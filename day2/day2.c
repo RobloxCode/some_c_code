@@ -15,6 +15,7 @@ void str_to_capital(char *str);
 void str_to_lower(char *str);
 int str_reverse(char *str);
 int str_reverse_in_place(char *str);
+int str_reverse_opt(char *str);
 
 noreturn void display_err(char *msg);
 
@@ -32,6 +33,11 @@ int main(void) {
     puts(str);
 
     if (str_reverse_in_place(str) < 0)
+        display_err("Error while reversing string!\n");
+
+    puts(str);
+
+    if (str_reverse_opt(str) < 0)
         display_err("Error while reversing string!\n");
 
     puts(str);
@@ -118,6 +124,32 @@ int str_reverse_in_place(char *str) {
         char tmp = str[left];
         str[left] = str[right];
         str[right] = tmp;
+        left++;
+        right--;
+    }
+
+    return 0;
+}
+
+int str_reverse_opt(char *str) {
+    if (!str)
+        return -1;
+
+    char *left = str;
+    char *right = str;
+
+    while (*right)
+        right++;
+
+    if (right == str)
+        return -1;
+
+    right--;
+
+    while (left < right) {
+        char tmp = *left;
+        *left = *right;
+        *right = tmp;
         left++;
         right--;
     }
