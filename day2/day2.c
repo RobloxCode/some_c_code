@@ -4,16 +4,19 @@
 
 #include <stdio.h>
 #include <stddef.h>
-
-size_t str_len(char *str);
+#include <stdlib.h>
+#include <stdnoreturn.h>
 
 void char_to_capital(char *c);
 void char_to_lower(char *c);
 
+size_t str_len(char *str);
 void str_to_capital(char *str);
 void str_to_lower(char *str);
 int str_reverse(char *str);
 int str_reverse_in_place(char *str);
+
+noreturn void display_err(char *msg);
 
 int main(void) {
     char str[] = "abcdefg";
@@ -23,16 +26,14 @@ int main(void) {
     str_to_lower(str);
     puts(str);
 
-    if (str_reverse(str) < 0) {
-        fprintf(stderr, "Error while reversing string\n");
-        return -1;
-    }
+    if (str_reverse(str) < 0)
+        display_err("Error while reversing string!\n");
+
     puts(str);
 
-    if (str_reverse_in_place(str) < 0) {
-        fprintf(stderr, "Error while reversing string\n");
-        return -1;
-    }
+    if (str_reverse_in_place(str) < 0)
+        display_err("Error while reversing string!\n");
+
     puts(str);
 
     return 0;
@@ -122,4 +123,9 @@ int str_reverse_in_place(char *str) {
     }
 
     return 0;
+}
+
+noreturn void display_err(char *msg) {
+    fprintf(stderr, "Error: %s\n", msg);
+    exit(-1);
 }
