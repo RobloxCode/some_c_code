@@ -9,12 +9,22 @@
 
 void int_arr_print(int *arr, size_t len);
 int int_sqrt(int num, int *out);
+int is_prime(int num);
 int *get_primes_sieves_eratosthenes(int num);
+int *get_primes(int num);
 int is_multiple(int divisor, int src);
 noreturn void display_err(char *msg);
 
 int main(void) {
-    get_primes_sieves_eratosthenes(10);
+    int *primes = NULL;
+    primes = get_primes(100);
+    if (!primes)
+        display_err("Error creating primes list");
+
+    int_arr_print(primes, (size_t)100);
+
+    free(primes);
+    primes = NULL;
     return 0;
 }
 
@@ -50,7 +60,39 @@ int is_multiple(int divisor, int src) {
     return src % divisor == 0 ? 1 : 0;
 }
 
+int is_prime(int num) {
+    if (num < 2)
+        return 0;
+
+    int sqrt = 0;
+    if (int_sqrt(num, &sqrt) < 0)
+        return 0;
+
+    for (size_t i = 2; i < sqrt + 1; ++i) {
+        if (num % i == 0) {
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
+int *get_primes(int num) {
+    int *primes = malloc(num * sizeof *primes);
+    if (!primes)
+        return NULL;
+
+    for (size_t i = 0; i <= num; ++i) {
+        if (is_prime(num)) {
+            primes[i] = num;
+        } else {
+            primes[i] = 0;
+        }
+    }
+}
+
 // TODO: refactor this whole function
+// it does not free!!
 int *get_primes_sieves_eratosthenes(int num) {
     size_t arr_len = (size_t)num - 1;
     printf("len: %zu\n", arr_len);
