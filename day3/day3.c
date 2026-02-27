@@ -7,68 +7,124 @@
 #include <stdlib.h>
 #include <stdnoreturn.h>
 
-void int_arr_print(int *arr, size_t len);
-int int_sqrt(int num, int *out);
+typedef struct {
+    int *items;
+    size_t length;
+    size_t _count;
+} ArrayList;
+
+ArrayList *ArrayList_create(const size_t init_len);
+int ArrayList_append(ArrayList *al, const int item);
+int ArrayList_free(ArrayList **al);
+void ArrayList_print(const ArrayList *al);
+
+noreturn void display_err(const char *msg);
 int is_prime(int num);
-int *get_primes_sieves_eratosthenes(int num);
-int *get_primes(int num);
-int is_multiple(int divisor, int src);
-noreturn void display_err(char *msg);
+int int_sqrt(int num);
+ArrayList *get_primes(int num);
 
 int main(void) {
-    int *primes = NULL;
-    primes = get_primes(100);
-    if (!primes)
-        display_err("Error creating primes list");
+    ArrayList *al = get_primes(100);
+    if (!al) {
+        display_err("creating ArrayList");
+    }
 
-    int_arr_print(primes, (size_t)100);
+    ArrayList_print(al);
 
-    free(primes);
-    primes = NULL;
+    ArrayList_free(&al);
     return 0;
 }
 
-void int_arr_print(int *arr, size_t len) {
-    for (size_t i = 0; i < len; ++i)
-        printf("%d ", arr[i]);
+ArrayList *ArrayList_create(const size_t init_len) {
+    int *items = calloc(init_len, sizeof *items);
+    if (!items) {
+        return NULL;
+    }
+
+    ArrayList *al = malloc(sizeof *al);
+    if (!al) {
+        free(items);
+        return NULL;
+    }
+
+    al->items = items;
+    al->_count = init_len;
+    al->length = 0;
+
+    return al;
+}
+
+int ArrayList_append(ArrayList *al, const int item) {
+    if (al->length + 1 >= al->_count) {
+        size_t new_len = al->_count * 2;
+        int *tmp = realloc(al->items, new_len * sizeof *al->items);
+        if (!tmp) {
+            return -1;
+        }
+
+        al->items = tmp;
+        al->_count = new_len;
+    }
+
+    al->items[al->length] = item;
+    al->length++;
+
+    return 0;
+}
+
+int ArrayList_free(ArrayList **al) {
+    if (!al || !*al) {
+        return -1;
+    }
+
+    free((*al)->items);
+    free(*al);
+    *al = NULL;
+    return 0;
+}
+
+void ArrayList_print(const ArrayList *al) {
+    for (size_t i = 0; i < al->length; ++i) {
+        printf("%d ", al->items[i]);
+    }
+
     printf("\n");
 }
 
-int int_sqrt(int num, int *out) {
-    if (num < 0)
-        return -1;
+noreturn void display_err(const char *msg) {
+    fprintf(stderr, "Error: %s\n", msg);
+    exit(-1);
+}
 
-    if (num == 0 || num == 1) {
-        *out = num;
+int int_sqrt(int num) {
+    if (num < 0) {
         return 0;
     }
 
-    for (int i = 0; i < num; ++i) {
-        if (i * i > num)
-            break;
-
-        if (i * i == num)
-            *out = i;
-
-        *out = i;
+    if (num < 2) {
+        return num;
     }
 
-    return 0;
-}
+    int res = 0;
+    for (int i = 2; i < num; ++i) {
+        if (i * i == num) {
+            return i;
+        } else if (i * i >= num) {
+            return res;
+        } else {
+            res = i;
+        }
+    }
 
-int is_multiple(int divisor, int src) {
-    return src % divisor == 0 ? 1 : 0;
+    return res;
 }
 
 int is_prime(int num) {
-    if (num < 2)
+    if (num < 0) {
         return 0;
+    }
 
-    int sqrt = 0;
-    if (int_sqrt(num, &sqrt) < 0)
-        return 0;
-
-    for (size_t i = 2; i < sqrt + 1; ++i) {
+    for (int i = 2; i < int_sqrt(num) + 1; ++i) {
         if (num % i == 0) {
             return 0;
         }
@@ -77,54 +133,17 @@ int is_prime(int num) {
     return 1;
 }
 
-int *get_primes(int num) {
-    int *primes = malloc(num * sizeof *primes);
-    if (!primes)
+ArrayList *get_primes(int num) {
+    ArrayList *al = ArrayList_create((size_t)num);
+    if (!al) {
         return NULL;
-
-    for (size_t i = 0; i <= num; ++i) {
-        if (is_prime(num)) {
-            primes[i] = num;
-        } else {
-            primes[i] = 0;
-        }
     }
-}
 
-// TODO: refactor this whole function
-// it does not free!!
-int *get_primes_sieves_eratosthenes(int num) {
-    size_t arr_len = (size_t)num - 1;
-    printf("len: %zu\n", arr_len);
-    int *primes = malloc(arr_len * sizeof *primes);
-    if (!primes)
-        return NULL;
-
-    for (size_t i = 0; i < arr_len; ++i)
-        primes[i] = (int)i + 2;
-
-    int num_sqrt = 0;
-    if (int_sqrt(num, &num_sqrt) < 0)
-        return NULL;
-
-    int_arr_print(primes, arr_len);
-
-    printf("SQRT: %d\n", num_sqrt);
-    for (size_t i = 0; i < (size_t)num_sqrt; ++i) {
-        for (size_t j = i; j < arr_len; ++j) {
-            int prev_iteration = primes[i];
-            int new_iteration = primes[j];
-            if (!is_multiple(new_iteration, prev_iteration)) {
-                primes[i] = 0;
-            }
+    for (int i = 2; i <= num; ++i) {
+        if (is_prime(i)) {
+            ArrayList_append(al, i);
         }
     }
 
-    int_arr_print(primes, arr_len);
-    return NULL;
-}
-
-noreturn void display_err(char *msg) {
-    fprintf(stderr, "Error: %s\n", msg);
-    exit(-1);
+    return al;
 }

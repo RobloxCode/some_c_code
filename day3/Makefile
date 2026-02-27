@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -std=c11 -Wall -Wextra -Wconversion -pedantic
+CFLAGS = -std=c11 -Wall -Wextra -Wconversion -pedantic -fsanitize=address
 SRC = day3.c
 OUT = d3
 
