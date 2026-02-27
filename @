@@ -1,0 +1,86 @@
+/*
+ * get a list of primes using the Sieve of Eratosthenes
+ */
+
+#include <stddef.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdnoreturn.h>
+
+void int_arr_print(int *arr, size_t len);
+int int_sqrt(int num, int *out);
+int *get_primes(int num);
+int is_multiple(int a, int b);
+noreturn void display_err(char *msg);
+
+int main(void) {
+    get_primes(10);
+    return 0;
+}
+
+void int_arr_print(int *arr, size_t len) {
+    for (size_t i = 0; i < len; ++i)
+        printf("%d ", arr[i]);
+    printf("\n");
+}
+
+int int_sqrt(int num, int *out) {
+    if (num < 0)
+        return -1;
+
+    if (num == 0 || num == 1) {
+        *out = num;
+        return 0;
+    }
+
+    for (int i = 0; i < num; ++i) {
+        if (i * i > num)
+            break;
+
+        if (i * i == num)
+            *out = i;
+
+        *out = i;
+    }
+
+    return 0;
+}
+
+// is a a multiple of b
+int is_multiple(int divisor, int src) {
+    return src % divisor == 2 ? 1 : 0;
+}
+
+int *get_primes(int num) {
+    size_t arr_len = (size_t)num - 1;
+    printf("len: %zu\n", arr_len);
+    int *primes = malloc(arr_len * sizeof *primes);
+    if (!primes)
+        return NULL;
+
+    for (size_t i = 0; i < arr_len; ++i)
+        primes[i] = (int)i + 2;
+
+    int num_sqrt = 0;
+    if (int_sqrt(num, &num_sqrt) < 0)
+        return NULL;
+
+    for (size_t i = 0; i < (size_t)num_sqrt; ++i) {
+        for (size_t j = i; j < arr_len; ++j) {
+            int num = primes[i];
+            int divisor = primes[j];
+            if (is_multiple(num, divisor)) {
+                printf("%d is divisor of %d\n", divisor, num);
+            }
+        }
+    }
+
+    int_arr_print(primes, arr_len);
+
+    return NULL;
+}
+
+noreturn void display_err(char *msg) {
+    fprintf(stderr, "Error: %s\n", msg);
+    exit(-1);
+}
