@@ -42,7 +42,7 @@ int main(void) {
 
     puts(str);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 size_t str_len(char *str) {
@@ -159,5 +159,5 @@ int str_reverse_opt(char *str) {
 
 noreturn void display_err(char *msg) {
     fprintf(stderr, "Error: %s\n", msg);
-    exit(-1);
+    exit(EXIT_FAILURE);
 }

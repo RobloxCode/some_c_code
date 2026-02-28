@@ -32,7 +32,7 @@ int main(void) {
     ArrayList_print(al);
 
     ArrayList_free(&al);
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 ArrayList *ArrayList_create(const size_t init_len) {
@@ -93,7 +93,7 @@ void ArrayList_print(const ArrayList *al) {
 
 noreturn void display_err(const char *msg) {
     fprintf(stderr, "Error: %s\n", msg);
-    exit(-1);
+    exit(EXIT_FAILURE);
 }
 
 int int_sqrt(int num) {
