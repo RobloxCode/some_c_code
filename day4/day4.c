@@ -14,20 +14,18 @@ typedef enum {
 int is_digit(const char c);
 atoi_status ascii_to_int(const char *src, int *out);
 
+void test_atoi(const char *t_src);
 noreturn void display_status_err(atoi_status status);
 
 int main(void) {
-    atoi_status status = ATOI_OK;
-    int int_num = 0;
-    char str_num[] = "-806";
-
-    status = ascii_to_int(str_num, &int_num);
-    if (status != ATOI_OK) {
-        display_status_err(status);
-    }
-
-    printf("string    %s\n", str_num);
-    printf("int num:  %d\n", int_num);
+    test_atoi("123");
+    test_atoi("-42");
+    test_atoi("77");
+    test_atoi("2147483647");
+    test_atoi("2147483648");
+    test_atoi("-2147483648");
+    test_atoi("-2147483649");
+    test_atoi("23aa");
 
     return EXIT_SUCCESS;
 }
@@ -77,6 +75,22 @@ atoi_status ascii_to_int(const char *src, int *out) {
 
     *out = result * sign;
     return ATOI_OK;
+}
+
+void test_atoi(const char *t_src) {
+    if (!t_src) {
+        return;
+    }
+
+    int out = 0;
+    atoi_status status = ATOI_OK;
+    status = ascii_to_int(t_src, &out);
+    if (status != ATOI_OK) {
+        printf("STATUS: %d\n", status);
+    }
+
+    printf("string    %s\n", t_src);
+    printf("int num:  %d\n", out);
 }
 
 noreturn void display_status_err(atoi_status status) {
