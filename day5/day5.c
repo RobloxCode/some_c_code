@@ -1,11 +1,11 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "../utils/ArrayList/ArrayListImp.h"
 
 void print_pascal_triangle(int rows);
 
 int main(void) {
-
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 void print_pascal_triangle(int rows) {

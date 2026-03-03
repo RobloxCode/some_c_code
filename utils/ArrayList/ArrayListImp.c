@@ -1,14 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
+#include <stdint.h>
+#include <limits.h>
+
+typedef enum {
+    ARRAYLIST_OK,
+    ARRAYLIST_ERR_WRONG_PTR,
+    ARRAYLIST_ERR_REALLOC,
+    ARRAYLIST_ERR_OVERFLOW,
+} ArrayList_status;
 
 typedef struct {
     int *items;
     size_t length;
-    size_t _count;
+    size_t capacity;
 } ArrayList;
 
-ArrayList *ArrayList_create(const size_t init_len) {
+ArrayList *ArrayList_create(size_t init_len) {
+    if (init_len == 0) {
+        init_len = 1;
+    }
+
     int *items = calloc(init_len, sizeof *items);
     if (!items) {
         return NULL;
@@ -21,45 +34,63 @@ ArrayList *ArrayList_create(const size_t init_len) {
     }
 
     al->items = items;
-    al->_count = init_len;
+    al->capacity = init_len;
     al->length = 0;
 
     return al;
 }
 
-int ArrayList_append(ArrayList *al, const int item) {
-    if (al->length + 1 >= al->_count) {
-        size_t new_len = al->_count * 2;
+ArrayList_status ArrayList_append(ArrayList *al, const int item) {
+    if (!al) {
+        return ARRAYLIST_ERR_WRONG_PTR;
+    }
+
+    if (al->length == al->capacity) {
+        if (al->capacity > SIZE_MAX / 2) {
+            return ARRAYLIST_ERR_OVERFLOW;
+        }
+
+        size_t new_len = al->capacity * 2;
+
+        if (new_len > SIZE_MAX / sizeof *al->items) {
+            return ARRAYLIST_ERR_OVERFLOW;
+        }
+
         int *tmp = realloc(al->items, new_len * sizeof *al->items);
         if (!tmp) {
-            return -1;
+            return ARRAYLIST_ERR_REALLOC;
         }
 
         al->items = tmp;
-        al->_count = new_len;
+        al->capacity = new_len;
     }
 
     al->items[al->length] = item;
     al->length++;
 
-    return 0;
+    return ARRAYLIST_OK;
 }
 
-int ArrayList_free(ArrayList **al) {
+ArrayList_status ArrayList_free(ArrayList **al) {
     if (!al || !*al) {
-        return -1;
+        return ARRAYLIST_ERR_WRONG_PTR;
     }
 
     free((*al)->items);
     free(*al);
     *al = NULL;
-    return 0;
+    return ARRAYLIST_OK;
 }
 
-void ArrayList_print(const ArrayList *al) {
+ArrayList_status ArrayList_print(const ArrayList *al) {
+    if (!al) {
+        return ARRAYLIST_ERR_WRONG_PTR;
+    }
+
     for (size_t i = 0; i < al->length; ++i) {
         printf("%d ", al->items[i]);
     }
 
     printf("\n");
+    return ARRAYLIST_OK;
 }
