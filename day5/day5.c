@@ -5,6 +5,10 @@
 void print_pascal_triangle(int rows);
 
 int main(void) {
+    ArrayList *al = ArrayList_create(5);
+    if (!al)
+        return EXIT_FAILURE;
+
     return EXIT_SUCCESS;
 }
 

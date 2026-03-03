@@ -8,7 +8,7 @@ typedef enum {
     ATOI_OK                     = 0,
     ATOI_ERR_WRONG_PTR          = 1,
     ATOI_ERR_CHAR_NO_DIGIT      = 2,
-    ATOI_ERR_OVERFLOW           = 3,
+    ATOI_ERR_OUT_OF_RANGE           = 3,
 } atoi_status;
 
 int is_digit(const char c);
@@ -62,11 +62,11 @@ atoi_status ascii_to_int(const char *src, int *out) {
 
         if (sign == 1) {
             if (result > (INT_MAX - digit) / 10) {
-                return ATOI_ERR_OVERFLOW;
+                return ATOI_ERR_OUT_OF_RANGE;
             }
         } else {
             if (result > (-(INT_MIN + digit)) / 10) {
-                return ATOI_ERR_OVERFLOW;
+                return ATOI_ERR_OUT_OF_RANGE;
             }
         }
 
