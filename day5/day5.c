@@ -5,7 +5,6 @@ void print_pascals_triangle(int n);
 
 int main(void) {
     print_pascals_triangle(7);
-    printf("hello world\n");
     return EXIT_SUCCESS;
 }
 
