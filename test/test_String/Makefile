@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -std=c11 -Wall -Wextra -Wconversion -pedantic -fsanitize=address
-UTILS = ../utils/String/StringImp.c
+UTILS = ../../utils/String/StringImp.c
 SRC = test.c
 OUT = t
 
