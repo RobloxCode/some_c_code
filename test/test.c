@@ -57,15 +57,19 @@ int main(void) {
         );
     }
 
-    printf("STRING: %s\n", s1->items);
+    printf("STRING: %s\n", String_c_str(s1));
     if ((status = String_clear(s1)) != STRING_OK) {
         goto cleanup;
     }
-    printf("STRING: %s\n", s1->items);
+    printf("STRING: %s\n", String_c_str(s2));
 
     String_write_to(s1, "new message in string");
     const char *ptr_to_char = String_c_str(s1);
     puts(ptr_to_char);
+
+    printf("s1 len: %zu\n", String_len(s1));
+    printf("s2 len: %zu\n", String_len(s2));
+    printf("s3 len: %zu\n", String_len(s3));
 
     cleanup:
         if (s1) {
