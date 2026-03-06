@@ -6,16 +6,19 @@ int main(void) {
     const size_t string_init_len = 10;
     int comparisson = 0;
     String_status status = STRING_OK;
+    String *s1 = NULL;
+    String *s2 = NULL;
+    String *s3 = NULL;
 
-    String *s1 = String_create(string_init_len);
+    s1 = String_create(string_init_len);
     if (!s1)
         goto cleanup;
 
-    String *s2 = String_create(string_init_len);
+    s2 = String_create(string_init_len);
     if (!s2)
         goto cleanup;
 
-    String *s3 = String_create(string_init_len);
+    s3 = String_create(string_init_len);
     if (!s3)
         goto cleanup;
 
@@ -23,8 +26,9 @@ int main(void) {
     if (status != STRING_OK)
         goto cleanup;
 
-    // we can ignore the return status code
-    String_write_to(s2, "some other message for string 2");
+    status = String_write_to(s2, "some other message for string 2");
+    if (status != STRING_OK)
+        goto cleanup;
 
     status = String_write_to(s3, "final message for string 3");
     if (status != STRING_OK)
