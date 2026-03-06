@@ -15,9 +15,9 @@ typedef struct {
     size_t capacity;
 } String;
 
-String *String_create(size_t init_len) {
+String *String_create(const size_t init_len) {
     if (init_len == 0) {
-        init_len = 1;
+        return NULL;
     }
 
     char *items = calloc(init_len, sizeof *items);
@@ -39,7 +39,7 @@ String *String_create(size_t init_len) {
     return str;
 }
 
-String_status String_append(String *str, const char item) {
+String_status String_append_char(String *str, const char item) {
     if (!str) {
         return STRING_ERR_WRONG_PTR;
     }
@@ -82,7 +82,7 @@ String_status String_free(String **str) {
     return STRING_OK;
 }
 
-String_status String_print(const String *str) {
+String_status String_println(const String *str) {
     if (!str) {
         return STRING_ERR_WRONG_PTR;
     }
@@ -90,14 +90,14 @@ String_status String_print(const String *str) {
     return STRING_OK;
 }
 
-String_status String_write_to(String *str, const char *content) {
+String_status String_append_cstr(String *str, const char *content) {
     if (!str || !content) {
         return STRING_ERR_WRONG_PTR;
     }
 
     String_status status = STRING_OK;
     for (size_t i = 0; content[i] != '\0'; ++i) {
-        if ((status = String_append(str, content[i])) != STRING_OK) {
+        if ((status = String_append_char(str, content[i])) != STRING_OK) {
             fprintf(stderr, "Error status: %d\n", status);
             return status;
         }
@@ -109,25 +109,25 @@ String_status String_write_to(String *str, const char *content) {
 String_status String_compare(
     const String *str1,
     const String *str2,
-    int *are_equal
+    int *result
 ) {
-    if (!str1 || !str2 || !are_equal) {
+    if (!str1 || !str2 || !result) {
         return STRING_ERR_WRONG_PTR;
     }
 
     if (str1->length != str2->length) {
-        *are_equal = 0;
+        *result = 0;
         return STRING_OK;
     }
 
     for (size_t i = 0; i < str1->length; ++i) {
         if (str1->items[i] != str2->items[i]) {
-            *are_equal = 0;
+            *result = 0;
             return STRING_OK;
         }
     }
 
-    *are_equal = 1;
+    *result = 1;
     return STRING_OK;
 }
 
@@ -149,11 +149,19 @@ String_status String_clear(String *str) {
     return STRING_OK;
 }
 
-const char *String_c_str(const String *str) {
+const char *String_cstr(const String *str) {
     if (!str) {
         return NULL;
     }
 
     return str->items;
 }
+
+String_status String_concat(
+    String *dst,
+    const String *str1,
+    const String *str2
+);
+String_status String_copy(String *dst, const String *src);
+String_status String_substring(String *str);
 
