@@ -16,6 +16,16 @@ int main(void) {
         goto cleanup;
     }
 
+    String *s3 = String_create(string_init_len);
+    if (!s3) {
+        goto cleanup;
+    }
+
+    // you can ignore the return status type
+    String_write_to(s3, "Hello");
+    printf("%s\n", String_c_str(s3));
+
+    // saving the return status type
     if ((status = String_write_to(s1, "this is the string1")) != STRING_OK) {
         goto cleanup;
     }
@@ -29,16 +39,33 @@ int main(void) {
     }
 
     if (comparisson) {
-        printf("the strings\n");
-        String_print(s1);
-        String_print(s2);
-        printf("are equal\n");
+        printf(
+            "the strings\n"
+            "%s\n"
+            "%s\n"
+            "are equal\n",
+            String_c_str(s1),
+            String_c_str(s2)
+        );
     } else {
-        printf("the strings\n");
-        String_print(s1);
-        String_print(s2);
-        printf("are different\n");
+        printf(
+            "the strings\n"
+            "%s\n"
+            "%s",
+            String_c_str(s1),
+            String_c_str(s2)
+        );
     }
+
+    printf("STRING: %s\n", s1->items);
+    if ((status = String_clear(s1)) != STRING_OK) {
+        goto cleanup;
+    }
+    printf("STRING: %s\n", s1->items);
+
+    String_write_to(s1, "new message in string");
+    const char *ptr_to_char = String_c_str(s1);
+    puts(ptr_to_char);
 
     cleanup:
         if (s1) {
@@ -47,6 +74,10 @@ int main(void) {
 
         if (s2) {
             String_free(&s2);
+        }
+
+        if (s3) {
+            String_free(&s3);
         }
 
         if (status != STRING_OK) {

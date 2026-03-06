@@ -32,6 +32,7 @@ String *String_create(size_t init_len) {
     }
 
     str->items = items;
+    str->items[0] = '\0';
     str->capacity = init_len;
     str->length = 0;
 
@@ -43,28 +44,29 @@ String_status String_append(String *str, const char item) {
         return STRING_ERR_WRONG_PTR;
     }
 
-    if (str->length == str->capacity) {
+    if (str->length + 1 >= str->capacity) {
         if (str->capacity > SIZE_MAX / 2) {
             return STRING_ERR_OVERFLOW;
         }
 
-        size_t new_len = str->capacity * 2;
+        size_t new_cap = str->capacity * 2;
 
-        if (new_len > SIZE_MAX / sizeof *str->items) {
+        if (new_cap > SIZE_MAX / sizeof *str->items) {
             return STRING_ERR_OVERFLOW;
         }
 
-        char *tmp = realloc(str->items, new_len * sizeof *str->items);
+        char *tmp = realloc(str->items, new_cap * sizeof *str->items);
         if (!tmp) {
             return STRING_ERR_REALLOC;
         }
 
         str->items = tmp;
-        str->capacity = new_len;
+        str->capacity = new_cap;
     }
 
     str->items[str->length] = item;
     str->length++;
+    str->items[str->length] = '\0';
 
     return STRING_OK;
 }
@@ -84,12 +86,7 @@ String_status String_print(const String *str) {
     if (!str) {
         return STRING_ERR_WRONG_PTR;
     }
-
-    for (size_t i = 0; i < str->length; ++i) {
-        printf("%c", str->items[i]);
-    }
-
-    printf("\n");
+    fprintf(stdout, "%s\n", str->items);
     return STRING_OK;
 }
 
@@ -110,11 +107,11 @@ String_status String_write_to(String *str, const char *content) {
 }
 
 String_status String_compare(
-    String *str1,
-    String *str2,
+    const String *str1,
+    const String *str2,
     int *are_equal
 ) {
-    if (!str1 || !str2) {
+    if (!str1 || !str2 || !are_equal) {
         return STRING_ERR_WRONG_PTR;
     }
 
@@ -132,5 +129,31 @@ String_status String_compare(
 
     *are_equal = 1;
     return STRING_OK;
+}
+
+size_t String_len(const String *str) {
+    if (!str) {
+        return 0;
+    }
+
+    return str->length;
+}
+
+String_status String_clear(String *str) {
+    if (!str) {
+        return STRING_ERR_WRONG_PTR;
+    }
+
+    str->length = 0;
+    str->items[0] = '\0';
+    return STRING_OK;
+}
+
+const char *String_c_str(const String *str) {
+    if (!str) {
+        return NULL;
+    }
+
+    return str->items;
 }
 
