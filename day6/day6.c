@@ -6,15 +6,43 @@
 #define MAX_DIGIT_LEN 9
 #define MAX_DIGITS_IN_EXPRESSION 10
 
-int ascii_to_int(const char *str, int *result);
+typedef enum {
+    ATOI_OK                 = 0,
+    ATOI_ERR_WRONG_PTR      = 1,
+    ATOI_ERR_NO_DIGIT       = 2,
+    ATOI_ERR_OUT_OF_RANGE   = 3,
+} atoi_status;
+
+typedef enum {
+    GET_OP_OK               = 0,
+    GET_OP_WRONG_PTR        = 1,
+    GET_OP_NO_OP_FOUND      = 2,
+} get_operator_status;
+
+typedef enum {
+    GET_DIGITS_OK           = 0,
+    GET_DIGITS_WRONG_PTR    = 1,
+    GET_DIGITS_ATOI_ERR     = 2,
+} get_digits_status;
+
+typedef enum {
+    EVALEXP_OK                  = 0,
+    EVALEXP_WRONG_PTR           = 1,
+    EVALEXP_ERR_GET_DIGITS      = 2,
+    EVALEXP_ERR_GET_OP          = 3,
+    EVALEXP_ERR_DIV_BY_ZERO     = 4,
+    EVALEXP_NOT_VALID_OP        = 5,
+} evaluate_exp_status;
+
+atoi_status ascii_to_int(const char *str, int *result);
 size_t get_str_len(char *str);
 int clear_str(char *str);
 int is_digit(char c);
 int is_operator(char c);
 
-int get_digits(char *exp, int *digits);
-int get_operator(char *exp, char *operator);
-int evaluate_exp(char *exp, int *result);
+get_digits_status get_digits(char *exp, int *digits);
+get_operator_status get_operator(char *exp, char *operator);
+evaluate_exp_status evaluate_exp(char *exp, int *result);
 
 int main(int argc, char **argv) {
     if (argc != 2) {
@@ -27,20 +55,21 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
+    evaluate_exp_status status = EVALEXP_OK;
     char *expression = argv[1];
     int result = 0;
-    if (evaluate_exp(expression, &result) < 0) {
+    if ((status = evaluate_exp(expression, &result)) != EVALEXP_OK) {
+        fprintf(stderr, "Error EVALEXP_STATUS: %d\n", status);
         return EXIT_FAILURE;
     }
 
     printf("result: %d\n", result);
-
     return EXIT_SUCCESS;
 }
 
-int ascii_to_int(const char *str, int *result) {
-    if (!str) {
-        return -1;
+atoi_status ascii_to_int(const char *str, int *result) {
+    if (!str || !result) {
+        return ATOI_ERR_WRONG_PTR;
     }
 
     size_t i = 0;
@@ -55,18 +84,18 @@ int ascii_to_int(const char *str, int *result) {
 
     for (; str[i] != '\0'; ++i) {
         if (!is_digit(str[i])) {
-            return -1;
+            return ATOI_ERR_NO_DIGIT;
         }
 
         int digit = str[i] - '0';
 
         if (sign == 1) {
             if (*result > (INT_MAX - digit) / 10) {
-                return -1;
+                return ATOI_ERR_OUT_OF_RANGE;
             }
         } else {
             if (*result > (-(INT_MIN + digit)) / 10) {
-                return -1;
+                return ATOI_ERR_OUT_OF_RANGE;
             }
         }
 
@@ -74,7 +103,7 @@ int ascii_to_int(const char *str, int *result) {
     }
 
     *result = *result * sign;
-    return 0;
+    return ATOI_OK;
 }
 
 size_t get_str_len(char *str) {
@@ -115,11 +144,12 @@ int is_operator(char c) {
     return 0;
 }
 
-int get_digits(char *exp, int *digits) {
+get_digits_status get_digits(char *exp, int *digits) {
     if (!exp || !digits) {
-        return -1;
+        return GET_DIGITS_WRONG_PTR;
     }
 
+    atoi_status status = ATOI_OK;
     int atoi_res = 0;
     char ascii_digit_buff[MAX_DIGIT_LEN] = {'\0'};
     size_t digit_last_i = 0;
@@ -134,8 +164,10 @@ int get_digits(char *exp, int *digits) {
         }
 
         if (is_operator(exp_cur_char) || exp[i + 1] == '\0') {
-            if ((ascii_to_int(ascii_digit_buff, &atoi_res)) < 0) {
-                return -1;
+            status = ascii_to_int(ascii_digit_buff, &atoi_res);
+            if (status != ATOI_OK) {
+                fprintf(stderr, "Error ATOI STATUS: %d\n", status);
+                return GET_DIGITS_ATOI_ERR;
             }
 
             digits[digit_last_i] = atoi_res;
@@ -146,38 +178,43 @@ int get_digits(char *exp, int *digits) {
         }
     }
 
-    return 0;
+    return GET_DIGITS_OK;
 }
 
-int get_operator(char *exp, char *operator) {
-    if (!operator) {
-        return -1;
+get_operator_status get_operator(char *exp, char *operator) {
+    if (!exp || !operator) {
+        return GET_OP_WRONG_PTR;
     }
 
     for (size_t i = 0; exp[i] != '\0'; ++i) {
         if (is_operator(exp[i])) {
             *operator = exp[i];
-            return 0;
+            return GET_OP_OK;
         }
     }
 
-    return -1;
+    return GET_OP_NO_OP_FOUND;
 }
 
-int evaluate_exp(char *exp, int *result) {
+evaluate_exp_status evaluate_exp(char *exp, int *result) {
     if (!exp || !result) {
-        return -1;
+        return EVALEXP_WRONG_PTR;
     }
+
+    get_operator_status op_status = GET_OP_OK;
+    get_digits_status digits_status = GET_DIGITS_OK;
 
     int digits[MAX_DIGITS_IN_EXPRESSION] = {0};
     char operator = '\0';
 
-    if (get_digits(exp, digits) < 0) {
-        return -1;
+    if ((digits_status = get_digits(exp, digits)) != GET_DIGITS_OK) {
+        fprintf(stderr, "Error GET_DIGITS_STATUS: %d\n", digits_status);
+        return EVALEXP_ERR_GET_DIGITS;
     }
 
-    if (get_operator(exp, &operator) < 0) {
-        return -1;
+    if ((op_status = get_operator(exp, &operator)) != GET_OP_OK) {
+        fprintf(stderr, "Error GET_OP_STATUS: %d\n", op_status);
+        return EVALEXP_ERR_GET_OP;
     }
 
     int num1 = digits[0];
@@ -195,8 +232,7 @@ int evaluate_exp(char *exp, int *result) {
             break;
         case '/':
             if (num2 == 0) {
-                printf("cannot divide by 0\n");
-                return -1;
+                return EVALEXP_ERR_DIV_BY_ZERO;
             }
             *result = num1 / num2;
             break;
