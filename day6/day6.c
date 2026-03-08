@@ -6,37 +6,34 @@
 #define MAX_DIGIT_LEN 9
 #define MAX_DIGITS_IN_EXPRESSION 10
 
-typedef struct {
-    int *items;
-    size_t len;
-} IntArray;
-
 int ascii_to_int(const char *str, int *result);
 size_t get_str_len(char *str);
 int clear_str(char *str);
 int is_digit(char c);
 int is_operator(char c);
-int is_space(char c);
 
-int parse_exp(char *exp, IntArray *digits);
+int get_digits(char *exp, int *digits);
+int get_operator(char *exp, char *operator);
 int evaluate_exp(char *exp, int *result);
 
-int main(void) {
-    // if (argc != 2) {
-    //     fprintf(stderr,
-    //         "USAGE:\n"
-    //         "./d6 [some expression]\n"
-    //         "ex:\n"
-    //         "./d6 \"1 + 1\"\n"
-    //     );
-    //     return EXIT_FAILURE;
-    // }
+int main(int argc, char **argv) {
+    if (argc != 2) {
+        fprintf(stderr,
+            "USAGE:\n"
+            "./d6 [some expression]\n"
+            "ex:\n"
+            "./d6 \"1 + 1\"\n"
+        );
+        return EXIT_FAILURE;
+    }
 
-    char *expression = "132 + 43 - 54";
+    char *expression = argv[1];
     int result = 0;
     if (evaluate_exp(expression, &result) < 0) {
         return EXIT_FAILURE;
     }
+
+    printf("result: %d\n", result);
 
     return EXIT_SUCCESS;
 }
@@ -118,41 +115,53 @@ int is_operator(char c) {
     return 0;
 }
 
-int is_space(char c) {
-    return c == ' ';
-}
-
-int parse_exp(char *exp, IntArray *digits) {
-    if (!exp) {
+int get_digits(char *exp, int *digits) {
+    if (!exp || !digits) {
         return -1;
     }
 
     int atoi_res = 0;
-    char ascii_cur_digit[MAX_DIGIT_LEN] = {'\0'};
-    size_t char_append_pos = 0;
-    size_t digit_append_pos = 0;
+    char ascii_digit_buff[MAX_DIGIT_LEN] = {'\0'};
+    size_t digit_last_i = 0;
+    size_t ascii_digit_buff_last_i = 0;
 
-    for (size_t i = 0; i < get_str_len(exp); ++i) {
-        if (is_operator(exp[i]) || exp[i + 1] == '\0') {
-            if ((ascii_to_int(ascii_cur_digit, &atoi_res)) < 0) {
+    for (size_t i = 0; exp[i] != '\0'; ++i) {
+        char exp_cur_char = exp[i];
+
+        if (is_digit(exp_cur_char)) {
+            ascii_digit_buff[ascii_digit_buff_last_i] = exp_cur_char;
+            ascii_digit_buff_last_i++;
+        }
+
+        if (is_operator(exp_cur_char) || exp[i + 1] == '\0') {
+            if ((ascii_to_int(ascii_digit_buff, &atoi_res)) < 0) {
                 return -1;
             }
 
-            digits->items[digit_append_pos] = atoi_res;
-            digit_append_pos++;
+            digits[digit_last_i] = atoi_res;
+            digit_last_i++;
             atoi_res = 0;
-            char_append_pos = 0;
-            clear_str(ascii_cur_digit);
-            continue;
-        } else if (is_space(exp[i])) {
-            continue;
-        } if (is_digit(exp[i])) {
-            ascii_cur_digit[char_append_pos] = exp[i];
-            char_append_pos++;
+            ascii_digit_buff_last_i = 0;
+            clear_str(ascii_digit_buff);
         }
     }
 
     return 0;
+}
+
+int get_operator(char *exp, char *operator) {
+    if (!operator) {
+        return -1;
+    }
+
+    for (size_t i = 0; exp[i] != '\0'; ++i) {
+        if (is_operator(exp[i])) {
+            *operator = exp[i];
+            return 0;
+        }
+    }
+
+    return -1;
 }
 
 int evaluate_exp(char *exp, int *result) {
@@ -160,12 +169,39 @@ int evaluate_exp(char *exp, int *result) {
         return -1;
     }
 
-    int items[MAX_DIGITS_IN_EXPRESSION] = {0};
-    IntArray digits = (IntArray){ .items = items, .len = (size_t)MAX_DIGITS_IN_EXPRESSION };
-    parse_exp(exp, &digits);
+    int digits[MAX_DIGITS_IN_EXPRESSION] = {0};
+    char operator = '\0';
 
-    for (size_t i = 0; i < digits.len; ++i) {
-        printf("%d ", digits.items[i]);
+    if (get_digits(exp, digits) < 0) {
+        return -1;
+    }
+
+    if (get_operator(exp, &operator) < 0) {
+        return -1;
+    }
+
+    int num1 = digits[0];
+    int num2 = digits[1];
+
+    switch (operator) {
+        case '+':
+            *result = num1 + num2;
+            break;
+        case '-':
+            *result = num1 - num2;
+            break;
+        case '*':
+            *result = num1 * num2;
+            break;
+        case '/':
+            if (num2 == 0) {
+                printf("cannot divide by 0\n");
+                return -1;
+            }
+            *result = num1 / num2;
+            break;
+        default:
+            printf("not a valid operator\n");
     }
 
     return 0;
