@@ -14,28 +14,28 @@ typedef enum {
 } atoi_status;
 
 typedef enum {
-    GET_OP_OK               = 0,
-    GET_OP_WRONG_PTR        = 1,
-    GET_OP_NO_OP_FOUND      = 2,
+    GET_OP_OK                   = 0,
+    GET_OP_ERR_WRONG_PTR        = 1,
+    GET_OP_ERR_NO_OP_FOUND      = 2,
 } get_operator_status;
 
 typedef enum {
-    GET_DIGITS_OK           = 0,
-    GET_DIGITS_WRONG_PTR    = 1,
-    GET_DIGITS_ATOI_ERR     = 2,
+    GET_DIGITS_OK                   = 0,
+    GET_DIGITS_ERR_WRONG_PTR        = 1,
+    GET_DIGITS_ERR_ATOI_ERR         = 2,
+    GET_DIGITS_ERR_DIGIT_OVERFLOW   = 3,
 } get_digits_status;
 
 typedef enum {
     EVALEXP_OK                  = 0,
-    EVALEXP_WRONG_PTR           = 1,
-    EVALEXP_ERR_GET_DIGITS      = 2,
-    EVALEXP_ERR_GET_OP          = 3,
-    EVALEXP_ERR_DIV_BY_ZERO     = 4,
-    EVALEXP_NOT_VALID_OP        = 5,
+    EVALEXP_ERR_WRONG_PTR       = 1,
+    EVALEXP_ERR_DIV_BY_ZERO     = 2,
+    EVALEXP_ERR_HELPER_FUNC     = 3,
+    EVALEXP_ERR_NOT_VALID_OP    = 4,
 } evaluate_exp_status;
 
 atoi_status ascii_to_int(const char *str, int *result);
-size_t get_str_len(char *str);
+size_t get_str_len(const char *str);
 int clear_str(char *str);
 int is_digit(char c);
 int is_operator(char c);
@@ -72,6 +72,7 @@ atoi_status ascii_to_int(const char *str, int *result) {
         return ATOI_ERR_WRONG_PTR;
     }
 
+    *result = 0;
     size_t i = 0;
     int sign = 1;
 
@@ -106,15 +107,16 @@ atoi_status ascii_to_int(const char *str, int *result) {
     return ATOI_OK;
 }
 
-size_t get_str_len(char *str) {
+size_t get_str_len(const char *str) {
     if (!str) {
         return 0;
     }
 
     size_t i = 0;
-    while (str[++i]) {
-        ;;
+    while (str[i]) {
+        i++;
     }
+
     return i;
 }
 
@@ -146,35 +148,43 @@ int is_operator(char c) {
 
 get_digits_status get_digits(char *exp, int *digits) {
     if (!exp || !digits) {
-        return GET_DIGITS_WRONG_PTR;
+        return GET_DIGITS_ERR_WRONG_PTR;
     }
 
     atoi_status status = ATOI_OK;
     int atoi_res = 0;
-    char ascii_digit_buff[MAX_DIGIT_LEN] = {'\0'};
-    size_t digit_last_i = 0;
-    size_t ascii_digit_buff_last_i = 0;
+    char digit_buff[MAX_DIGIT_LEN] = {'\0'};
+    size_t digit_idx = 0;
+    size_t buff_idx = 0;
 
     for (size_t i = 0; exp[i] != '\0'; ++i) {
         char exp_cur_char = exp[i];
 
         if (is_digit(exp_cur_char)) {
-            ascii_digit_buff[ascii_digit_buff_last_i] = exp_cur_char;
-            ascii_digit_buff_last_i++;
+            if (buff_idx >= MAX_DIGIT_LEN - 1) {
+                return GET_DIGITS_ERR_DIGIT_OVERFLOW;
+            }
+
+            digit_buff[buff_idx] = exp_cur_char;
+            buff_idx++;
         }
 
         if (is_operator(exp_cur_char) || exp[i + 1] == '\0') {
-            status = ascii_to_int(ascii_digit_buff, &atoi_res);
+            status = ascii_to_int(digit_buff, &atoi_res);
             if (status != ATOI_OK) {
                 fprintf(stderr, "Error ATOI STATUS: %d\n", status);
-                return GET_DIGITS_ATOI_ERR;
+                return GET_DIGITS_ERR_ATOI_ERR;
             }
 
-            digits[digit_last_i] = atoi_res;
-            digit_last_i++;
+            digits[digit_idx] = atoi_res;
+            digit_idx++;
             atoi_res = 0;
-            ascii_digit_buff_last_i = 0;
-            clear_str(ascii_digit_buff);
+            buff_idx = 0;
+            clear_str(digit_buff);
+        }
+
+        if (exp_cur_char == ' ') {
+            continue;
         }
     }
 
@@ -183,7 +193,7 @@ get_digits_status get_digits(char *exp, int *digits) {
 
 get_operator_status get_operator(char *exp, char *operator) {
     if (!exp || !operator) {
-        return GET_OP_WRONG_PTR;
+        return GET_OP_ERR_WRONG_PTR;
     }
 
     for (size_t i = 0; exp[i] != '\0'; ++i) {
@@ -193,34 +203,34 @@ get_operator_status get_operator(char *exp, char *operator) {
         }
     }
 
-    return GET_OP_NO_OP_FOUND;
+    return GET_OP_ERR_NO_OP_FOUND;
 }
 
 evaluate_exp_status evaluate_exp(char *exp, int *result) {
     if (!exp || !result) {
-        return EVALEXP_WRONG_PTR;
+        return EVALEXP_ERR_WRONG_PTR;
     }
 
     get_operator_status op_status = GET_OP_OK;
     get_digits_status digits_status = GET_DIGITS_OK;
 
     int digits[MAX_DIGITS_IN_EXPRESSION] = {0};
-    char operator = '\0';
+    char char_op = '\0';
+    int num1 = 0;
+    int num2 = 0;
 
     if ((digits_status = get_digits(exp, digits)) != GET_DIGITS_OK) {
-        fprintf(stderr, "Error GET_DIGITS_STATUS: %d\n", digits_status);
-        return EVALEXP_ERR_GET_DIGITS;
+        goto error;
     }
 
-    if ((op_status = get_operator(exp, &operator)) != GET_OP_OK) {
-        fprintf(stderr, "Error GET_OP_STATUS: %d\n", op_status);
-        return EVALEXP_ERR_GET_OP;
+    if ((op_status = get_operator(exp, &char_op)) != GET_OP_OK) {
+        goto error;
     }
 
-    int num1 = digits[0];
-    int num2 = digits[1];
+    num1 = digits[0];
+    num2 = digits[1];
 
-    switch (operator) {
+    switch (char_op) {
         case '+':
             *result = num1 + num2;
             break;
@@ -234,11 +244,24 @@ evaluate_exp_status evaluate_exp(char *exp, int *result) {
             if (num2 == 0) {
                 return EVALEXP_ERR_DIV_BY_ZERO;
             }
+
             *result = num1 / num2;
             break;
         default:
             printf("not a valid operator\n");
+            return EVALEXP_ERR_NOT_VALID_OP;
     }
 
-    return 0;
+    return EVALEXP_OK;
+
+    error:
+    if (digits_status != GET_DIGITS_OK) {
+        fprintf(stderr, "Error GET_DIGITS_STATUS: %d\n", digits_status);
+    }
+
+    if (op_status != GET_OP_OK) {
+        fprintf(stderr, "Error GET_OP_STATUS: %d\n", op_status);
+    }
+
+    return EVALEXP_ERR_HELPER_FUNC;
 }
