@@ -91,7 +91,7 @@ atoi_status ascii_to_int(const char *str, int *result) {
         int digit = str[i] - '0';
 
         if (sign == 1) {
-            if (*result > (INT_MAX - digit) / 10) {
+            if (*result > INT_MAX / 10 || (*result == INT_MAX / 10 && digit > INT_MAX % 10)) {
                 return ATOI_ERR_OUT_OF_RANGE;
             }
         } else {
