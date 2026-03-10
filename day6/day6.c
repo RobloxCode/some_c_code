@@ -172,7 +172,6 @@ get_digits_status get_digits(char *exp, int *digits) {
         if (is_operator(exp_cur_char) || exp[i + 1] == '\0') {
             status = ascii_to_int(digit_buff, &atoi_res);
             if (status != ATOI_OK) {
-                fprintf(stderr, "Error ATOI STATUS: %d\n", status);
                 return GET_DIGITS_ERR_ATOI_ERR;
             }
 
