@@ -5,7 +5,7 @@
 
 size_t str_len(const char *str);
 int is_anagram(const char *str1, const char *str2);
-void print_strs(char **strs, const size_t strs_len);
+int print_strs(char **strs, const size_t strs_len);
 int find_anagrams(
     char **words,
     const size_t words_len,
@@ -22,7 +22,9 @@ int main(void) {
         return EXIT_FAILURE;
     }
 
-    print_strs(anagrams, (size_t)NUM_WORDS);
+    if (print_strs(anagrams, (size_t)NUM_WORDS) < 0) {
+        return EXIT_FAILURE;
+    }
 
     return EXIT_SUCCESS;
 }
@@ -64,16 +66,19 @@ int is_anagram(const char *str1, const char *str2) {
     return 0;
 }
 
-void print_strs(char **strs, const size_t strs_len) {
+int print_strs(char **strs, const size_t strs_len) {
     if (!strs || !*strs) {
-        return;
+        return -1;
     }
 
     for (size_t i = 0; i < strs_len; ++i) {
-        printf("%s\n", strs[i]);
+        if (strs[i]) {
+            printf("%s\n", strs[i]);
+        }
     }
 
     printf("\n");
+    return 0;
 }
 
 int find_anagrams(
@@ -81,7 +86,7 @@ int find_anagrams(
     const size_t words_len,
     char **out
 ) {
-    if (!words || !*words || !out || !*out) {
+    if (!words || !*words) {
         return -1;
     }
 
@@ -90,6 +95,9 @@ int find_anagrams(
         for (size_t j = i + 1; j < words_len; ++j) {
             if (is_anagram(words[i], words[j])) {
                 out[out_idx] = words[i];
+                out_idx++;
+                out[out_idx] = words[j];
+                out_idx++;
             }
         }
     }
