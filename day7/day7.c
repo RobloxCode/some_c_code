@@ -1,28 +1,38 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
+#include <string.h>
 #define NUM_WORDS 5
+#define ANAGRAMS_MAX_LEN (NUM_WORDS * 2)
+#define ANAGRAM_FREQ_LEN 256
 
 size_t str_len(const char *str);
+int is_anagram_count_chars(const char *str1, const char *str2);
 int is_anagram(const char *str1, const char *str2);
-int print_strs(char **strs, const size_t strs_len);
+int print_strs(char *const *strs, const size_t strs_len);
 int find_anagrams(
     char **words,
     const size_t words_len,
-    char **out
+    char **out,
+    size_t *out_cap
 );
 
 int main(void) {
-    char *words[NUM_WORDS] = {
-        "eggs", "plant", "cat", "gsge", "tac"
-    };
-    char *anagrams[NUM_WORDS];
+    char *words[NUM_WORDS] = {"eggs", "plant", "cat", "gsge", "tac"};
+    size_t anagrams_found = 0;
+    char *anagrams[ANAGRAMS_MAX_LEN] = {0};
 
-    if (find_anagrams(words, NUM_WORDS, anagrams) < 0) {
-        return EXIT_FAILURE;
+    if (is_anagram_count_chars("hello", "hello")) {
+        puts("they're anagrams");
+    } else {
+        puts("they're not anagrams");
     }
 
-    if (print_strs(anagrams, (size_t)NUM_WORDS) < 0) {
+    // if (find_anagrams(words, NUM_WORDS, anagrams, &anagrams_found) < 0) {
+    //     return EXIT_FAILURE;
+    // }
+
+    if (print_strs(anagrams, anagrams_found) < 0) {
         return EXIT_FAILURE;
     }
 
@@ -42,12 +52,38 @@ size_t str_len(const char *str) {
     return i;
 }
 
+int is_anagram_count_chars(const char *str1, const char *str2) {
+    if (!str1 || !str2) {
+        return 0;
+    }
+
+    int freq[ANAGRAM_FREQ_LEN] = {0};
+
+    for (size_t i = 0; str1[i] != '\0'; ++i) {
+        char cur_char = str1[i];
+        freq[(int)cur_char]++;
+    }
+
+    for (size_t i = 0; str2[i] != '\0'; ++i) {
+        char cur_char = str2[i];
+        freq[(int)cur_char]--;
+    }
+
+    for (size_t i = 0; i < ANAGRAM_FREQ_LEN; ++i) {
+        if (freq[i] != 0) {
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
 int is_anagram(const char *str1, const char *str2) {
     if (!str1 || !str2) {
         return 0;
     }
 
-    if (str_len(str1) != str_len(str2)) {
+    if (strlen(str1) != strlen(str2)) {
         return 0;
     }
 
@@ -66,8 +102,8 @@ int is_anagram(const char *str1, const char *str2) {
     return 0;
 }
 
-int print_strs(char **strs, const size_t strs_len) {
-    if (!strs || !*strs) {
+int print_strs(char *const *strs, const size_t strs_len) {
+    if (!strs) {
         return -1;
     }
 
@@ -84,20 +120,21 @@ int print_strs(char **strs, const size_t strs_len) {
 int find_anagrams(
     char **words,
     const size_t words_len,
-    char **out
+    char **out,
+    size_t *out_cap
 ) {
-    if (!words || !*words) {
+    if (!words || *out || !out_cap) {
         return -1;
     }
 
+    *out_cap = 0;
     size_t out_idx = 0;
     for (size_t i = 0; i < words_len; ++i) {
         for (size_t j = i + 1; j < words_len; ++j) {
             if (is_anagram(words[i], words[j])) {
-                out[out_idx] = words[i];
-                out_idx++;
-                out[out_idx] = words[j];
-                out_idx++;
+                out[out_idx++] = words[i];
+                out[out_idx++] = words[j];
+                *out_cap = *out_cap + 2;
             }
         }
     }
