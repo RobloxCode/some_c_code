@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -std=c11 -Wall -Wextra -Wconversion -pedantic -fsanitize=address
-# UTILS = ../utils/String/StringImp.c
+UTILS = ../utils/Stack/StackImp.c
 SRC = day8.c
 OUT = d8
 
