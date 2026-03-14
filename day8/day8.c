@@ -44,7 +44,7 @@ int main(void) {
     if ((status = Stack_println(s)) != STACK_OK)
         goto cleanup;
 
-    cleanup:
+cleanup:
     Stack_free(&s);
     if (status != STACK_OK) {
         printf("Error Status: %d\n", status);
