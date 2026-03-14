@@ -20,10 +20,10 @@ typedef struct {
 } String;
 
 String *String_create(const size_t init_len);
-String_status String_append_char(String *str, const char item);
+String_status String_append_char(String *dst, const char src);
 String_status String_free(String **str);
 String_status String_println(const String *str);
-String_status String_append_cstr(String *str, const char *content);
+String_status String_append_cstr(String *dst, const char *src);
 String_status String_compare(
     const String *str1,
     const String *str2,

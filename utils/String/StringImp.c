@@ -39,34 +39,35 @@ String *String_create(const size_t init_len) {
     return str;
 }
 
-String_status String_append_char(String *str, const char item) {
-    if (!str) {
+String_status String_append_char(String *dst, const char src) {
+    if (!dst) {
         return STRING_ERR_WRONG_PTR;
     }
 
-    if (str->length + 1 >= str->capacity) {
-        if (str->capacity > SIZE_MAX / 2) {
+    if (dst->length + 1 >= dst->capacity) {
+        if (dst->capacity > SIZE_MAX / 2) {
             return STRING_ERR_OVERFLOW;
         }
 
-        size_t new_cap = str->capacity * 2;
+        size_t new_cap = dst->capacity * 2;
 
-        if (new_cap > SIZE_MAX / sizeof *str->items) {
+        if (new_cap > SIZE_MAX / sizeof dst->items) {
             return STRING_ERR_OVERFLOW;
         }
 
-        char *tmp = realloc(str->items, new_cap * sizeof *str->items);
+        char *tmp = realloc(dst->items,
+                            new_cap * sizeof *dst->items);
         if (!tmp) {
             return STRING_ERR_REALLOC;
         }
 
-        str->items = tmp;
-        str->capacity = new_cap;
+        dst->items = tmp;
+        dst->capacity = new_cap;
     }
 
-    str->items[str->length] = item;
-    str->length++;
-    str->items[str->length] = '\0';
+    dst->items[dst->length] = src;
+    dst->length++;
+    dst->items[dst->length] = '\0';
 
     return STRING_OK;
 }
@@ -90,18 +91,42 @@ String_status String_println(const String *str) {
     return STRING_OK;
 }
 
-String_status String_append_cstr(String *str, const char *content) {
-    if (!str || !content) {
+String_status String_append_cstr(String *dst, const char *src) {
+    if (!dst || !src) {
         return STRING_ERR_WRONG_PTR;
     }
 
-    String_status status = STRING_OK;
-    for (size_t i = 0; content[i] != '\0'; ++i) {
-        if ((status = String_append_char(str, content[i])) != STRING_OK) {
-            fprintf(stderr, "Error status: %d\n", status);
-            return status;
-        }
+    size_t src_len = 0;
+    while (src[src_len] != '\0') {
+        src_len++;
     }
+
+    if (dst->length + src_len + 1 > dst->capacity) {
+        size_t new_cap = dst->capacity;
+
+        while (dst->length + src_len + 1 > new_cap) {
+            if (new_cap > SIZE_MAX / 2) {
+                return STRING_ERR_OVERFLOW;
+            }
+
+            new_cap *= 2;
+        }
+
+        char *tmp = realloc(dst->items, new_cap);
+        if (!tmp) {
+            return STRING_ERR_REALLOC;
+        }
+
+        dst->items = tmp;
+        dst->capacity = new_cap;
+    }
+
+    for (size_t i = 0; i < src_len; i++) {
+        dst->items[dst->length + i] = src[i];
+    }
+
+    dst->length += src_len;
+    dst->items[dst->length] = '\0';
 
     return STRING_OK;
 }
