@@ -1,11 +1,15 @@
 CC = gcc
-CFLAGS = -std=c11 -Wall -Wextra -Wconversion -pedantic -fsanitize=address
-UTILS = ../utils/ArrayList/ArrayListImp.c
-SRC = day3.c
+
+CFLAGS = -std=c11 -Wall -Wextra -Wconversion -pedantic -g \
+         -fsanitize=address -fno-omit-frame-pointer
+
+SRC = day3.c ../utils/ArrayList/ArrayListImp.c
 OUT = d3
 
-volatile:
-	$(CC) $(UTILS) $(SRC) $(CFLAGS) -o $(OUT)
+$(OUT): $(SRC)
+	$(CC) $(CFLAGS) $^ -o $@
 
 clean:
 	rm -f $(OUT)
+
+.PHONY: clean

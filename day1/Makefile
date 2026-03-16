@@ -1,10 +1,15 @@
 CC = gcc
-CFLAGS = -std=c11 -Wall -Wextra -Wconversion -pedantic
+
+CFLAGS = -std=c11 -Wall -Wextra -Wconversion -pedantic -g \
+         -fsanitize=address -fno-omit-frame-pointer
+
 SRC = day1.c
 OUT = d1
 
-volatile:
-	$(CC) $(SRC) $(CFLAGS) -o $(OUT)
+$(OUT): $(SRC)
+	$(CC) $(CFLAGS) $^ -o $@
 
 clean:
 	rm -f $(OUT)
+
+.PHONY: clean

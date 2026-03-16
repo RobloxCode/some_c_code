@@ -5,7 +5,7 @@
 
 int main(void) {
     int pop_val = 0;
-    const size_t stack_init_cap = 0;
+    const size_t stack_init_cap = 10;
     Stack_status status = STACK_OK;
     Stack *s = Stack_init(stack_init_cap);
     if (!s)
