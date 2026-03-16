@@ -13,11 +13,16 @@ typedef enum {
     STACK_OK,
     STACK_ERR_WRONG_PTR,
     STACK_ERR_REALLOC,
-    STACK_ERR_EMTPY,
+    STACK_ERR_EMPTY,
+    STACK_ERR_OVERFLOW,
 } Stack_status;
 
 Stack *Stack_init(const size_t init_cap) {
     if (init_cap > SIZE_MAX / 10) {
+        return NULL;
+    }
+
+    if (init_cap == 0) {
         return NULL;
     }
 
@@ -39,13 +44,14 @@ Stack *Stack_init(const size_t init_cap) {
 }
 
 Stack_status Stack_free(Stack **stack) {
-    if (!stack) {
+    if (!stack || !*stack) {
         return STACK_ERR_WRONG_PTR;
     }
 
     free((*stack)->items);
     free(*stack);
     *stack = NULL;
+
     return STACK_OK;
 }
 
@@ -55,7 +61,15 @@ Stack_status Stack_push(Stack *stack, const int item) {
     }
 
     if (stack->len >= stack->cap) {
+        if (stack->cap > SIZE_MAX / 2) {
+            return STACK_ERR_OVERFLOW;
+        }
+
         size_t new_cap = stack->cap * 2;
+        if (new_cap > SIZE_MAX / 2) {
+            return STACK_ERR_OVERFLOW;
+        }
+
         int *tmp = realloc(stack->items, new_cap * sizeof *stack->items);
         if (!tmp) {
             return STACK_ERR_REALLOC;
@@ -70,23 +84,25 @@ Stack_status Stack_push(Stack *stack, const int item) {
 }
 
 Stack_status Stack_pop(Stack *stack, int *out) {
-    if (!stack) {
+    if (!stack || !out) {
         return STACK_ERR_WRONG_PTR;
     }
 
     if (stack->len == 0) {
-        return STACK_ERR_EMTPY;
+        return STACK_ERR_EMPTY;
     }
 
-    *out = stack->items[stack->len - 1];
-    stack->items[stack->len - 1] = 0;
-    stack->len--;
+    *out = stack->items[--stack->len];
     return STACK_OK;
 }
 
-Stack_status Stack_top(Stack *stack, int *out) {
+Stack_status Stack_top(const Stack *stack, int *out) {
     if (!stack || !out) {
         return STACK_ERR_WRONG_PTR;
+    }
+
+    if (stack->len == 0) {
+        return STACK_ERR_EMPTY;
     }
 
     *out = stack->items[stack->len - 1];

@@ -34,23 +34,10 @@ int main(void) {
         return EXIT_FAILURE;
     }
 
-    if ((status = LinkedList_append(ll, 1)) != LL_OK)
-        goto cleanup;
-
-    if ((status = LinkedList_append(ll, 2)) != LL_OK)
-        goto cleanup;
-
-    if ((status = LinkedList_append(ll, 3)) != LL_OK)
-        goto cleanup;
-
-    if ((status = LinkedList_append(ll, 4)) != LL_OK)
-        goto cleanup;
-
-    if ((status = LinkedList_append(ll, 5)) != LL_OK)
-        goto cleanup;
-
-    if ((status = LinkedList_append(ll, 6)) != LL_OK)
-        goto cleanup;
+    for (int i = 1; i <= 6; ++i) {
+        if ((status = LinkedList_append(ll, i)) != LL_OK)
+            goto cleanup;
+    }
 
     if ((status = LinkedList_println(ll)) != LL_OK)
         goto cleanup;
