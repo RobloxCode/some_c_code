@@ -15,9 +15,10 @@ typedef struct {
     size_t capacity;
 } ArrayList;
 
-ArrayList *ArrayList_create(size_t init_len);
+ArrayList *ArrayList_init(const size_t init_len);
 ArrayList_status ArrayList_append(ArrayList *al, const int item);
-ArrayList_status ArrayList_free(ArrayList **al);
-ArrayList_status ArrayList_print(const ArrayList *al);
+ArrayList_status ArrayList_deinit(ArrayList **al);
+ArrayList_status ArrayList_println(const ArrayList *al);
+ArrayList_status ArrayList_reverse(ArrayList *al);
 #endif
 

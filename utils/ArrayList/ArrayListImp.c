@@ -17,15 +17,13 @@ typedef struct {
     size_t capacity;
 } ArrayList;
 
-ArrayList *ArrayList_create(size_t init_len) {
-    if (init_len == 0) {
-        init_len = 1;
-    }
+ArrayList *ArrayList_init(const size_t init_len) {
+    if (init_len == 0)
+        return NULL;
 
     int *items = calloc(init_len, sizeof *items);
-    if (!items) {
+    if (!items)
         return NULL;
-    }
 
     ArrayList *al = malloc(sizeof *al);
     if (!al) {
@@ -41,25 +39,21 @@ ArrayList *ArrayList_create(size_t init_len) {
 }
 
 ArrayList_status ArrayList_append(ArrayList *al, const int item) {
-    if (!al) {
+    if (!al)
         return ARRAYLIST_ERR_WRONG_PTR;
-    }
 
     if (al->length == al->capacity) {
-        if (al->capacity > SIZE_MAX / 2) {
+        if (al->capacity > SIZE_MAX / 2)
             return ARRAYLIST_ERR_OVERFLOW;
-        }
 
         size_t new_len = al->capacity * 2;
 
-        if (new_len > SIZE_MAX / sizeof *al->items) {
+        if (new_len > SIZE_MAX / sizeof *al->items)
             return ARRAYLIST_ERR_OVERFLOW;
-        }
 
         int *tmp = realloc(al->items, new_len * sizeof *al->items);
-        if (!tmp) {
+        if (!tmp)
             return ARRAYLIST_ERR_REALLOC;
-        }
 
         al->items = tmp;
         al->capacity = new_len;
@@ -71,10 +65,9 @@ ArrayList_status ArrayList_append(ArrayList *al, const int item) {
     return ARRAYLIST_OK;
 }
 
-ArrayList_status ArrayList_free(ArrayList **al) {
-    if (!al || !*al) {
+ArrayList_status ArrayList_deinit(ArrayList **al) {
+    if (!al || !*al)
         return ARRAYLIST_ERR_WRONG_PTR;
-    }
 
     free((*al)->items);
     free(*al);
@@ -82,15 +75,29 @@ ArrayList_status ArrayList_free(ArrayList **al) {
     return ARRAYLIST_OK;
 }
 
-ArrayList_status ArrayList_print(const ArrayList *al) {
-    if (!al) {
+ArrayList_status ArrayList_println(const ArrayList *al) {
+    if (!al)
         return ARRAYLIST_ERR_WRONG_PTR;
-    }
 
-    for (size_t i = 0; i < al->length; ++i) {
+    for (size_t i = 0; i < al->length; ++i)
         printf("%d ", al->items[i]);
-    }
 
     printf("\n");
+
+    return ARRAYLIST_OK;
+}
+
+ArrayList_status ArrayList_reverse(ArrayList *al) {
+    if (!al)
+        return ARRAYLIST_ERR_WRONG_PTR;
+
+    int buff[al->length];
+
+    for (int i = (int)al->length; i >= 0; --i)
+        buff[al->length - i - 1] = al->items[i];
+
+    for (size_t i = 0; i < al->length; ++i)
+        al->items[i] = buff[i];
+
     return ARRAYLIST_OK;
 }
