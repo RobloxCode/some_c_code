@@ -1,11 +1,15 @@
 CC = gcc
-CFLAGS = -std=c11 -Wall -Wextra -Wconversion -pedantic -fsanitize=address
-UTILS = ../utils/String/StringImp.c
-SRC = day6.c
+
+CFLAGS = -std=c11 -Wall -Wextra -Wconversion -pedantic -g \
+         -fsanitize=address -fno-omit-frame-pointer
+
+SRC =  day6.c ../utils/String/StringImp.c
 OUT = d6
 
-volatile:
-	$(CC) $(UTILS) $(SRC) $(CFLAGS) -o $(OUT)
+$(OUT): $(SRC)
+	$(CC) $(CFLAGS) $^ -o $@
 
 clean:
 	rm -f $(OUT)
+
+.PHONY: clean

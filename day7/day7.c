@@ -22,15 +22,9 @@ int main(void) {
     size_t anagrams_found = 0;
     char *anagrams[ANAGRAMS_MAX_LEN] = {0};
 
-    if (is_anagram_count_chars("hello", "hello")) {
-        puts("they're anagrams");
-    } else {
-        puts("they're not anagrams");
+    if (find_anagrams(words, NUM_WORDS, anagrams, &anagrams_found) < 0) {
+        return EXIT_FAILURE;
     }
-
-    // if (find_anagrams(words, NUM_WORDS, anagrams, &anagrams_found) < 0) {
-    //     return EXIT_FAILURE;
-    // }
 
     if (print_strs(anagrams, anagrams_found) < 0) {
         return EXIT_FAILURE;
@@ -131,7 +125,7 @@ int find_anagrams(
     size_t out_idx = 0;
     for (size_t i = 0; i < words_len; ++i) {
         for (size_t j = i + 1; j < words_len; ++j) {
-            if (is_anagram(words[i], words[j])) {
+            if (is_anagram_count_chars(words[i], words[j])) {
                 out[out_idx++] = words[i];
                 out[out_idx++] = words[j];
                 *out_cap = *out_cap + 2;
