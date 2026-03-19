@@ -17,6 +17,8 @@ typedef enum {
     LL_ERR_WRONG_PTR,
     LL_ERR_MALLOC,
     LL_ERR_IDX_OUT_OF_RANGE,
+    LL_ERR_EMPTY,
+    LL_ERR_OVERFLOW
 } LinkedList_status;
 LinkedList *LinkedList_init(void) {
     LinkedList *ll = malloc(sizeof *ll);
@@ -122,6 +124,17 @@ LinkedList_status LinkedList_reverse(LinkedList *ll) {
     if (!ll)
         return LL_ERR_WRONG_PTR;
 
+    Node *cur = ll->start;
+    Node *before = NULL;
+
+    while (cur) {
+        Node *next = cur->next;
+        cur->next = before;
+        before = cur;
+        cur = next;
+    }
+
+    ll->start = before;
     return LL_OK;
 }
 
@@ -130,4 +143,46 @@ size_t LinkedList_len(LinkedList *ll) {
         return 0;
 
     return ll->len;
+}
+
+LinkedList_status LinkedList_to_arr(
+    const LinkedList *ll,
+    int *dst,
+    const size_t dst_len) {
+    if (!ll || !dst)
+        return LL_ERR_WRONG_PTR;
+
+    if (dst_len > ll->len)
+        return LL_ERR_OVERFLOW;
+
+    if (!ll->start)
+        return LL_ERR_EMPTY;
+
+    Node *cur = ll->start;
+    for (size_t i = 0; i < dst_len; ++i) {
+        dst[i] = cur->val;
+        cur = cur->next;
+    }
+
+    return LL_OK;
+}
+
+LinkedList *arr_to_LinkedList(
+    const int *arr,
+    const size_t arr_len
+) {
+    if (!arr)
+        return NULL;
+
+    LinkedList *new = LinkedList_init();
+    if (!new)
+        return NULL;
+
+    LinkedList_status status = LL_OK;
+    for (size_t i = 0; i < arr_len; ++i) {
+        if ((status = LinkedList_append(new, arr[i])) != LL_OK)
+            return NULL;
+    }
+
+    return new;
 }
