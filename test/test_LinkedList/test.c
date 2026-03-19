@@ -58,6 +58,13 @@ int main(void) {
     if ((status = LinkedList_println(ll)) != LL_OK)
         goto cleanup;
 
+    size_t idx = 0;
+    int val_to_find = 5;
+    if ((status = LinkedList_search(ll, val_to_find, &idx)) != LL_OK)
+        goto cleanup;
+
+    printf("idx: %zu\nval: %d", idx, val_to_find);
+
 cleanup:
     LinkedList_deinit(&ll);
     LinkedList_deinit(&from_arr);

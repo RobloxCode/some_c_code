@@ -18,7 +18,8 @@ typedef enum {
     LL_ERR_MALLOC,
     LL_ERR_IDX_OUT_OF_RANGE,
     LL_ERR_EMPTY,
-    LL_ERR_OVERFLOW
+    LL_ERR_OVERFLOW,
+    LL_ERR_VALUE_NOT_FOUND,
 } LinkedList_status;
 LinkedList *LinkedList_init(void) {
     LinkedList *ll = malloc(sizeof *ll);
@@ -186,3 +187,27 @@ LinkedList *arr_to_LinkedList(
 
     return new;
 }
+
+LinkedList_status LinkedList_search(
+    const LinkedList *ll,
+    const int val,
+    size_t *out
+) {
+    if (!ll || !out)
+        return LL_ERR_WRONG_PTR;
+
+    if (ll->len == 0)
+        return LL_ERR_EMPTY;
+
+    Node *cur = ll->start;
+    for (size_t i = 0; cur != NULL; ++i) {
+        if (cur->val == val) {
+            *out = i;
+            return LL_OK;
+        }
+        cur = cur->next;
+    }
+
+    return LL_ERR_VALUE_NOT_FOUND;
+}
+

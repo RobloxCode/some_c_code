@@ -33,5 +33,9 @@ LinkedList_status LinkedList_to_arr(
 LinkedList *arr_to_LinkedList(
     const int *arr,
     const size_t arr_len);
+LinkedList_status LinkedList_search(
+    const LinkedList *ll,
+    const int val,
+    size_t *out);
 
 #endif
