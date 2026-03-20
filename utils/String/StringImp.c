@@ -1,19 +1,7 @@
+#include "StringImp.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
-
-typedef enum {
-    STRING_OK,
-    STRING_ERR_WRONG_PTR,
-    STRING_ERR_REALLOC,
-    STRING_ERR_OVERFLOW,
-} String_status;
-
-typedef struct {
-    char *items;
-    size_t length;
-    size_t capacity;
-} String;
 
 String *String_create(const size_t init_len) {
     if (init_len == 0) {

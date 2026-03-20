@@ -17,6 +17,9 @@ typedef enum {
     LL_ERR_WRONG_PTR,
     LL_ERR_MALLOC,
     LL_ERR_IDX_OUT_OF_RANGE,
+    LL_ERR_OVERFLOW,
+    LL_ERR_EMPTY,
+    LL_ERR_VALUE_NOT_FOUND,
 } LinkedList_status;
 
 LinkedList *LinkedList_init(void);

@@ -1,26 +1,8 @@
+#include "LinkedList_imp.h"
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef struct Node {
-    int val;
-    struct Node *next;
-} Node;
-
-typedef struct {
-    Node *start;
-    size_t len;
-} LinkedList;
-
-typedef enum {
-    LL_OK,
-    LL_ERR_WRONG_PTR,
-    LL_ERR_MALLOC,
-    LL_ERR_IDX_OUT_OF_RANGE,
-    LL_ERR_EMPTY,
-    LL_ERR_OVERFLOW,
-    LL_ERR_VALUE_NOT_FOUND,
-} LinkedList_status;
 LinkedList *LinkedList_init(void) {
     LinkedList *ll = malloc(sizeof *ll);
     if (!ll)

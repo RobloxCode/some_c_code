@@ -1,21 +1,9 @@
+#include "ArrayListImp.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <limits.h>
-
-typedef enum {
-    ARRAYLIST_OK,
-    ARRAYLIST_ERR_WRONG_PTR,
-    ARRAYLIST_ERR_REALLOC,
-    ARRAYLIST_ERR_OVERFLOW,
-} ArrayList_status;
-
-typedef struct {
-    int *items;
-    size_t length;
-    size_t capacity;
-} ArrayList;
 
 ArrayList *ArrayList_init(const size_t init_len) {
     if (init_len == 0)

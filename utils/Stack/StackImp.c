@@ -1,21 +1,8 @@
+#include "StackImp.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
-
-typedef struct {
-    int *items;
-    size_t len;
-    size_t cap;
-} Stack;
-
-typedef enum {
-    STACK_OK,
-    STACK_ERR_WRONG_PTR,
-    STACK_ERR_REALLOC,
-    STACK_ERR_EMPTY,
-    STACK_ERR_OVERFLOW,
-} Stack_status;
 
 Stack *Stack_init(const size_t init_cap) {
     if (init_cap > SIZE_MAX / 10)
@@ -106,3 +93,18 @@ Stack_status Stack_println(const Stack *stack) {
     return STACK_OK;
 }
 
+Stack_status Stack_clear(Stack *stack) {
+    if (!stack)
+        return STACK_ERR_WRONG_PTR;
+
+    stack->len = 0;
+
+    return STACK_OK;
+}
+
+size_t Stack_len(Stack *stack) {
+    if (!stack)
+        return 0;
+
+    return stack->len;
+}

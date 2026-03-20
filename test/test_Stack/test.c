@@ -11,6 +11,10 @@ int main(void) {
     if (!s)
         return EXIT_FAILURE;
 
+    puts("empty stack:");
+    if ((status = Stack_println(s)) != STACK_OK)
+        goto cleanup;
+
     // pop when it is still empty
     // if ((status = Stack_top(s, &pop_val)) != STACK_OK)
     //     goto cleanup;
@@ -34,6 +38,22 @@ int main(void) {
     if ((status = Stack_top(s, &pop_val)) != STACK_OK)
         goto cleanup;
     printf("item from the top: %d\n", pop_val);
+
+    if ((status = Stack_println(s)) != STACK_OK)
+        goto cleanup;
+
+    if ((status = Stack_clear(s)) != STACK_OK)
+        goto cleanup;
+
+    puts("empty stack:");
+    if ((status = Stack_println(s)) != STACK_OK)
+        goto cleanup;
+
+    if ((status = Stack_push(s, 1)) != STACK_OK)
+        goto cleanup;
+
+    if ((status = Stack_push(s, 2)) != STACK_OK)
+        goto cleanup;
 
     if ((status = Stack_println(s)) != STACK_OK)
         goto cleanup;
