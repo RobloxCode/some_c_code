@@ -94,7 +94,7 @@ ArrayList_status ArrayList_reverse(ArrayList *al) {
     int buff[al->length];
 
     for (int i = (int)al->length; i >= 0; --i)
-        buff[al->length - i - 1] = al->items[i];
+        buff[(int)al->length - i - 1] = al->items[i];
 
     for (size_t i = 0; i < al->length; ++i)
         al->items[i] = buff[i];

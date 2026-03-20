@@ -18,9 +18,9 @@ int main(void) {
         display_err("creating ArrayList");
     }
 
-    ArrayList_print(al);
+    ArrayList_println(al);
 
-    ArrayList_free(&al);
+    ArrayList_deinit(&al);
     return EXIT_SUCCESS;
 }
 
@@ -67,7 +67,7 @@ int is_prime(int num) {
 }
 
 ArrayList *get_primes(int num) {
-    ArrayList *al = ArrayList_create((size_t)num);
+    ArrayList *al = ArrayList_init((size_t)num);
     if (!al) {
         return NULL;
     }
