@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../utils/Stack/StackImp.h"
 #include "../utils/Queue/QueueImp.h"
 
 int main(void) {
