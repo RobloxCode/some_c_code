@@ -3,11 +3,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(void) {
+void test_BST(void) {
     BST_status status = BST_OK;
     BST *bst = BST_init();
     if (!bst)
-        return EXIT_FAILURE;
+        return;
 
     if ((status = BST_append(bst, 1)) != BST_OK)
         goto cleanup;
@@ -43,11 +43,12 @@ int main(void) {
 cleanup:
     BST_deinit(&bst);
 
-    if (status != BST_OK) {
+    if (status != BST_OK)
         fprintf(stderr, "Error status: %d\n", status);
-        return EXIT_FAILURE;
-    }
+}
 
+int main(void) {
+    test_BST();
     return EXIT_SUCCESS;
 }
 
