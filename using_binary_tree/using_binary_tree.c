@@ -3,7 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void test_BST(void) {
+void test_BST(void)
+{
     BST_status status = BST_OK;
     BST *bst = BST_init();
     if (!bst)
@@ -40,6 +41,8 @@ void test_BST(void) {
     if ((status = BST_print_pos(bst)) != BST_OK)
         goto cleanup;
 
+    BST_remove(bst, 10);
+
 cleanup:
     BST_deinit(&bst);
 
@@ -47,7 +50,8 @@ cleanup:
         fprintf(stderr, "Error status: %d\n", status);
 }
 
-int main(void) {
+int main(void)
+{
     test_BST();
     return EXIT_SUCCESS;
 }

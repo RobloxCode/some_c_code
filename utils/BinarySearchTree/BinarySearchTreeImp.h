@@ -7,6 +7,8 @@ typedef enum {
     BST_ERR_WRONG_PTR       = 1,
     BST_ERR_INIT_NODE       = 2,
     BST_ERR_REPEATED_VAL    = 3,
+    BST_ERR_EMPTY_TREE      = 4,
+    BST_ERR_VAL_NOT_FOUND   = 5,
 } BST_status;
 
 typedef struct BSTNode {
@@ -19,20 +21,6 @@ typedef struct {
     BSTNode *root;
     size_t height;
 } BST;
-
-/**
- * Initialices a new node
- * @param val value that the new node will contain
- */
-BSTNode *BSTNode_init(const int val);
-
-/**
- * Destroys the node
- * @param bstnode a double pointer to the BSTNode struct
- *                since the current pointer to the
- *                node will be set to NULL
- */
-void BSTNode_deinit(BSTNode **bstnode);
 
 /**
  * Initialices the binary search tree
@@ -55,7 +43,7 @@ BST_status BST_append(BST *bst, const int val);
 /**
  * Not implemented yet
  */
-BST_status BST_remove(BST *bst);
+BST_status BST_remove(BST *bst, int val);
 
 /*
  * Prints to the console the tree values in preorder
