@@ -7,6 +7,7 @@ typedef enum {
     ARRAYLIST_ERR_WRONG_PTR,
     ARRAYLIST_ERR_REALLOC,
     ARRAYLIST_ERR_OVERFLOW,
+    ARRAYLIST_ERR_SRC_LARGER_THAN_DST,
 } ArrayList_status;
 
 typedef struct {
@@ -20,5 +21,6 @@ ArrayList_status ArrayList_append(ArrayList *al, const int item);
 ArrayList_status ArrayList_deinit(ArrayList **al);
 ArrayList_status ArrayList_println(const ArrayList *al);
 ArrayList_status ArrayList_reverse(ArrayList *al);
+ArrayList_status ArrayList_copy(const ArrayList *src, ArrayList *dst);
 #endif
 

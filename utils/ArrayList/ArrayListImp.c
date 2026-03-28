@@ -81,11 +81,27 @@ ArrayList_status ArrayList_reverse(ArrayList *al) {
 
     int buff[al->length];
 
-    for (int i = (int)al->length; i >= 0; --i)
+    for (int i = (int)al->length - 1; i >= 0; --i)
         buff[(int)al->length - i - 1] = al->items[i];
 
     for (size_t i = 0; i < al->length; ++i)
         al->items[i] = buff[i];
+
+    return ARRAYLIST_OK;
+}
+
+ArrayList_status ArrayList_copy(const ArrayList *src, ArrayList *dst) {
+    if (!src || !dst)
+        return ARRAYLIST_ERR_WRONG_PTR;
+
+    if (src->capacity > dst->capacity)
+        return ARRAYLIST_ERR_SRC_LARGER_THAN_DST;
+
+    ArrayList_status status = ARRAYLIST_OK;
+    for (size_t i = 0; i < src->length; ++i) {
+        if ((status = ArrayList_append(dst, src->items[i])) != ARRAYLIST_OK)
+            return status;
+    }
 
     return ARRAYLIST_OK;
 }
