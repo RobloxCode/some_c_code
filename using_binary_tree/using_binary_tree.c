@@ -3,31 +3,32 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void test_BST(void)
-{
+void test_BST(void) {
     BST_status status = BST_OK;
     BST *bst = BST_init();
     if (!bst)
         return;
 
-    if ((status = BST_append(bst, 1)) != BST_OK)
-        goto cleanup;
-
-    if ((status = BST_append(bst, 2)) != BST_OK)
-        goto cleanup;
-
-    if ((status = BST_append(bst, 3)) != BST_OK)
-        goto cleanup;
-
-    if ((status = BST_append(bst, 4)) != BST_OK)
+    if ((status = BST_append(bst, 10)) != BST_OK)
         goto cleanup;
 
     if ((status = BST_append(bst, 5)) != BST_OK)
         goto cleanup;
 
-    if ((status = BST_append(bst, 10)) != BST_OK)
+    if ((status = BST_append(bst, 15)) != BST_OK)
         goto cleanup;
 
+    if ((status = BST_append(bst, 6)) != BST_OK)
+        goto cleanup;
+
+    if ((status = BST_append(bst, 3)) != BST_OK)
+        goto cleanup;
+
+    if ((status = BST_append(bst, 11)) != BST_OK)
+        goto cleanup;
+
+    if ((status = BST_append(bst, 17)) != BST_OK)
+        goto cleanup;
 
     printf("preorder: ");
     if ((status = BST_print_pre(bst)) != BST_OK)
@@ -40,8 +41,10 @@ void test_BST(void)
     printf("\npostorder: ");
     if ((status = BST_print_pos(bst)) != BST_OK)
         goto cleanup;
+    printf("\n");
 
-    BST_remove(bst, 10);
+    if ((status = BST_remove(bst, 15)) != BST_OK)
+        goto cleanup;
 
 cleanup:
     BST_deinit(&bst);
@@ -50,8 +53,7 @@ cleanup:
         fprintf(stderr, "Error status: %d\n", status);
 }
 
-int main(void)
-{
+int main(void) {
     test_BST();
     return EXIT_SUCCESS;
 }
