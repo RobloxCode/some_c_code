@@ -145,14 +145,15 @@ static void _swap_node_vals(BSTNode *node1, BSTNode *node2) {
 }
 
 static BST_status _init_left_max_ptr(
-    const BSTNode *to_del,
-    BSTNode **node,
-    BSTNode **before
+    BSTNode *to_del,
+    BSTNode **left_max,
+    BSTNode **parent
 ) {
-    *node = to_del->left_child;
-    while ((*node)->right_child) {
-        *before = *node;
-        *node = (*node)->right_child;
+    *left_max = to_del->left_child;
+    *parent = to_del;
+    while ((*left_max)->right_child) {
+        *parent = *left_max;
+        *left_max = (*left_max)->right_child;
     }
 
     return BST_OK;
@@ -190,6 +191,22 @@ static BST_status _init_del_ptrs(
     }
 }
 
+static void _replace_child(
+    BST *bst,
+    BSTNode *parent,
+    BSTNode *old,
+    BSTNode *new_child
+) {
+    if (parent) {
+        if (parent->left_child == old)
+            parent->left_child = new_child;
+        else
+            parent->right_child = new_child;
+    } else {
+        bst->root = new_child;
+    }
+}
+
 BST_status BST_remove(BST *bst, int val) {
     if (!bst)
         return BST_ERR_WRONG_PTR;
@@ -206,56 +223,38 @@ BST_status BST_remove(BST *bst, int val) {
         return status;
 
     if (!to_del->left_child && !to_del->right_child) {
-        if (parent) {
-            if (parent->left_child == to_del)
-                parent->left_child = NULL;
-            else
-                parent->right_child = NULL;
-        } else
-            bst->root = NULL;
+        _replace_child(bst, parent, to_del, NULL);
 
-        free(to_del);
-        return BST_OK;
+        goto free_node;
     } else if (!to_del->left_child) {
         BSTNode *new_child = to_del->right_child;
 
-        if (parent) {
-            if (parent->left_child == to_del)
-                parent->left_child = new_child;
-            else
-                parent->right_child = new_child;
-        } else
-            bst->root = NULL;
+        _replace_child(bst, parent, to_del, new_child);
 
-        free(to_del);
-        return BST_OK;
+        goto free_node;
     } else if (!to_del->right_child) {
         BSTNode *new_child = to_del->left_child;
 
-        if (parent) {
-            if (parent->left_child == to_del)
-                parent->left_child = new_child;
-            else
-                parent->right_child = new_child;
-        } else
-            bst->root = NULL;
+        _replace_child(bst, parent, to_del, new_child);
 
-        free(to_del);
-        return BST_OK;
+        goto free_node;
     } else {
         if ((status = _init_left_max_ptr(to_del, &left_max, &parent)) != BST_OK)
             return status;
 
         _swap_node_vals(to_del, left_max);
-        if (left_max->left_child) {
-            parent = to_del->left_child;
-            free(left_max);
-            return BST_OK;
-        } else {
-            free(left_max);
-            return BST_OK;
-        }
+        BSTNode *new_child = left_max->left_child;
+
+        if (parent->right_child == left_max)
+            parent->right_child = new_child;
+        else
+            parent->left_child = new_child;
+
+        free(left_max);
+        return BST_OK;
     }
 
+free_node:
+    free(to_del);
     return BST_OK;
 }
