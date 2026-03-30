@@ -215,11 +215,8 @@ BST_status BST_remove(BST *bst, int val) {
             return status;
 
         _swap_node_vals(to_del, left_max);
-        if (left_max->right_child) {
-            if ((status = _init_del_ptrs(bst, val, &to_del, &before)) != BST_OK)
-                return status;
-
-            before = to_del->right_child;
+        if (left_max->left_child) {
+            before = to_del->left_child;
             free(to_del);
             return BST_OK;
         } else {
