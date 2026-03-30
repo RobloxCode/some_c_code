@@ -1,5 +1,5 @@
-#ifndef BST_H
-#define BST_H
+#ifndef BINARY_SEARCH_TREE_H
+#define BINARY_SEARCH_TREE_H
 #include <stddef.h>
 
 typedef enum {
@@ -23,7 +23,7 @@ typedef struct {
 } BST;
 
 /**
- * Initialices the binary search tree
+ * Initializes the binary search tree
  */
 BST *BST_init(void);
 
@@ -65,5 +65,7 @@ BST_status BST_print_ino(const BST *bst);
  * @param bst a pointer to a BST struct
  */
 BST_status BST_print_pos(const BST *bst);
+
+BST_status BST_swap(BST *bst, int val1, int val2);
 
 #endif

@@ -30,6 +30,9 @@ void test_BST(void) {
     if ((status = BST_append(bst, 17)) != BST_OK)
         goto cleanup;
 
+    if ((status = BST_append(bst, 7)) != BST_OK)
+        goto cleanup;
+
     printf("preorder: ");
     if ((status = BST_print_pre(bst)) != BST_OK)
         goto cleanup;
@@ -43,7 +46,12 @@ void test_BST(void) {
         goto cleanup;
     printf("\n");
 
-    if ((status = BST_remove(bst, 15)) != BST_OK)
+    // deleting a leaf
+    if ((status = BST_remove(bst, 6)) != BST_OK)
+        goto cleanup;
+
+    printf("preorder after deletion: ");
+    if ((status = BST_print_pre(bst)) != BST_OK)
         goto cleanup;
 
 cleanup:
