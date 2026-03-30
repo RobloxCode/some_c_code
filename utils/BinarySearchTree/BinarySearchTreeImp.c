@@ -138,16 +138,22 @@ BST_status BST_println_pos(const BST *bst) {
     return BST_OK;
 }
 
-void _swap_node_vals(BSTNode *node1, BSTNode *node2) {
+static void _swap_node_vals(BSTNode *node1, BSTNode *node2) {
     int tmp = node1->val;
     node1->val = node2->val;
     node2->val = tmp;
 }
 
-static BST_status _init_left_max_ptr(const BSTNode *to_del, BSTNode **node) {
+static BST_status _init_left_max_ptr(
+    const BSTNode *to_del,
+    BSTNode **node,
+    BSTNode **before
+) {
     *node = to_del->left_child;
-    while ((*node)->right_child)
+    while ((*node)->right_child) {
+        *before = *node;
         *node = (*node)->right_child;
+    }
 
     return BST_OK;
 }
@@ -211,16 +217,16 @@ BST_status BST_remove(BST *bst, int val) {
         free(to_del);
         return BST_OK;
     } else {
-        if ((status = _init_left_max_ptr(to_del, &left_max)) != BST_OK)
+        if ((status = _init_left_max_ptr(to_del, &left_max, &before)) != BST_OK)
             return status;
 
         _swap_node_vals(to_del, left_max);
         if (left_max->left_child) {
             before = to_del->left_child;
-            free(to_del);
+            free(left_max);
             return BST_OK;
         } else {
-            free(to_del);
+            free(left_max);
             return BST_OK;
         }
     }
