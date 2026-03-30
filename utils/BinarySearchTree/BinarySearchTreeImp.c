@@ -138,58 +138,16 @@ BST_status BST_println_pos(const BST *bst) {
     return BST_OK;
 }
 
-static BST_status _swap_node_vals(const BST *bst, int val1, int val2) {
-    if (!bst)
-        return BST_ERR_WRONG_PTR;
-
-    if (!bst->root)
-        return BST_ERR_EMPTY_TREE;
-
-    BSTNode *cur = bst->root;
-    BSTNode *tmp_node = bst->root;
-
-    while (1) {
-        if (tmp_node->val == val2) {
-            break;
-        } else if (tmp_node->val < val2) {
-            if (!tmp_node->right_child)
-                return BST_ERR_VAL_NOT_FOUND;
-
-            tmp_node = tmp_node->right_child;
-        } else {
-            if (!tmp_node->left_child)
-                return BST_ERR_VAL_NOT_FOUND;
-
-            tmp_node = tmp_node->left_child;
-        }
-    }
-
-    while (1) {
-        if (cur->val == val1) {
-            break;
-        } else if (cur->val < val1) {
-            if (!cur->right_child)
-                return BST_ERR_VAL_NOT_FOUND;
-
-            cur = cur->right_child;
-        } else {
-            if (!cur->left_child)
-                return BST_ERR_VAL_NOT_FOUND;
-
-            cur = cur->left_child;
-        }
-    }
-
-    int tmp = cur->val;
-    cur->val = tmp_node->val;
-    tmp_node->val = tmp;
-
-    return BST_OK;
+void _swap_node_vals(BSTNode *node1, BSTNode *node2) {
+    int tmp = node1->val;
+    node1->val = node2->val;
+    node2->val = tmp;
 }
 
-static BST_status _init_left_max_ptr(BST *bst, BSTNode **node) {
-    if (!bst)
-        return BST_ERR_WRONG_PTR;
+static BST_status _init_left_max_ptr(const BSTNode *to_del, BSTNode **node) {
+    *node = to_del->left_child;
+    while ((*node)->right_child)
+        *node = (*node)->right_child;
 
     return BST_OK;
 }
@@ -227,36 +185,48 @@ static BST_status _init_del_ptrs(
 }
 
 BST_status BST_remove(BST *bst, int val) {
-    // if (!bst)
-    //     return BST_ERR_WRONG_PTR;
-    //
-    // if (!bst->root)
-    //     return BST_ERR_EMPTY_TREE;
-    //
-    // BST_status status = BST_OK;
-    // BSTNode *to_del = NULL;
-    // BSTNode *before = NULL;
-    // BSTNode *left_max = NULL;
-    //
-    // if ((status = _init_del_ptrs(bst, val, &to_del, &before)) != BST_OK)
-    //     return status;
-    //
-    // if (!to_del->left_child && !to_del->right_child) {
-    //     free(to_del);
-    //     return BST_OK;
-    // } else if (!to_del->left_child) {
-    //     before = to_del->right_child;
-    //     free(to_del);
-    //     return BST_OK;
-    // } else if (!to_del->right_child) {
-    //     before = to_del->left_child;
-    //     free(to_del);
-    //     return BST_OK;
-    // } else {
-    //     if ((status = _init_left_max_ptr(bst, &left_max)) != BST_OK)
-    //         return status;
-    // }
-    //
+    if (!bst)
+        return BST_ERR_WRONG_PTR;
+
+    if (!bst->root)
+        return BST_ERR_EMPTY_TREE;
+
+    BST_status status = BST_OK;
+    BSTNode *to_del = NULL;
+    BSTNode *before = NULL;
+    BSTNode *left_max = NULL;
+
+    if ((status = _init_del_ptrs(bst, val, &to_del, &before)) != BST_OK)
+        return status;
+
+    if (!to_del->left_child && !to_del->right_child) {
+        free(to_del);
+        return BST_OK;
+    } else if (!to_del->left_child) {
+        before = to_del->right_child;
+        free(to_del);
+        return BST_OK;
+    } else if (!to_del->right_child) {
+        before = to_del->left_child;
+        free(to_del);
+        return BST_OK;
+    } else {
+        if ((status = _init_left_max_ptr(to_del, &left_max)) != BST_OK)
+            return status;
+
+        _swap_node_vals(to_del, left_max);
+        if (left_max->right_child) {
+            if ((status = _init_del_ptrs(bst, val, &to_del, &before)) != BST_OK)
+                return status;
+
+            before = to_del->right_child;
+            free(to_del);
+            return BST_OK;
+        } else {
+            free(to_del);
+            return BST_OK;
+        }
+    }
 
     return BST_OK;
 }
