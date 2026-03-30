@@ -50,22 +50,20 @@ BST_status BST_remove(BST *bst, int val);
  * Node -> left -> right
  * @param bst a pointer to a BST struct
  */
-BST_status BST_print_pre(const BST *bst);
+BST_status BST_println_pre(const BST *bst);
 
 /*
  * Prints to the console the tree values in inorder
  * left -> Node -> right
  * @param bst a pointer to a BST struct
  */
-BST_status BST_print_ino(const BST *bst);
+BST_status BST_println_ino(const BST *bst);
 
 /*
  * Prints to the console the tree values in postorder
  * left -> right -> Node
  * @param bst a pointer to a BST struct
  */
-BST_status BST_print_pos(const BST *bst);
-
-BST_status BST_swap(BST *bst, int val1, int val2);
+BST_status BST_println_pos(const BST *bst);
 
 #endif

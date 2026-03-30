@@ -33,25 +33,14 @@ void test_BST(void) {
     if ((status = BST_append(bst, 7)) != BST_OK)
         goto cleanup;
 
-    printf("preorder: ");
-    if ((status = BST_print_pre(bst)) != BST_OK)
+    if ((status = BST_println_pos(bst)) != BST_OK)
         goto cleanup;
-
-    printf("\ninorder: ");
-    if ((status = BST_print_ino(bst)) != BST_OK)
-        goto cleanup;
-
-    printf("\npostorder: ");
-    if ((status = BST_print_pos(bst)) != BST_OK)
-        goto cleanup;
-    printf("\n");
 
     // deleting a leaf
     if ((status = BST_remove(bst, 6)) != BST_OK)
         goto cleanup;
 
-    printf("preorder after deletion: ");
-    if ((status = BST_print_pre(bst)) != BST_OK)
+    if ((status = BST_println_pos(bst)) != BST_OK)
         goto cleanup;
 
 cleanup:
