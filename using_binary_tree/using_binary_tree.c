@@ -33,11 +33,20 @@ void test_BST(void) {
     if ((status = BST_append(bst, 7)) != BST_OK)
         goto cleanup;
 
+    if ((status = BST_append(bst, 16)) != BST_OK)
+        goto cleanup;
+
     if ((status = BST_println_pos(bst)) != BST_OK)
         goto cleanup;
 
     // deleting a leaf
     if ((status = BST_remove(bst, 6)) != BST_OK)
+        goto cleanup;
+
+    if ((status = BST_remove(bst, 16)) != BST_OK)
+        goto cleanup;
+
+    if ((status = BST_remove(bst, 5)) != BST_OK)
         goto cleanup;
 
     if ((status = BST_println_pos(bst)) != BST_OK)
