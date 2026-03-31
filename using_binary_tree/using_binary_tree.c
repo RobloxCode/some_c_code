@@ -51,6 +51,9 @@ void test_BST(void) {
     if ((status = BST_remove(bst, 10)) != BST_OK)
         goto cleanup;
 
+    if ((status = BST_remove_rec(bst, 15)) != BST_OK)
+        goto cleanup;
+
     if ((status = BST_println_pos(bst)) != BST_OK)
         goto cleanup;
 

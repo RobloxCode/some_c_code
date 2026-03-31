@@ -66,6 +66,14 @@ BST_status BST_println_ino(const BST *bst);
  */
 BST_status BST_println_pos(const BST *bst);
 
+/*
+ * stores the minimun value in the tree in the out variable
+ * @param bst a pointer to a BST struct
+ * @param out a poointer to the variable where the mininum
+ *        value will be stored
+ */
 BST_status BST_get_min(const BST *bst, int *out);
+
+BST_status BST_remove_rec(BST *bst, int val);
 
 #endif

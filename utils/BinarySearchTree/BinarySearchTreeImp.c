@@ -227,21 +227,20 @@ BST_status BST_remove(BST *bst, int val) {
 
     if (!to_del->left_child && !to_del->right_child) {
         _replace_child(bst, parent, to_del, NULL);
-
         goto free_node;
-    } else if (!to_del->left_child) {
-        BSTNode *new_child = to_del->right_child;
+    }
 
-        _replace_child(bst, parent, to_del, new_child);
-
+    else if (!to_del->left_child) {
+        _replace_child(bst, parent, to_del, to_del->right_child);
         goto free_node;
-    } else if (!to_del->right_child) {
-        BSTNode *new_child = to_del->left_child;
+    }
 
-        _replace_child(bst, parent, to_del, new_child);
-
+    else if (!to_del->right_child) {
+        _replace_child(bst, parent, to_del, to_del->left_child);
         goto free_node;
-    } else {
+    }
+
+    else {
         if ((status = _init_left_max_ptr(to_del, &left_max, &parent)) != BST_OK)
             return status;
 
@@ -277,4 +276,133 @@ BST_status BST_get_min(const BST *bst, int *out) {
     }
 
     return BST_OK;
+}
+
+static void pro_replace_child(
+    BST *bst,
+    BSTNode *parent,
+    BSTNode *old,
+    BSTNode *new_child
+) {
+
+    if (parent) {
+        if (parent->left_child == old)
+            parent->left_child = new_child;
+        else
+            parent->right_child = new_child;
+    } else {
+        bst->root = new_child;
+    }
+}
+
+static BST_status pro_BST_remove(BST *bst, int val) {
+    if (!bst)
+        return BST_ERR_WRONG_PTR;
+
+    if (!bst->root)
+        return BST_ERR_EMPTY_TREE;
+
+    BSTNode *to_del = NULL;
+    BSTNode *parent = NULL;
+
+    BST_status status = _init_del_ptrs(bst, val, &to_del, &parent);
+    if (status != BST_OK)
+        return status;
+
+    if (!to_del->left_child && !to_del->right_child) {
+        pro_replace_child(bst, parent, to_del, NULL);
+        free(to_del);
+    }
+
+    else if (!to_del->left_child) {
+        pro_replace_child(bst, parent, to_del, to_del->right_child);
+        free(to_del);
+    }
+
+    else if (!to_del->right_child) {
+        pro_replace_child(bst, parent, to_del, to_del->left_child);
+        free(to_del);
+    }
+
+    else {
+        BSTNode *pred_parent = to_del;
+        BSTNode *pred = to_del->left_child;
+
+        while (pred->right_child) {
+            pred_parent = pred;
+            pred = pred->right_child;
+        }
+
+        to_del->val = pred->val;
+
+        BSTNode *child = pred->left_child;
+
+        if (pred_parent->right_child == pred)
+            pred_parent->right_child = child;
+        else
+            pred_parent->left_child = child;
+
+        free(pred);
+    }
+
+    return BST_OK;
+}
+
+static BSTNode *_remove_rec(BSTNode *node, int val, BST_status *status) {
+    if (!node) {
+        *status = BST_ERR_VAL_NOT_FOUND;
+        return NULL;
+    }
+
+    if (val < node->val) {
+        node->left_child = _remove_rec(node->left_child, val, status);
+    } else if (val > node->val) {
+        node->right_child = _remove_rec(node->right_child, val, status);
+    } else {
+        *status = BST_OK;
+
+        // Case 1: no child
+        if (!node->left_child && !node->right_child) {
+            free(node);
+            return NULL;
+        }
+
+        // Case 2: one child
+        if (!node->left_child) {
+            BSTNode *tmp = node->right_child;
+            free(node);
+            return tmp;
+        }
+
+        if (!node->right_child) {
+            BSTNode *tmp = node->left_child;
+            free(node);
+            return tmp;
+        }
+
+        // Case 3: two children
+        BSTNode *pred = node->left_child;
+        while (pred->right_child)
+            pred = pred->right_child;
+
+        node->val = pred->val;
+
+        // delete predecessor recursively
+        node->left_child = _remove_rec(node->left_child, pred->val, status);
+    }
+
+    return node;
+}
+
+BST_status BST_remove_rec(BST *bst, int val) {
+    if (!bst)
+        return BST_ERR_WRONG_PTR;
+
+    if (!bst->root)
+        return BST_ERR_EMPTY_TREE;
+
+    BST_status status = BST_OK;
+    bst->root = _remove_rec(bst->root, val, &status);
+
+    return status;
 }
