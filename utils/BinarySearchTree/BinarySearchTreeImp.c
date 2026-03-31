@@ -165,8 +165,11 @@ static BST_status _init_del_ptrs(
     BSTNode **to_del,
     BSTNode **parent
 ) {
-    if (!bst || !bst->root)
+    if (!bst)
         return BST_ERR_WRONG_PTR;
+
+    if (!bst->root)
+        return BST_ERR_EMPTY_TREE;
 
     *parent = NULL;
 
@@ -266,9 +269,7 @@ BST_status BST_get_min(const BST *bst, int *out) {
     if (!bst->root)
         return BST_ERR_EMPTY_TREE;
 
-    BSTNode *cur = bst->root;
-    *out = cur->val;
-    cur = cur->left_child;
+    BSTNode *cur = bst->root->left_child;
     *out = cur->val;
     while (cur) {
         *out = cur->val;
