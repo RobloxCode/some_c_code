@@ -258,3 +258,22 @@ free_node:
     free(to_del);
     return BST_OK;
 }
+
+BST_status BST_get_min(const BST *bst, int *out) {
+    if (!bst || !out)
+        return BST_ERR_WRONG_PTR;
+
+    if (!bst->root)
+        return BST_ERR_EMPTY_TREE;
+
+    BSTNode *cur = bst->root;
+    *out = cur->val;
+    cur = cur->left_child;
+    *out = cur->val;
+    while (cur) {
+        *out = cur->val;
+        cur = cur->right_child;
+    }
+
+    return BST_OK;
+}

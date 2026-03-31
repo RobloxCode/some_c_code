@@ -66,4 +66,6 @@ BST_status BST_println_ino(const BST *bst);
  */
 BST_status BST_println_pos(const BST *bst);
 
+BST_status BST_get_min(const BST *bst, int *out);
+
 #endif

@@ -55,6 +55,12 @@ void test_BST(void) {
     if ((status = BST_println_pos(bst)) != BST_OK)
         goto cleanup;
 
+    int min = 0;
+    if ((status = BST_get_min(bst, &min)) != BST_OK)
+        goto cleanup;
+
+    printf("min value: %d\n", min);
+
 cleanup:
     BST_deinit(&bst);
 
