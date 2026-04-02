@@ -3,7 +3,7 @@ CC = gcc
 CFLAGS = -std=c11 -Wall -Wextra -Wconversion -pedantic -g \
          -fsanitize=address -fno-omit-frame-pointer
 
-SRC =  using_flex_arr_mem.c
+SRC =  using_flex_arr_mem.c ../utils/FlexibleArrayMember/FlexibleArrayMemberImp.c
 OUT = ufam
 
 $(OUT): $(SRC)
