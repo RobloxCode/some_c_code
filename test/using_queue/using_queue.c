@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../utils/Queue/QueueImp.h"
+#include "../../utils/Queue/QueueImp.h"
 
 int main(void) {
     Queue *queue = Queue_init(4);

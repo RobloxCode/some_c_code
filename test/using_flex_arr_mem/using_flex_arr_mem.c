@@ -1,7 +1,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "../utils/FlexibleArrayMember/FlexibleArrayMemberImp.h"
+#include "../../utils/FlexibleArrayMember/FlexibleArrayMemberImp.h"
 
 int test_FlexArr(void) {
     FA_status status = FA_OK;

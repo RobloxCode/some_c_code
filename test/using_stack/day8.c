@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
-#include "../utils/Stack/StackImp.h"
+#include "../../utils/Stack/StackImp.h"
 
 int main(void) {
     const size_t stack_init_cap = 3;
