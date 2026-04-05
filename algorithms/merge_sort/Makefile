@@ -4,7 +4,7 @@ CFLAGS = -std=c11 -Wall -Wextra -Wconversion -pedantic -g \
          -fsanitize=address -fno-omit-frame-pointer
 
 SRC =  merge_sort.c
-OUT = ufam
+OUT = ms
 
 $(OUT): $(SRC)
 	$(CC) $(CFLAGS) $^ -o $@

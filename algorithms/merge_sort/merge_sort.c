@@ -1,63 +1,52 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <stddef.h>
 
-// typedef struct {
-//     size_t len;
-//     int *values;
-// } Arr;
+void merge(int *arr, int *temp, int left, int mid, int right) {
+    int i = left;     // left subarray
+    int j = mid + 1;  // right subarray
+    int k = left;     // temp index
 
-void arr_println(const int *arr, size_t len);
-void arr_cpy(
-    const int *src,
-    const size_t src_len,
-    int *dst,
-    const size_t dst_len
-);
+    while (i <= mid && j <= right) {
+        if (arr[i] <= arr[j])
+            temp[k++] = arr[i++];
+        else
+            temp[k++] = arr[j++];
+    }
 
-int main(void) {
-    int arr[] = {2,8,5,3,9,4,1,7};
-    const size_t len = sizeof arr / sizeof arr[0];
+    while (i <= mid)
+        temp[k++] = arr[i++];
 
-    int tmp[len];
-    size_t left = len / 2;
-    size_t right = len - len / 2;
+    while (j <= right)
+        temp[k++] = arr[j++];
 
-    arr_println(arr, len);
+    // copy back to original array
+    for (int x = left; x <= right; x++)
+        arr[x] = temp[x];
+}
 
-    for (size_t i = 0; i < left; ++i)
+void merge_sort(int *arr, int *temp, int left, int right) {
+    if (left >= right)
+        return;
+
+    int mid = (left + right) / 2;
+
+    merge_sort(arr, temp, left, mid);
+    merge_sort(arr, temp, mid + 1, right);
+    merge(arr, temp, left, mid, right);
+}
+
+int main() {
+    int arr[] = {5, 2, 9, 1, 3};
+    int n = sizeof arr / sizeof arr[0];
+
+    int temp[n];  // stack-allocated (no malloc)
+
+    merge_sort(arr, temp, 0, n - 1);
+
+    for (int i = 0; i < n; i++)
         printf("%d ", arr[i]);
 
-    printf("\n");
-
-    for (size_t i = left; i < len; ++i)
-        printf("%d ", arr[i]);
     printf("\n");
 
     return 0;
-}
-
-void arr_println(const int *arr, size_t len) {
-    if (!arr)
-        return;
-
-    for (size_t i = 0; i < len; ++i)
-        printf("%d ", arr[i]);
-    printf("\n");
-}
-
-void arr_cpy(
-    const int *src,
-    const size_t src_len,
-    int *dst,
-    const size_t dst_len
-) {
-    if (!src || !dst)
-        return;
-
-    if (src_len > dst_len)
-        return;
-
-    for (size_t i = 0; i < src_len; ++i)
-        dst[i] = src[i];
 }
