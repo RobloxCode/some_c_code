@@ -4,15 +4,15 @@
 void _arr_sort_helper(
     int *arr,
     int *tmp,
-    size_t left,
-    size_t mid,
-    size_t right
+    const size_t left,
+    const size_t mid,
+    const size_t right
 );
 void arr_sort(
     int *arr,
     int *tmp,
-    size_t left,
-    size_t right
+    const size_t left,
+    const size_t right
 );
 void arr_println(const int *arr, const size_t len);
 
@@ -34,9 +34,9 @@ int main() {
 void _arr_sort_helper(
     int *arr,
     int *tmp,
-    size_t left,
-    size_t mid,
-    size_t right
+    const size_t left,
+    const size_t mid,
+    const size_t right
 ) {
     size_t left_idx = left;
     size_t right_idx = mid + 1;
@@ -62,8 +62,8 @@ void _arr_sort_helper(
 void arr_sort(
     int *arr,
     int *tmp,
-    size_t left,
-    size_t right
+    const size_t left,
+    const size_t right
 ) {
     if (left >= right)
         return;
