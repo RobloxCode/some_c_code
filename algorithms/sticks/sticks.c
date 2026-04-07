@@ -8,15 +8,10 @@ void arr_set(int *arr, const size_t len, const int val);
 int arr_max(const int *arr, const size_t len);
 int can_make_square(const int *arr, const size_t len);
 
+void test_can_make_square();
+
 int main(void) {
-    int arr[] = {0,0,1,1,1,1,2,3,2,3,4,5,5,1,3,9};
-    size_t len = sizeof arr / sizeof arr[0];
-
-    if (can_make_square(arr, len))
-        printf("YES\n");
-    else
-        printf("NO\n");
-
+    test_can_make_square();
     return 0;
 }
 
@@ -57,4 +52,32 @@ int can_make_square(const int *arr, const size_t len) {
     }
 
     return 0;
+}
+
+void display_test_info(const int *arr, const size_t len) {
+    printf("arr: ");
+    arr_println(arr, len);
+    if (can_make_square(arr, len))
+        printf("YES\n");
+    else
+        printf("NO\n");
+}
+
+void test_can_make_square() {
+    int arr1[] = {0,0,1,1,1,1,2,3,2,3,4,5,5,1,3,9};
+    size_t len1 = sizeof arr1 / sizeof arr1[0];
+    display_test_info(arr1, len1);
+
+    int arr2[] = {1,1,1,2,2,8};
+    size_t len2 = sizeof arr2 / sizeof arr2[0];
+    display_test_info(arr2, len2);
+
+    int arr3[] = {1,1,1,1,1,1};
+    size_t len3 = sizeof arr3 / sizeof arr3[0];
+    display_test_info(arr3, len3);
+
+    int arr4[] = {3};
+    size_t len4 = sizeof arr4 / sizeof arr4[0];
+    display_test_info(arr4, len4);
+
 }
