@@ -3,12 +3,14 @@
 
 void test_String();
 
-int main(void) {
+int main(void)
+{
     test_String();
     return 0;
 }
 
-void test_String() {
+void test_String()
+{
     String *s = String_init(10);
     if (!s) {
         printf("NULL\n");
