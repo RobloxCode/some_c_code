@@ -1,4 +1,5 @@
 #include "c_arr_utls.h"
+#include <limits.h>
 #include <stdio.h>
 
 static void _arr_sort_helper(int *arr,
@@ -54,6 +55,12 @@ void arr_println(const int *arr, size_t len)
     printf("\n");
 }
 
+void arr_clear(int *arr, const size_t len)
+{
+    for (size_t i = 0; i < len; ++i)
+        arr[i] = 0;
+}
+
 void arr_add(
     int *res,
     const size_t res_len,
@@ -80,3 +87,84 @@ void arr_add(
         res[i] = arr2[i];
 }
 
+void arr_sub(
+    int *res,
+    const size_t res_len,
+    const int *arr1,
+    const size_t arr1_len,
+    const int *arr2,
+    const size_t arr2_len)
+{
+    if (!res || !arr1 || !arr2)
+        return;
+
+    if (res_len < MAX(arr1_len, arr2_len))
+        return;
+
+    size_t min_len = MIN(arr1_len, arr2_len);
+
+    for (size_t i = 0; i < min_len; ++i)
+        res[i] = arr1[i] - arr2[i];
+
+    for (size_t i = min_len; i < arr1_len; ++i)
+        res[i] = arr1[i];
+
+    for (size_t i = min_len; i < arr2_len; ++i)
+        res[i] = arr2[i];
+}
+
+void arr_mul(
+    int *res,
+    const size_t res_len,
+    const int *arr1,
+    const size_t arr1_len,
+    const int *arr2,
+    const size_t arr2_len)
+{
+    if (!res || !arr1 || !arr2)
+        return;
+
+    if (res_len < MAX(arr1_len, arr2_len))
+        return;
+
+    size_t min_len = MIN(arr1_len, arr2_len);
+
+    for (size_t i = 0; i < min_len; ++i)
+        res[i] = arr1[i] * arr2[i];
+
+    for (size_t i = min_len; i < arr1_len; ++i)
+        res[i] = arr1[i];
+
+    for (size_t i = min_len; i < arr2_len; ++i)
+        res[i] = arr2[i];
+}
+
+void arr_div(
+    int *res,
+    const size_t res_len,
+    const int *arr1,
+    const size_t arr1_len,
+    const int *arr2,
+    const size_t arr2_len)
+{
+    if (!res || !arr1 || !arr2)
+        return;
+
+    if (res_len < MAX(arr1_len, arr2_len))
+        return;
+
+    size_t min_len = MIN(arr1_len, arr2_len);
+
+    for (size_t i = 0; i < min_len; ++i) {
+        if (arr2[i] == 0)
+            continue;
+
+        res[i] = arr1[i] / arr2[i];
+    }
+
+    for (size_t i = min_len; i < arr1_len; ++i)
+        res[i] = arr1[i];
+
+    for (size_t i = min_len; i < arr2_len; ++i)
+        res[i] = arr2[i];
+}

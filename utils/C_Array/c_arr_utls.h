@@ -12,7 +12,29 @@ void arr_sort(
     int *tmp,
     const size_t left,
     const size_t right);
+void arr_clear(int *arr, const size_t len);
 void arr_add(
+    int *res,
+    const size_t res_len,
+    const int *arr1,
+    const size_t arr1_len,
+    const int *arr2,
+    const size_t arr2_len);
+void arr_sub(
+    int *res,
+    const size_t res_len,
+    const int *arr1,
+    const size_t arr1_len,
+    const int *arr2,
+    const size_t arr2_len);
+void arr_mul(
+    int *res,
+    const size_t res_len,
+    const int *arr1,
+    const size_t arr1_len,
+    const int *arr2,
+    const size_t arr2_len);
+void arr_div(
     int *res,
     const size_t res_len,
     const int *arr1,
