@@ -42,4 +42,13 @@ void c_arr_utils_test(void)
     arr_println(res, ARR_LEN(res));
     arr_clear(res, ARR_LEN(res));
 
+    arr_println(arr1, ARR_LEN(arr1));
+    arr_reverse(arr1, ARR_LEN(arr1));
+    arr_println(arr1, ARR_LEN(arr1));
+
+    int cpy[ARR_LEN(arr3)];
+    printf("before copy\n");
+    arr_println(cpy, ARR_LEN(cpy));
+    arr_copy(cpy, ARR_LEN(cpy), arr3, ARR_LEN(arr3));
+    arr_println(cpy, ARR_LEN(cpy));
 }

@@ -168,3 +168,36 @@ void arr_div(
     for (size_t i = min_len; i < arr2_len; ++i)
         res[i] = arr2[i];
 }
+
+void arr_reverse(int *arr, const size_t len)
+{
+    if (!arr || len == 0)
+        return;
+
+    size_t left = 0;
+    size_t right = len - 1;
+
+    while (left < right) {
+        int tmp = arr[left];
+        arr[left] = arr[right];
+        arr[right] = tmp;
+        left++;
+        right--;
+    }
+}
+
+void arr_copy(
+    int *dst,
+    const size_t dst_len,
+    const int *src,
+    const size_t src_len)
+{
+    if (!dst || !src)
+        return;
+
+    if (src_len > dst_len)
+        return;
+
+    for (size_t i = 0; i < src_len; ++i)
+        dst[i] = src[i];
+}

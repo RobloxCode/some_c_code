@@ -41,4 +41,10 @@ void arr_div(
     const size_t arr1_len,
     const int *arr2,
     const size_t arr2_len);
+void arr_reverse(int *arr, const size_t len);
+void arr_copy(
+    int *dst,
+    const size_t dst_len,
+    const int *src,
+    const size_t src_len);
 #endif
