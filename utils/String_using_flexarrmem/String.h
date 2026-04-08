@@ -15,7 +15,7 @@ String *String_init(const size_t cap);
 void String_deinit(String **str);
 void String_println(const String *str);
 void String_append_char(String **str, const char c);
-void String_append(String **str, char *cstr);
+void String_append(String **str, const char *cstr);
 const char *String_to_cstr(const String *str);
 size_t String_len(const String *str);
 

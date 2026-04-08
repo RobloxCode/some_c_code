@@ -9,9 +9,13 @@ int main(void) {
 }
 
 void test_String() {
-    String *s = String_init(4);
-    if (!s)
+    String *s = String_init(10);
+    if (!s) {
+        printf("NULL\n");
         return;
+    }
+
+    String_println(s);
 
     String_append_char(&s, 'h');
     String_append_char(&s, 'e');
