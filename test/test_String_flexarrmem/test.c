@@ -28,7 +28,7 @@ void test_String() {
     String_println(s);
 
     String_append(&s,
-            "this text should be something really long i guess");
+            " this text should be something really long i guess");
     String_println(s);
 
     printf("cap: %zu\n", s->cap);
@@ -51,6 +51,26 @@ void test_String() {
                 String_to_cstr(s), String_to_cstr(s2));
     else
         printf("the strings are not the same\n");
+
+    puts("s");
+    String_println(s);
+    String_clear(s);
+    String_println(s);
+    String_append(&s, "new string");
+    String_println(s);
+
+    puts("s2");
+    String_println(s2);
+
+    printf("len s: %zu\n", s->len);
+    printf("len s2: %zu\n", s2->len);
+
+    String_cpy(s2, s);
+    puts("s");
+    String_println(s);
+    puts("s2");
+    String_println(s2);
+    printf("len s2: %zu\n", s2->len);
 
 cleanup:
     String_deinit(&s);

@@ -8,6 +8,7 @@ typedef struct {
     // the variable len does not include
     // null terminator character
     size_t len;
+
     char items[];
 } String;
 
@@ -24,5 +25,9 @@ size_t String_len(const String *str);
  * otherwise 1
  */
 int String_cmp(const String *str1, const String *str2);
+
+void String_clear(String *str);
+int String_cpy(String *dst, const String *src);
+void String_concat(String *dst, const String *str1, const String *str2);
 
 #endif

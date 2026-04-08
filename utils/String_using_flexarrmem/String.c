@@ -105,3 +105,26 @@ int String_cmp(const String *str1, const String *str2) {
 
     return 0;
 }
+
+void String_clear(String *str) {
+    if (!str)
+        return;
+
+    str->items[0] = '\0';
+    str->len = 0;
+}
+
+int String_cpy(String *dst, const String *src) {
+    if (!dst || !src)
+        return 1;
+
+    if (src->len > dst->len)
+        return 1;
+
+    String_clear(dst);
+    String_append(&dst, src->items);
+
+    return 0;
+}
+
+void String_concat(String *dst, const String *str1, const String *str2);
