@@ -17,18 +17,20 @@ void test_String() {
 
     String_println(s);
 
-    String_append_char(&s, 'h');
-    String_append_char(&s, 'e');
-    String_append_char(&s, 'l');
-    String_append_char(&s, 'l');
-    String_append_char(&s, 'o');
+    if (String_append_char(&s, 'h') != 0) goto cleanup;
+    if (String_append_char(&s, 'e') != 0) goto cleanup;
+    if (String_append_char(&s, 'l') != 0) goto cleanup;
+    if (String_append_char(&s, 'l') != 0) goto cleanup;
+    if (String_append_char(&s, 'o') != 0) goto cleanup;
 
     printf("cap: %zu\n", s->cap);
     printf("len: %zu\n", s->len);
     String_println(s);
 
-    String_append(&s,
-            " this text should be something really long i guess");
+    if (String_append(&s,
+            " this text should be something really long i guess"))
+        goto cleanup;
+
     String_println(s);
 
     printf("cap: %zu\n", s->cap);
@@ -44,7 +46,8 @@ void test_String() {
     if (!s2)
         goto cleanup;
 
-    String_append(&s2, (char *)String_to_cstr(s));
+    if (String_append(&s2, (char *)String_to_cstr(s)) != 0)
+        goto cleanup;
 
     if (String_cmp(s, s2) == 0)
         printf("the strings\n%s\n%s\nare the same\n",
@@ -56,7 +59,10 @@ void test_String() {
     String_println(s);
     String_clear(s);
     String_println(s);
-    String_append(&s, "new string");
+
+    if (String_append(&s, "new string") != 0)
+        goto cleanup;
+
     String_println(s);
 
     puts("s2");
@@ -72,8 +78,28 @@ void test_String() {
     String_println(s2);
     printf("len s2: %zu\n", s2->len);
 
+    String *s3 = String_init(10);
+    if (!s3)
+        goto cleanup;
+
+    if (String_concat(&s3, s, s2) != 0)
+        goto cleanup;
+
+    puts("coctatinated string s3:");
+    String_println(s3);
+
+    if (String_append(&s3, " some extra text") != 0)
+        goto cleanup;
+    String_println(s3);
+
+    if (String_concat(&s3, s, s2) != 0)
+        goto cleanup;
+
+    String_println(s3);
+
 cleanup:
     String_deinit(&s);
     String_deinit(&s2);
+    String_deinit(&s3);
     return;
 }

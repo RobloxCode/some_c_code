@@ -15,8 +15,8 @@ typedef struct {
 String *String_init(const size_t cap);
 void String_deinit(String **str);
 void String_println(const String *str);
-void String_append_char(String **str, const char c);
-void String_append(String **str, const char *cstr);
+int String_append_char(String **str, const char c);
+int String_append(String **str, const char *cstr);
 const char *String_to_cstr(const String *str);
 size_t String_len(const String *str);
 
@@ -28,6 +28,6 @@ int String_cmp(const String *str1, const String *str2);
 
 void String_clear(String *str);
 int String_cpy(String *dst, const String *src);
-void String_concat(String *dst, const String *str1, const String *str2);
+int String_concat(String **dst, const String *str1, const String *str2);
 
 #endif

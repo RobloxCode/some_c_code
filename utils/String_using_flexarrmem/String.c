@@ -33,16 +33,16 @@ void String_println(const String *str) {
     puts(str->items);
 }
 
-void String_append_char(String **str, const char c) {
+int String_append_char(String **str, const char c) {
     if (!str || !*str)
-        return;
+        return 1;
 
     if ((*str)->len + 2 > (*str)->cap) {
         size_t new_cap = (*str)->cap * 2;
 
         String *tmp = realloc(*str, sizeof *tmp + new_cap + 1);
         if (!tmp)
-            return;
+            return 1;
 
         tmp->cap = new_cap;
         *str = tmp;
@@ -50,11 +50,13 @@ void String_append_char(String **str, const char c) {
 
     (*str)->items[(*str)->len++] = c;
     (*str)->items[(*str)->len] = '\0';
+
+    return 0;
 }
 
-void String_append(String **str, const char *cstr) {
+int String_append(String **str, const char *cstr) {
     if (!str || !*str || !cstr)
-        return;
+        return 1;
 
     size_t cstr_len = 0;
     while (cstr[cstr_len])
@@ -64,7 +66,7 @@ void String_append(String **str, const char *cstr) {
         size_t new_cap = ((*str)->len + cstr_len) * 2;
         String *tmp = realloc(*str, sizeof *tmp + new_cap + 1);
         if (!tmp)
-            return;
+            return 1;
 
         tmp->cap = new_cap;
         *str = tmp;
@@ -76,6 +78,8 @@ void String_append(String **str, const char *cstr) {
 
     (*str)->len += cstr_len;
     (*str)->items[(*str)->len] = '\0';
+
+    return 0;
 }
 
 const char *String_to_cstr(const String *str) {
@@ -127,13 +131,25 @@ int String_cpy(String *dst, const String *src) {
     return 0;
 }
 
-void String_concat(
-    String *dst,
+int String_concat(
+    String **dst,
     const String *str1,
     const String *str2
 ) {
-    if (!str1 || !str2)
-        return;
+    if (!dst || !*dst || !str1 || !str2)
+        return 1;
 
+    if ((*dst)->cap < str1->len + str2->len) {
+        size_t new_cap = str1->len + str2->len;
+        String *tmp = realloc(*dst, sizeof *tmp + new_cap + 1);
+        if (!tmp)
+            return 1;
 
+        tmp->cap = new_cap;
+        *dst = tmp;
+    }
+
+    String_append(dst, str1->items);
+    String_append(dst, str2->items);
+    return 0;
 }
