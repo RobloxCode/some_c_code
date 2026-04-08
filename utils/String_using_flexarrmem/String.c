@@ -127,4 +127,13 @@ int String_cpy(String *dst, const String *src) {
     return 0;
 }
 
-void String_concat(String *dst, const String *str1, const String *str2);
+void String_concat(
+    String *dst,
+    const String *str1,
+    const String *str2
+) {
+    if (!str1 || !str2)
+        return;
+
+
+}
