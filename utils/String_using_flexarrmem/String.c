@@ -1,0 +1,103 @@
+#include "String.h"
+#include <stddef.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+String *String_init(const size_t cap) {
+    if (cap == 0)
+        return NULL;
+
+    String *str = malloc(sizeof *str + cap);
+    if (!str)
+        return NULL;
+
+    str->cap = cap;
+    str->len = 0;
+
+    return str;
+}
+
+void String_deinit(String **str) {
+    if (!str || !*str)
+        return;
+
+    free(*str);
+    *str = NULL;
+}
+
+void String_println(const String *str) {
+    puts(str->items);
+}
+
+void String_append_char(String **str, const char c) {
+    if (!str || !*str)
+        return;
+
+    if ((*str)->len - 1 >= (*str)->cap) {
+        size_t new_cap = (*str)->cap * 2;
+
+        String *tmp = realloc(*str, sizeof *tmp + new_cap);
+        if (!tmp)
+            return;
+
+        tmp->cap = new_cap;
+        *str = tmp;
+    }
+
+    (*str)->items[(*str)->len++] = c;
+    (*str)->items[(*str)->len] = '\0';
+}
+
+void String_append(String **str, char *cstr) {
+    if (!str || !*str)
+        return;
+
+    size_t cstr_len = 0;
+    while (cstr[cstr_len])
+        cstr_len++;
+
+    if ((*str)->cap < ((*str)->len + cstr_len + 1)) {
+        size_t new_cap = ((*str)->len + cstr_len) * 2;
+        String *tmp = realloc(*str, sizeof *tmp + new_cap);
+        if (!tmp)
+            return;
+
+        tmp->cap = new_cap;
+        *str = tmp;
+    }
+
+    for (size_t i = 0; i < cstr_len; ++i) {
+        (*str)->items[i + (*str)->len] = cstr[i];
+    }
+
+    (*str)->len += cstr_len;
+    (*str)->items[(*str)->len] = '\0';
+}
+
+const char *String_to_cstr(const String *str) {
+    if (!str)
+        return NULL;
+
+    return str->items;
+}
+
+size_t String_len(const String *str) {
+    if (!str)
+        return 0;
+
+    return str->len;
+}
+
+int String_cmp(const String *str1, const String *str2) {
+    if (!str1 || !str2)
+        return -1;
+
+    if (str1->len != str2->len)
+        return -2;
+
+    for (size_t i = 0; i < str1->len; ++i)
+        if (str1->items[i] != str2->items[i])
+            return -3;
+
+    return 0;
+}
