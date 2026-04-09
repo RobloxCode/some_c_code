@@ -1,52 +1,49 @@
 #include <limits.h>
 #include <stddef.h>
 #include <stdio.h>
-#define MAX_COUNT_LEN 256
+#define COUNT_MAX_LEN 256
 
-void arr_println(const int *arr, const size_t len);
-void arr_set(int *arr, const size_t len, const int val);
-int arr_max(const int *arr, const size_t len);
-int can_make_square(const int *arr, const size_t len);
+typedef struct {
+    int *items;
+    size_t len;
+} IntArr;
+
+void arr_println(const IntArr *arr);
+void display_can_make_square(IntArr *arr);
+int can_make_square(IntArr *arr);
 
 void test_can_make_square();
 
-int main(void) {
+int main(void)
+{
     test_can_make_square();
     return 0;
 }
 
-void arr_println(const int *arr, const size_t len) {
+void arr_println(const IntArr *arr)
+{
     if (!arr)
         return;
 
-    for (size_t i = 0; i < len; ++i)
-        printf("%d ", arr[i]);
+    for (size_t i = 0; i < arr->len; ++i)
+        printf("%d ", arr->items[i]);
 
     printf("\n");
 }
 
-void arr_set(int *arr, const size_t len, const int val) {
-    if (!arr)
-        return;
-
-    for (size_t i = 0; i < len; ++i)
-        arr[i] = val;
-}
-
-int can_make_square(const int *arr, const size_t len) {
+int can_make_square(IntArr *arr) {
     if (!arr)
         return 0;
 
-    if (len < 4)
+    if (arr->len < 4)
         return 0;
 
-    int count[MAX_COUNT_LEN];
+    int count[COUNT_MAX_LEN];
 
-    for (size_t i = 0; i < len; ++i) {
-        count[arr[i]]++;
-    }
+    for (size_t i = 0; i < arr->len; ++i)
+        count[arr->items[i]]++;
 
-    for (size_t i = 0; i < len; ++i) {
+    for (size_t i = 0; i < arr->len; ++i) {
         if (count[i] >= 4)
             return 1;
     }
@@ -54,30 +51,40 @@ int can_make_square(const int *arr, const size_t len) {
     return 0;
 }
 
-void display_test_info(const int *arr, const size_t len) {
+void display_can_make_square(IntArr *arr)
+{
     printf("arr: ");
-    arr_println(arr, len);
-    if (can_make_square(arr, len))
+    arr_println(arr);
+    if (can_make_square(arr))
         printf("YES\n");
     else
         printf("NO\n");
 }
 
-void test_can_make_square() {
-    int arr1[] = {0,0,1,1,1,1,2,3,2,3,4,5,5,1,3,9};
-    size_t len1 = sizeof arr1 / sizeof arr1[0];
-    display_test_info(arr1, len1);
+void test_can_make_square()
+{
+    int items1[] = {0,0,1,1,1,1,2,3,2,3,4,5,5,1,3,9};
+    IntArr arr = (IntArr){ .items = items1,
+                           .len = sizeof items1 / sizeof items1[0]};
 
-    int arr2[] = {1,1,1,2,2,8};
-    size_t len2 = sizeof arr2 / sizeof arr2[0];
-    display_test_info(arr2, len2);
+    display_can_make_square(&arr);
 
-    int arr3[] = {1,1,1,1,1,1};
-    size_t len3 = sizeof arr3 / sizeof arr3[0];
-    display_test_info(arr3, len3);
+    int items2[] = {1,1,1,2,2,8};
+    IntArr arr2 = (IntArr){ .items = items2,
+                            .len = sizeof items2 / sizeof items2[0]};
 
-    int arr4[] = {3};
-    size_t len4 = sizeof arr4 / sizeof arr4[0];
-    display_test_info(arr4, len4);
+    display_can_make_square(&arr2);
+
+    int items3[] = {1,1,1,1,1,1};
+    IntArr arr3 = (IntArr){ .items = items3,
+                            .len = sizeof items3 / sizeof items3[0]};
+
+    display_can_make_square(&arr3);
+
+    int items4[] = {3};
+    IntArr arr4 = (IntArr){ .items = items4,
+                            .len = sizeof items4 / sizeof items4[0]};
+
+    display_can_make_square(&arr4);
 
 }
