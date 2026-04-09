@@ -1,7 +1,12 @@
 #include <limits.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #define COUNT_MAX_LEN 256
+#define FILENAME "list_of_sticks.txt"
+#define BUFF_MAX_LEN 256
+#define FILE_CONTENT_MAX_LEN 256
 
 typedef struct {
     int *items;
@@ -11,6 +16,8 @@ typedef struct {
 void arr_println(const IntArr *arr);
 void display_can_make_square(IntArr *arr);
 int can_make_square(IntArr *arr);
+
+size_t str_get_num_lines(const char *str);
 
 void test_can_make_square();
 
@@ -61,30 +68,39 @@ void display_can_make_square(IntArr *arr)
         printf("NO\n");
 }
 
+size_t str_get_num_lines(const char *str)
+{
+    if (!str)
+        return 0;
+
+    size_t num_lines = 0;
+    for (size_t i = 0; i < strlen(str); ++i)
+        if (str[i] == '\n')
+            num_lines++;
+
+    return num_lines;
+}
+
 void test_can_make_square()
 {
-    int items1[] = {0,0,1,1,1,1,2,3,2,3,4,5,5,1,3,9};
-    IntArr arr = (IntArr){ .items = items1,
-                           .len = sizeof items1 / sizeof items1[0]};
+    FILE *file;
+    char buff[BUFF_MAX_LEN];
+    size_t bytes_read;
+    size_t num_lines;
 
-    display_can_make_square(&arr);
+    file = fopen(FILENAME, "r");
+    if (!file)
+        return;
 
-    int items2[] = {1,1,1,2,2,8};
-    IntArr arr2 = (IntArr){ .items = items2,
-                            .len = sizeof items2 / sizeof items2[0]};
+    while ((bytes_read = fread(buff, sizeof(char), sizeof buff, file)) != 0)
+        buff[bytes_read] = '\0';
 
-    display_can_make_square(&arr2);
+    printf("buff\n%s\n", buff);
 
-    int items3[] = {1,1,1,1,1,1};
-    IntArr arr3 = (IntArr){ .items = items3,
-                            .len = sizeof items3 / sizeof items3[0]};
+    // num_lines = str_get_num_lines(buff);
+    // char *indiv_lines[num_lines];
+    // size_t indiv_lines_idx = 0;
+    //
 
-    display_can_make_square(&arr3);
-
-    int items4[] = {3};
-    IntArr arr4 = (IntArr){ .items = items4,
-                            .len = sizeof items4 / sizeof items4[0]};
-
-    display_can_make_square(&arr4);
-
+    fclose(file);
 }
