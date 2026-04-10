@@ -13,7 +13,8 @@ int is_palindrome(const char *word);
 
 void test_is_palindrome(char *word);
 
-int main(void) {
+int main(void)
+{
     test_is_palindrome("THTH");
     test_is_palindrome("Hello");
     test_is_palindrome("-u-");
@@ -23,18 +24,21 @@ int main(void) {
     return EXIT_SUCCESS;
 }
 
-int is_digit(const char c) {
+int is_digit(const char c)
+{
     return c >= '0' && c <= '9';
 }
 
-int is_symbol(const char c) {
+int is_symbol(const char c)
+{
     return (c >= '!' && c <= '/') ||
            (c >= ':' && c <= '@') ||
            (c >= '[' && c <= '`') ||
            (c >= '{' && c <= '~');
 }
 
-char char_to_low(const char c) {
+char char_to_low(const char c)
+{
     if (!c)
         return '\0';
 
@@ -47,7 +51,8 @@ char char_to_low(const char c) {
     return c + ('a' - 'A');
 }
 
-void str_to_low(char *str) {
+void str_to_low(char *str)
+{
     if (!str)
         return;
 
@@ -65,7 +70,8 @@ void str_to_low(char *str) {
     }
 }
 
-void str_copy(const char *src, char *dst) {
+void str_copy(const char *src, char *dst)
+{
     if (!src || !dst)
         return;
 
@@ -78,7 +84,8 @@ void str_copy(const char *src, char *dst) {
     dst[i] = '\0';
 }
 
-int is_palindrome(const char *word) {
+int is_palindrome(const char *word)
+{
     if (!word)
         return 0;
 
@@ -105,7 +112,8 @@ int is_palindrome(const char *word) {
     return 1;
 }
 
-void test_is_palindrome(char *word) {
+void test_is_palindrome(char *word)
+{
     if (!word)
         return;
 

@@ -67,7 +67,8 @@ int main(int argc, char **argv) {
     return EXIT_SUCCESS;
 }
 
-atoi_status ascii_to_int(const char *str, int *result) {
+atoi_status ascii_to_int(const char *str, int *result)
+{
     if (!str || !result) {
         return ATOI_ERR_WRONG_PTR;
     }
@@ -107,7 +108,8 @@ atoi_status ascii_to_int(const char *str, int *result) {
     return ATOI_OK;
 }
 
-size_t get_str_len(const char *str) {
+size_t get_str_len(const char *str)
+{
     if (!str) {
         return 0;
     }
@@ -120,7 +122,8 @@ size_t get_str_len(const char *str) {
     return i;
 }
 
-int clear_str(char *str) {
+int clear_str(char *str)
+{
     if (!str) {
         return -1;
     }
@@ -132,21 +135,24 @@ int clear_str(char *str) {
     return 0;
 }
 
-int is_digit(char c) {
+int is_digit(char c)
+{
     if (c < '0' || c > '9') {
         return 0;
     }
     return 1;
 }
 
-int is_operator(char c) {
+int is_operator(char c)
+{
     if (c == '+' || c == '-' || c == '/' || c == '*') {
         return 1;
     }
     return 0;
 }
 
-get_digits_status get_digits(char *exp, int *digits) {
+get_digits_status get_digits(char *exp, int *digits)
+{
     if (!exp || !digits) {
         return GET_DIGITS_ERR_WRONG_PTR;
     }
@@ -190,7 +196,8 @@ get_digits_status get_digits(char *exp, int *digits) {
     return GET_DIGITS_OK;
 }
 
-get_operator_status get_operator(char *exp, char *operator) {
+get_operator_status get_operator(char *exp, char *operator)
+{
     if (!exp || !operator) {
         return GET_OP_ERR_WRONG_PTR;
     }
@@ -205,7 +212,8 @@ get_operator_status get_operator(char *exp, char *operator) {
     return GET_OP_ERR_NO_OP_FOUND;
 }
 
-evaluate_exp_status evaluate_exp(char *exp, int *result) {
+evaluate_exp_status evaluate_exp(char *exp, int *result)
+{
     if (!exp || !result) {
         return EVALEXP_ERR_WRONG_PTR;
     }
