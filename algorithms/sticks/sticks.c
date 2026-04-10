@@ -74,7 +74,7 @@ size_t str_get_num_lines(const char *str)
         return 0;
 
     size_t num_lines = 0;
-    for (size_t i = 0; i < strlen(str); ++i)
+    for (size_t i = 0; str[i] != '\0'; ++i)
         if (str[i] == '\n')
             num_lines++;
 
@@ -83,10 +83,10 @@ size_t str_get_num_lines(const char *str)
 
 void test_can_make_square()
 {
-    FILE *file;
+    FILE *file = NULL;
     char buff[BUFF_MAX_LEN];
-    size_t bytes_read;
-    size_t num_lines;
+    size_t bytes_read = 0;
+    size_t num_lines = 0;
 
     file = fopen(FILENAME, "r");
     if (!file)
@@ -95,12 +95,20 @@ void test_can_make_square()
     while ((bytes_read = fread(buff, sizeof(char), sizeof buff, file)) != 0)
         buff[bytes_read] = '\0';
 
-    printf("buff\n%s\n", buff);
+    num_lines = str_get_num_lines(buff);
 
-    // num_lines = str_get_num_lines(buff);
-    // char *indiv_lines[num_lines];
-    // size_t indiv_lines_idx = 0;
-    //
+    int items[strlen(buff)];
+    size_t items_idxs[num_lines];
+
+    for (size_t i = 0, items_idxs_pos = 0; i < strlen(buff); ++i)
+        if (buff[i] == '\n')
+            items_idxs[items_idxs_pos++] = i;
+
+    for (size_t i = 0; i < items_idxs[0]; ++i)
+        printf("%c", buff[i]);
+
+    for (size_t i = items_idxs[0]; i < items_idxs[1]; ++i)
+        printf("%c", buff[i]);
 
     fclose(file);
 }
