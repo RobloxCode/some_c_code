@@ -50,10 +50,9 @@ int can_make_square(IntArr *arr) {
     for (size_t i = 0; i < arr->len; ++i)
         count[arr->items[i]]++;
 
-    for (size_t i = 0; i < arr->len; ++i) {
+    for (size_t i = 0; i < arr->len; ++i)
         if (count[i] >= 4)
             return 1;
-    }
 
     return 0;
 }
