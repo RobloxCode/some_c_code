@@ -16,10 +16,14 @@ typedef struct {
 void arr_println(const IntArr *arr);
 void display_can_make_square(IntArr *arr);
 int can_make_square(IntArr *arr);
-
-size_t str_get_num_lines(const char *str);
-
-void test_can_make_square();
+void display_can_make_square(IntArr *arr);
+size_t get_num_new_lines(const char *str);
+void load_file_content(char *buf,
+                       const size_t buf_size,
+                       FILE *stream);
+void init_new_lines_idxs(size_t *new_lines_idxs,
+                         const char *file_content);
+void test_can_make_square(void);
 
 int main(void)
 {
@@ -96,7 +100,8 @@ void load_file_content(char *buf,
         buf[bytes_read] = '\0';
 }
 
-void init_new_lines_idxs(size_t *new_lines_idxs, const char *file_content)
+void init_new_lines_idxs(size_t *new_lines_idxs,
+                         const char *file_content)
 {
     size_t last_new_line_idx = 0;
     for (size_t i = 0; file_content[i] != '\0'; ++i)
@@ -104,29 +109,32 @@ void init_new_lines_idxs(size_t *new_lines_idxs, const char *file_content)
             new_lines_idxs[last_new_line_idx++] = i;
 }
 
-void test_can_make_square()
+void test_can_make_square(void)
 {
     FILE *file = NULL;
     char file_content[BUFF_MAX_LEN];
-    size_t num_new_lines = 0;
 
     file = fopen(FILENAME, "r");
     if (!file)
         return;
 
     load_file_content(file_content, sizeof file_content, file);
-    num_new_lines = get_num_new_lines(file_content);
+    size_t num_new_lines = get_num_new_lines(file_content);
 
     int file_content_parsed[strlen(file_content)];
     size_t new_lines_idxs[num_new_lines];
 
+    memset(file_content_parsed, 0, sizeof file_content_parsed);
+
     init_new_lines_idxs(new_lines_idxs, file_content);
 
-    puts(file_content);
+    for (size_t i = 0; i < strlen(file_content); ++i)
+        printf("%d ", file_content_parsed[i]);
 
-    puts("new lines idxs");
-    for (size_t i = 0; i < num_new_lines; ++i)
-        printf("%zu\n", new_lines_idxs[i]);
+    size_t file_content_parsed_idx = 0;
+    for (size_t i = 0; file_content[i] != '\0'; ++i)
+        ;;
+
 
     fclose(file);
 }
