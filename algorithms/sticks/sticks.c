@@ -3,10 +3,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "../../ascii_to_int/ascii_to_int.h"
+
 #define COUNT_MAX_LEN 256
 #define FILENAME "list_of_sticks.txt"
 #define BUFF_MAX_LEN 256
 #define FILE_CONTENT_MAX_LEN 256
+#define MAX_DIGIT_COUNT 10
 
 typedef struct {
     int *items;
@@ -128,13 +131,25 @@ void test_can_make_square(void)
 
     init_new_lines_idxs(new_lines_idxs, file_content);
 
-    for (size_t i = 0; i < strlen(file_content); ++i)
-        printf("%d ", file_content_parsed[i]);
-
     size_t file_content_parsed_idx = 0;
-    for (size_t i = 0; file_content[i] != '\0'; ++i)
-        ;;
+    int parse_helper_buf = 0;
+    char cur_digit_buf[MAX_DIGIT_COUNT] = {0};
+    size_t cur_digit_buf_idx = 0;
 
+    for (size_t i = 0; file_content[i] != '\0'; ++i) {
+        char cur_char = file_content[i];
+
+        if (cur_char == ' ' || cur_char == '\n') {
+            ascii_to_int(cur_digit_buf, &parse_helper_buf);
+            file_content_parsed[file_content_parsed_idx++] = parse_helper_buf;
+            cur_digit_buf_idx = 0;
+        } else
+            cur_digit_buf[cur_digit_buf_idx++] = cur_char;
+    }
+
+    printf("%zu\n", new_lines_idxs[0]);
+    for (size_t i = 0; i < new_lines_idxs[0] - 9; ++i)
+        printf("%d ", file_content_parsed[i]);
 
     fclose(file);
 }
