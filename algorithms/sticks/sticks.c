@@ -10,6 +10,7 @@
 #define BUFF_MAX_LEN 256
 #define FILE_CONTENT_MAX_LEN 256
 #define MAX_DIGIT_COUNT 10
+#define ARR_LEN(a) (sizeof (a) / sizeof(a[0]))
 
 typedef struct {
     int *items;
@@ -25,7 +26,8 @@ void load_file_content(char *buf,
                        const size_t buf_size,
                        FILE *stream);
 void init_new_lines_idxs(size_t *new_lines_idxs,
-                         const char *file_content);
+                         const char *file_content,
+                         const size_t starting_idx);
 void parse_file_content(const char *file_content,
                         int *file_content_parsed);
 void test_can_make_square(void);
@@ -106,9 +108,10 @@ void load_file_content(char *buf,
 }
 
 void init_new_lines_idxs(size_t *new_lines_idxs,
-                         const char *file_content)
+                         const char *file_content,
+                         const size_t starting_idx)
 {
-    size_t last_new_line_idx = 0;
+    size_t last_new_line_idx = starting_idx;
     size_t last_pos = 0;
     for (size_t i = 0; file_content[i] != '\0'; ++i) {
         if (file_content[i] != '\n' && file_content[i] != ' ')
@@ -148,18 +151,28 @@ void test_can_make_square(void)
         return;
 
     load_file_content(file_content, sizeof file_content, file);
+
     size_t num_new_lines = get_num_new_lines(file_content);
-
     int file_content_parsed[strlen(file_content)];
-    size_t new_lines_idxs[num_new_lines];
+    size_t new_lines_idxs[num_new_lines + 1];
 
+    memset(new_lines_idxs, 0, sizeof new_lines_idxs);
     memset(file_content_parsed, 0, sizeof file_content_parsed);
 
-    init_new_lines_idxs(new_lines_idxs, file_content);
+    init_new_lines_idxs(new_lines_idxs, file_content, 1);
     parse_file_content(file_content, file_content_parsed);
 
-    for (size_t i = new_lines_idxs[1]; i < new_lines_idxs[2]; ++i)
+    puts(file_content);
+
+    printf("idxs\n");
+    for (size_t i = 0; i < num_new_lines; ++i)
+        printf("%zu ", new_lines_idxs[i]);
+    printf("\n");
+
+    printf("line 1\n");
+    for (size_t i = new_lines_idxs[0]; i < new_lines_idxs[1]; ++i)
         printf("%d ", file_content_parsed[i]);
+
 
     fclose(file);
 }
