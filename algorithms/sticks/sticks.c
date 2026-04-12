@@ -18,7 +18,7 @@ typedef struct {
 
 void arr_println(const IntArr *arr);
 void display_can_make_square(IntArr *arr);
-int can_make_square(IntArr *arr);
+int can_make_square(const IntArr *arr);
 void display_can_make_square(IntArr *arr);
 size_t get_num_new_lines(const char *str);
 void load_file_content(char *buf,
@@ -26,6 +26,8 @@ void load_file_content(char *buf,
                        FILE *stream);
 void init_new_lines_idxs(size_t *new_lines_idxs,
                          const char *file_content);
+void parse_file_content(const char *file_content,
+                        int *file_content_parsed);
 void test_can_make_square(void);
 
 int main(void)
@@ -45,7 +47,7 @@ void arr_println(const IntArr *arr)
     printf("\n");
 }
 
-int can_make_square(IntArr *arr) {
+int can_make_square(const IntArr *arr) {
     if (!arr)
         return 0;
 
