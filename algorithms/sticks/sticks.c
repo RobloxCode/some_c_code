@@ -107,9 +107,33 @@ void init_new_lines_idxs(size_t *new_lines_idxs,
                          const char *file_content)
 {
     size_t last_new_line_idx = 0;
-    for (size_t i = 0; file_content[i] != '\0'; ++i)
-        if (file_content[i] == '\n')
-            new_lines_idxs[last_new_line_idx++] = i;
+    size_t last_pos = 0;
+    for (size_t i = 0; file_content[i] != '\0'; ++i) {
+        if (file_content[i] != '\n' && file_content[i] != ' ')
+            last_pos++;
+        else if (file_content[i] == '\n')
+            new_lines_idxs[last_new_line_idx++] = last_pos;
+    }
+}
+
+void parse_file_content(const char *file_content,
+                        int *file_content_parsed)
+{
+    size_t file_content_parsed_idx = 0;
+    int parse_helper_buf = 0;
+    char cur_digit_buf[MAX_DIGIT_COUNT] = {0};
+    size_t cur_digit_buf_idx = 0;
+
+    for (size_t i = 0; file_content[i] != '\0'; ++i) {
+        char cur_char = file_content[i];
+
+        if (cur_char == ' ' || cur_char == '\n') {
+            ascii_to_int(cur_digit_buf, &parse_helper_buf);
+            file_content_parsed[file_content_parsed_idx++] = parse_helper_buf;
+            cur_digit_buf_idx = 0;
+        } else
+            cur_digit_buf[cur_digit_buf_idx++] = cur_char;
+    }
 }
 
 void test_can_make_square(void)
@@ -130,25 +154,9 @@ void test_can_make_square(void)
     memset(file_content_parsed, 0, sizeof file_content_parsed);
 
     init_new_lines_idxs(new_lines_idxs, file_content);
+    parse_file_content(file_content, file_content_parsed);
 
-    size_t file_content_parsed_idx = 0;
-    int parse_helper_buf = 0;
-    char cur_digit_buf[MAX_DIGIT_COUNT] = {0};
-    size_t cur_digit_buf_idx = 0;
-
-    for (size_t i = 0; file_content[i] != '\0'; ++i) {
-        char cur_char = file_content[i];
-
-        if (cur_char == ' ' || cur_char == '\n') {
-            ascii_to_int(cur_digit_buf, &parse_helper_buf);
-            file_content_parsed[file_content_parsed_idx++] = parse_helper_buf;
-            cur_digit_buf_idx = 0;
-        } else
-            cur_digit_buf[cur_digit_buf_idx++] = cur_char;
-    }
-
-    printf("%zu\n", new_lines_idxs[0]);
-    for (size_t i = 0; i < new_lines_idxs[0] - 9; ++i)
+    for (size_t i = new_lines_idxs[1]; i < new_lines_idxs[2]; ++i)
         printf("%d ", file_content_parsed[i]);
 
     fclose(file);
