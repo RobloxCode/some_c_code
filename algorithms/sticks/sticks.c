@@ -181,11 +181,6 @@ void test_can_make_square(void)
 
     puts(file_content);
 
-    printf("idxs\n");
-    for (size_t i = 0; i < ARR_LEN(new_lines_idxs); ++i)
-        printf("%zu ", new_lines_idxs[i]);
-    printf("\n");
-
     for (size_t i = 0; i < ARR_LEN(file_content_parsed); ++i) {
         if (arr_contains_val(new_lines_idxs, ARR_LEN(new_lines_idxs), (size_t)i))
             printf("\n%d", file_content_parsed[i]);
