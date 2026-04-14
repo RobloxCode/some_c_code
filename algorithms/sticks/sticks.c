@@ -11,6 +11,7 @@
 #define FILE_CONTENT_MAX_LEN 256
 #define MAX_DIGIT_COUNT 10
 #define ARR_LEN(a) (sizeof (a) / sizeof(a[0]))
+#define ARR_LAST(a) (a[ARR_LEN(a) - 1])
 
 typedef struct {
     int *items;
@@ -30,6 +31,10 @@ void init_new_lines_idxs(size_t *new_lines_idxs,
                          const size_t starting_idx);
 void parse_file_content(const char *file_content,
                         int *file_content_parsed);
+int arr_contains_val(const size_t *arr,
+                     const size_t len,
+                     const size_t val);
+
 void test_can_make_square(void);
 
 int main(void)
@@ -141,6 +146,17 @@ void parse_file_content(const char *file_content,
     }
 }
 
+int arr_contains_val(const size_t *arr,
+                     const size_t len,
+                     const size_t val)
+{
+    for (size_t i = 0; i < len; ++i)
+        if (arr[i] == val)
+            return 1;
+
+    return 0;
+}
+
 void test_can_make_square(void)
 {
     FILE *file = NULL;
@@ -160,19 +176,22 @@ void test_can_make_square(void)
     memset(file_content_parsed, 0, sizeof file_content_parsed);
 
     init_new_lines_idxs(new_lines_idxs, file_content, 1);
+
     parse_file_content(file_content, file_content_parsed);
 
     puts(file_content);
 
     printf("idxs\n");
-    for (size_t i = 0; i < num_new_lines; ++i)
+    for (size_t i = 0; i < ARR_LEN(new_lines_idxs); ++i)
         printf("%zu ", new_lines_idxs[i]);
     printf("\n");
 
-    printf("line 1\n");
-    for (size_t i = new_lines_idxs[0]; i < new_lines_idxs[1]; ++i)
-        printf("%d ", file_content_parsed[i]);
-
+    for (size_t i = 0; i < ARR_LEN(file_content_parsed); ++i) {
+        if (arr_contains_val(new_lines_idxs, ARR_LEN(new_lines_idxs), (size_t)i))
+            printf("\n%d", file_content_parsed[i]);
+        else
+            printf("%d ", file_content_parsed[i]);
+    }
 
     fclose(file);
 }
