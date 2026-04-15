@@ -13,15 +13,6 @@
 #define ARR_LEN(a) (sizeof (a) / sizeof(a[0]))
 #define ARR_LAST(a) (a[ARR_LEN(a) - 1])
 
-typedef struct {
-    int *items;
-    size_t len;
-} IntArr;
-
-void arr_println(const IntArr *arr);
-void display_can_make_square(IntArr *arr);
-int can_make_square(const IntArr *arr);
-void display_can_make_square(IntArr *arr);
 size_t get_num_new_lines(const char *str);
 void load_file_content(char *buf,
                        const size_t buf_size,
@@ -37,6 +28,9 @@ int arr_contains_val(const size_t *arr,
 void arr_print_range(const int *arr,
                      const size_t start_idx,
                      const size_t finish_idx);
+int can_make_square_range(const int *file_content_parsed,
+                          const size_t start_idx,
+                          const size_t finish_idx);
 void parse_content_and_check(void);
 
 void test_can_make_square(void);
@@ -45,47 +39,6 @@ int main(void)
 {
     test_can_make_square();
     return 0;
-}
-
-void arr_println(const IntArr *arr)
-{
-    if (!arr)
-        return;
-
-    for (size_t i = 0; i < arr->len; ++i)
-        printf("%d ", arr->items[i]);
-
-    printf("\n");
-}
-
-int can_make_square(const IntArr *arr)
-{
-    if (!arr)
-        return 0;
-
-    if (arr->len < 4)
-        return 0;
-
-    int count[COUNT_MAX_LEN];
-
-    for (size_t i = 0; i < arr->len; ++i)
-        count[arr->items[i]]++;
-
-    for (size_t i = 0; i < arr->len; ++i)
-        if (count[i] >= 4)
-            return 1;
-
-    return 0;
-}
-
-void display_can_make_square(IntArr *arr)
-{
-    printf("arr: ");
-    arr_println(arr);
-    if (can_make_square(arr))
-        printf("YES\n");
-    else
-        printf("NO\n");
 }
 
 size_t get_num_new_lines(const char *str)
