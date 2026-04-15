@@ -34,6 +34,10 @@ void parse_file_content(const char *file_content,
 int arr_contains_val(const size_t *arr,
                      const size_t len,
                      const size_t val);
+void arr_print_range(const int *arr,
+                     const size_t start_idx,
+                     const size_t finish_idx);
+void parse_content_and_check(void);
 
 void test_can_make_square(void);
 
@@ -54,7 +58,8 @@ void arr_println(const IntArr *arr)
     printf("\n");
 }
 
-int can_make_square(const IntArr *arr) {
+int can_make_square(const IntArr *arr)
+{
     if (!arr)
         return 0;
 
@@ -157,7 +162,38 @@ int arr_contains_val(const size_t *arr,
     return 0;
 }
 
-void test_can_make_square(void)
+int can_make_square_range(const int *file_content_parsed,
+                          const size_t start_idx,
+                          const size_t finish_idx)
+{
+    size_t len = finish_idx - start_idx + 1;
+    if (len < 4)
+        return 0;
+
+    int count[COUNT_MAX_LEN];
+
+    for (size_t i = start_idx; i < finish_idx; ++i)
+        count[file_content_parsed[i]]++;
+
+    for (size_t i = 0; i < len; ++i)
+        if (count[i] >= 4)
+            return 1;
+
+    return 0;
+}
+
+void arr_print_range(const int *arr,
+                     const size_t start_idx,
+                     const size_t finish_idx)
+{
+    for (size_t i = start_idx; i < finish_idx; ++i)
+        printf("%d ", arr[i]);
+
+    printf("\n");
+}
+
+
+void parse_content_and_check(void)
 {
     FILE *file = NULL;
     char file_content[BUFF_MAX_LEN];
@@ -181,12 +217,23 @@ void test_can_make_square(void)
 
     puts(file_content);
 
-    for (size_t i = 0; i < ARR_LEN(file_content_parsed); ++i) {
-        if (arr_contains_val(new_lines_idxs, ARR_LEN(new_lines_idxs), (size_t)i))
-            printf("\n%d", file_content_parsed[i]);
+    for (size_t i = 0; i < ARR_LEN(new_lines_idxs) - 1; ++i) {
+        arr_print_range(file_content_parsed,
+                        new_lines_idxs[i],
+                        new_lines_idxs[i + 1]);
+
+        if (can_make_square_range(file_content_parsed,
+                    new_lines_idxs[i],
+                    new_lines_idxs[i + 1]))
+            printf("YES\n\n");
         else
-            printf("%d ", file_content_parsed[i]);
+            printf("NO\n\n");
     }
 
     fclose(file);
+}
+
+void test_can_make_square(void)
+{
+    parse_content_and_check();
 }
