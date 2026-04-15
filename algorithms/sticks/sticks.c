@@ -8,7 +8,6 @@
 #define COUNT_MAX_LEN 256
 #define FILENAME "list_of_sticks.txt"
 #define BUFF_MAX_LEN 256
-#define FILE_CONTENT_MAX_LEN 256
 #define MAX_DIGIT_COUNT 10
 #define ARR_LEN(a) (sizeof (a) / sizeof(a[0]))
 #define ARR_LAST(a) (a[ARR_LEN(a) - 1])
