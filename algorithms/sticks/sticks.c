@@ -169,20 +169,28 @@ void parse_content_and_check(void)
 
     puts(file_content);
 
-    for (size_t i = 0; i < ARR_LEN(new_lines_idxs) - 1; ++i) {
-        arr_print_range(file_content_parsed,
-                        new_lines_idxs[i],
-                        new_lines_idxs[i + 1]);
+    FILE *res_file = fopen("result.txt", "w");
+    if (!res_file) {
+        goto files_cleanup;
+    }
 
+    for (size_t i = 0; i < ARR_LEN(new_lines_idxs) - 1; ++i) {
         if (can_make_square_range(file_content_parsed,
                     new_lines_idxs[i],
                     new_lines_idxs[i + 1]))
-            printf("YES\n\n");
+            fputs("YES\n", res_file);
         else
-            printf("NO\n\n");
+            fputs("NO\n", res_file);
     }
 
-    fclose(file);
+
+files_cleanup:
+    if (file)
+        fclose(file);
+    if (res_file)
+        fclose(res_file);
+
+    return;
 }
 
 void test_can_make_square(void)
