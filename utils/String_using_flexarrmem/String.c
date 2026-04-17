@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
 String *String_init(const size_t cap)
 {
@@ -163,3 +164,26 @@ int String_concat(
     String_append(dst, str2->items);
     return 0;
 }
+
+static void _int_to_char(int int_num, char *out)
+{
+    if (!out)
+        return;
+}
+
+int String_join_int_arr(String *str,
+                        const int *arr,
+                        const size_t len,
+                        const char separator)
+{
+    if (!str || !arr)
+        return 1;
+
+    int cur_num = 0;
+    for (size_t i = 0; i < len; ++i) {
+
+    }
+
+    return 0;
+}
+

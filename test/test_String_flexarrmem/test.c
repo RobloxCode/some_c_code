@@ -59,6 +59,7 @@ void test_String()
 
     puts("s");
     String_println(s);
+    printf("clear string\n");
     String_clear(s);
     String_println(s);
 
@@ -98,6 +99,11 @@ void test_String()
         goto cleanup;
 
     String_println(s3);
+
+    printf("joining\n");
+    int arr[] = {1,2,3,4,5,7};
+    if (String_join_int_arr(s, arr, sizeof arr / sizeof arr[0]) != 0)
+        goto cleanup;
 
 cleanup:
     String_deinit(&s);
