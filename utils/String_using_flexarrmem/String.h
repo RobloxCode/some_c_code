@@ -33,6 +33,6 @@ int String_concat(String **dst, const String *str1, const String *str2);
 int String_join_int_arr(String *str,
                         const int *arr,
                         const size_t len,
-                        const char separator);
+                        const char *separator);
 
 #endif

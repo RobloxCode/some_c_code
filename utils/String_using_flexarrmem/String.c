@@ -165,23 +165,59 @@ int String_concat(
     return 0;
 }
 
-static void _int_to_char(int int_num, char *out)
+static void _str_reverse(char *str)
+{
+    size_t left = 0;
+    size_t right = 0;
+
+    while (str[right])
+        right++;
+
+    right--;
+
+    while (left < right) {
+        char tmp = str[left];
+        str[left] = str[right];
+        str[right] = tmp;
+
+        left++;
+        right--;
+    }
+}
+
+static void _int_to_char(int num, char *out)
 {
     if (!out)
         return;
+
+    int last_digit = 0;
+    size_t out_idx = 0;
+    while (num > 0) {
+        last_digit = num % 10;
+        out[out_idx++] = (char)(last_digit + '0');
+        num /= 10;
+    }
+
+    _str_reverse(out);
 }
 
 int String_join_int_arr(String *str,
                         const int *arr,
                         const size_t len,
-                        const char separator)
+                        const char *separator)
 {
     if (!str || !arr)
         return 1;
 
-    int cur_num = 0;
-    for (size_t i = 0; i < len; ++i) {
+    #define MAX_DIGIT_LEN 256
 
+    String_clear(str);
+
+    char cur_digit[MAX_DIGIT_LEN] = {0};
+    for (size_t i = 0; i < len; ++i) {
+        _int_to_char(arr[i], cur_digit);
+        String_append(&str, cur_digit);
+        String_append(&str, separator);
     }
 
     return 0;

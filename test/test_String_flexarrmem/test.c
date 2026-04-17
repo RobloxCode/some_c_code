@@ -102,8 +102,10 @@ void test_String()
 
     printf("joining\n");
     int arr[] = {1,2,3,4,5,7};
-    if (String_join_int_arr(s, arr, sizeof arr / sizeof arr[0]) != 0)
+    if (String_join_int_arr(s, arr, sizeof arr / sizeof arr[0], ":)") != 0)
         goto cleanup;
+
+    String_println(s);
 
 cleanup:
     String_deinit(&s);
