@@ -209,6 +209,9 @@ int String_join_int_arr(String *str,
     if (!str || !arr)
         return 1;
 
+    if (len == 0)
+        return 1;
+
     #define MAX_DIGIT_LEN 256
 
     String_clear(str);
