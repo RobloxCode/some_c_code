@@ -1,14 +1,14 @@
 #ifndef BITARRAYIMP_H
 #define BITARRAYIMP_H
 
-#include <stdint.h>
-
-typedef struct {
+struct u8_BitArr {
     unsigned int items: 8;
-} BitArr;
+} __attribute__((packed));
 
 void print_bin(unsigned char num);
-void set(int *out, int n);
-void clear(int *out, int n);
+
+int u8_BitArr_print(struct u8_BitArr *ba);
+int u8_BitArr_set(struct u8_BitArr *ba, int n);
+int u8_BitArr_clear(struct u8_BitArr *ba, int n);
 
 #endif
