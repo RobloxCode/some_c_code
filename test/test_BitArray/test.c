@@ -2,22 +2,53 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <string.h>
 #include <stdint.h>
 
-// int main(void)
-// {
-//     uint32_t x = 42;
-//     printf("x: %d\n", x);
-//     print_bin(x);
-//
-//     for (int i = 0; i < 8; ++i)
-//         printf("i: %d bit: %d\n", i, (x >> i) & 0x1);
-//
-//     return EXIT_SUCCESS;
-// }
+#define do_test_BitArr      1
+#define do_test_render_text 1
+#define test 1
+
+#if test
+#define FLAG_BOLD       (1 << 0)
+#define FLAG_ITALIC     (1 << 1)
+#define FLAG_UNDERLINE  (1 << 2)
+#define FLAG_STRIKEOUT  (1 << 3)
+#endif
+
+void render_text(const char *text, unsigned int flags);
+void test_render_text(void);
+int test_BitArr(void);
 
 int main(void)
+{
+
+#if do_test_BitArr
+    printf("BitArr test\n\n");
+    test_BitArr();
+#endif
+
+#if do_test_render_text
+    printf("render text test\n\n");
+    test_render_text();
+#endif
+
+}
+
+void render_text(const char *text, unsigned int flags)
+{
+    if (flags & FLAG_BOLD)      printf("bold\n");
+    if (flags & FLAG_ITALIC)    printf("italic\n");
+    if (flags & FLAG_UNDERLINE) printf("underline\n");
+
+    printf("-> %s\n", text);
+}
+
+void test_render_text(void)
+{
+    render_text("Hello", FLAG_BOLD | FLAG_ITALIC | FLAG_UNDERLINE);
+}
+
+int test_BitArr(void)
 {
     struct u8_BitArr bitArr = {0};
     if (u8_BitArr_print(&bitArr) != 0)
