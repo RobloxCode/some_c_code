@@ -1,84 +1,91 @@
 #include "QueueImp.h"
-#include <stdlib.h>
+#include <stddef.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-Queue *Queue_init(size_t cap) {
-    Stack_status status = STACK_OK;
+Queue *Queue_init()
+{
+    Queue *q = malloc(sizeof *q);
+    if (!q)
+        return NULL;
 
-    Queue *queue = malloc(sizeof *queue);
-    if (!queue)
-        goto stack_cleanup;
+    q->len = 0;
+    q->start = NULL;
 
-    queue->push_stack = Stack_init(cap);
-    if (!queue->push_stack)
-        goto stack_cleanup;
+    return q;
+}
 
-    queue->pop_stack = Stack_init(cap);
-    if (!queue->pop_stack)
-        goto stack_cleanup;
+void Queue_deinit(Queue **q)
+{
+    if (!q || !*q)
+        return;
 
-    queue->status = status;
-    return queue;
+    if (!(*q)->start)
+        return;
 
-stack_cleanup:
-    if (queue->push_stack)
-        Stack_free(&queue->push_stack);
+    QueueNode *to_del = NULL;
+    QueueNode *cur = (*q)->start;
 
-    if (queue->pop_stack)
-        Stack_free(&queue->pop_stack);
-
-    if (queue) {
-        free(queue);
-        queue = NULL;
+    while (cur) {
+        to_del = cur;
+        cur = cur->next;
+        free(to_del);
     }
 
-    if (status != STACK_OK)
-        fprintf(stderr, "Error status: %d\n", status);
-
-    return NULL;
+    free(*q);
+    *q = NULL;
 }
 
-void Queue_deinit(Queue **queue) {
-    if (!queue || !*queue)
+void Queue_push(Queue *q, int val)
+{
+    if (!q)
         return;
 
-    Stack_free(&(*queue)->push_stack);
-    Stack_free(&(*queue)->pop_stack);
-    free(*queue);
-    *queue = NULL;
-}
+    QueueNode *new_node = malloc(sizeof *new_node);
+    new_node->next = NULL;
+    new_node->val = val;
 
-void Queue_push(Queue *queue, int item) {
-    if (!queue)
+    if (!q->start) {
+        q->start = new_node;
+        q->len++;
         return;
-
-    Stack_push(queue->push_stack, item);
-}
-
-void Queue_pop(Queue *queue) {
-    if (!queue)
-        return;
-
-    size_t stack_len = Stack_len(queue->push_stack);
-    int popped_item = 0;
-
-    for (size_t i = 0; i < stack_len; ++i) {
-        Stack_pop(queue->push_stack, &popped_item);
-        Stack_push(queue->pop_stack, popped_item);
     }
 
-    Stack_pop(queue->pop_stack, &popped_item);
+    QueueNode *cur = q->start;
 
-    stack_len = Stack_len(queue->pop_stack);
-    for (size_t i = 0; i < stack_len; ++i) {
-        Stack_pop(queue->pop_stack, &popped_item);
-        Stack_push(queue->push_stack, popped_item);
-    }
+    while (cur->next)
+        cur = cur->next;
+
+    cur->next = new_node;
+    q->len++;
 }
 
-void Queue_println(Queue *queue) {
-    if (!queue)
+void Queue_pop(Queue *q)
+{
+    if (!q)
         return;
 
-    Stack_println(queue->push_stack);
+    if (!q->start || !q->start->next)
+        return;
+
+    QueueNode *to_del = q->start;
+    q->start = q->start->next;
+
+    free(to_del);
+    q->len--;
+}
+
+void Queue_println(Queue *q)
+{
+    if (!q)
+        return;
+
+    QueueNode *cur = q->start;
+
+    while (cur) {
+        printf("%d ", cur->val);
+        cur = cur->next;
+    }
+
+    printf("\n");
 }

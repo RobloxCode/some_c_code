@@ -1,18 +1,22 @@
 #ifndef QUEUEIMP_H
 #define QUEUEIMP_H
-#include "../Stack/StackImp.h"
+
 #include <stddef.h>
 
+typedef struct QueueNode {
+    int val;
+    struct QueueNode *next;
+} QueueNode;
+
 typedef struct {
-    Stack *push_stack;
-    Stack *pop_stack;
-    Stack_status status;
+    QueueNode *start;
+    size_t len;
 } Queue;
 
-Queue *Queue_init(size_t cap);
-void Queue_deinit(Queue **queue);
-void Queue_push(Queue *queue, int item);
-void Queue_pop(Queue *queue);
-void Queue_println(Queue *queue);
+Queue *Queue_init();
+void Queue_deinit(Queue **q);
+void Queue_push(Queue *q, int val);
+void Queue_pop(Queue *q);
+void Queue_println(Queue *q);
 
 #endif
