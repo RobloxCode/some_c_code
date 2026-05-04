@@ -2,21 +2,39 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"net/http"
 )
 
 func main() {
-	URL := "https://jsonplaceholder.typicode.com/posts/1"
+	URL := "https://aleatori.cat/random"
 
-	resp, err := http.Get(URL)
+	catImgUrl, err := GetCatImgLink(URL)
 	if err != nil {
-		fmt.Println("Error: ", err)
+		fmt.Printf("Error: %s\n", err)
 		return
 	}
 
+	fmt.Printf("Cat image: %s\n", catImgUrl)
+}
+
+func MakeGetRequest(url string) (*http.Response, error) {
+	resp, err := http.Get(url)
+
+	if err != nil {
+		fmt.Println("Error: ", err)
+		return nil, err
+	}
 	defer resp.Body.Close()
 
-	body, _ := io.ReadAll(resp.Body)
-	fmt.Println(string(body))
+	return resp, nil
+}
+
+func GetCatImgLink(url string) (string, error) {
+	resp, err := MakeGetRequest(url)
+	if err != nil {
+		fmt.Println("Error: ", err)
+		return "", err
+	}
+
+	return resp.Request.URL.String(), nil
 }
