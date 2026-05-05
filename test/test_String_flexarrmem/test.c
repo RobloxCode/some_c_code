@@ -107,6 +107,11 @@ void test_String()
 
     String_println(s);
 
+    if (String_replace(s, ':', 'u') != 0)
+        goto cleanup;
+
+    String_println(s);
+
 cleanup:
     String_deinit(&s);
     String_deinit(&s2);

@@ -226,3 +226,15 @@ int String_join_int_arr(String *str,
     return 0;
 }
 
+int String_replace(String *str, const char oldchar, char newchar)
+{
+    if (!str)
+        return 1;
+
+    for (size_t i = 0; i < str->len; ++i)
+        if (str->items[i] == oldchar)
+            str->items[i] = newchar;
+
+    return 0;
+}
+

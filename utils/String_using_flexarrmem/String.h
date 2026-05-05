@@ -35,4 +35,6 @@ int String_join_int_arr(String *str,
                         const size_t len,
                         const char *separator);
 
+int String_replace(String *str, const char oldchar, char newchar);
+
 #endif
