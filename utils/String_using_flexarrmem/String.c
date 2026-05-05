@@ -128,7 +128,7 @@ void String_clear(String *str)
     str->len = 0;
 }
 
-int String_cpy(String *dst, const String *src)
+int String_copy(String *dst, const String *src)
 {
     if (!dst || !src)
         return 1;

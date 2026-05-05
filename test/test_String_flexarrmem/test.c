@@ -74,7 +74,7 @@ void test_String()
     printf("len s: %zu\n", s->len);
     printf("len s2: %zu\n", s2->len);
 
-    String_cpy(s2, s);
+    String_copy(s2, s);
     puts("s");
     String_println(s);
     puts("s2");
