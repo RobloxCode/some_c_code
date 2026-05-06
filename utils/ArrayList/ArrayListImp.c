@@ -5,7 +5,8 @@
 #include <stdint.h>
 #include <limits.h>
 
-ArrayList *ArrayList_init(const size_t cap) {
+ArrayList *ArrayList_init(const size_t cap)
+{
     if (cap == 0)
         return NULL;
 
@@ -26,7 +27,8 @@ ArrayList *ArrayList_init(const size_t cap) {
     return al;
 }
 
-ArrayList_status ArrayList_append(ArrayList *al, const int item) {
+ArrayList_status ArrayList_append(ArrayList *al, const int item)
+{
     if (!al)
         return ARRAYLIST_ERR_WRONG_PTR;
 
@@ -53,17 +55,20 @@ ArrayList_status ArrayList_append(ArrayList *al, const int item) {
     return ARRAYLIST_OK;
 }
 
-ArrayList_status ArrayList_deinit(ArrayList **al) {
+ArrayList_status ArrayList_deinit(ArrayList **al)
+{
     if (!al || !*al)
         return ARRAYLIST_ERR_WRONG_PTR;
 
     free((*al)->items);
     free(*al);
     *al = NULL;
+
     return ARRAYLIST_OK;
 }
 
-ArrayList_status ArrayList_println(const ArrayList *al) {
+ArrayList_status ArrayList_println(const ArrayList *al)
+{
     if (!al)
         return ARRAYLIST_ERR_WRONG_PTR;
 
@@ -75,7 +80,8 @@ ArrayList_status ArrayList_println(const ArrayList *al) {
     return ARRAYLIST_OK;
 }
 
-ArrayList_status ArrayList_reverse(ArrayList *al) {
+ArrayList_status ArrayList_reverse(ArrayList *al)
+{
     if (!al)
         return ARRAYLIST_ERR_WRONG_PTR;
 
@@ -90,7 +96,8 @@ ArrayList_status ArrayList_reverse(ArrayList *al) {
     return ARRAYLIST_OK;
 }
 
-ArrayList_status ArrayList_copy(const ArrayList *src, ArrayList *dst) {
+ArrayList_status ArrayList_copy(const ArrayList *src, ArrayList *dst)
+{
     if (!src || !dst)
         return ARRAYLIST_ERR_WRONG_PTR;
 
@@ -106,18 +113,18 @@ ArrayList_status ArrayList_copy(const ArrayList *src, ArrayList *dst) {
     return ARRAYLIST_OK;
 }
 
-size_t ArrayList_len(const ArrayList *al) {
+size_t ArrayList_len(const ArrayList *al)
+{
     if (!al)
         return 0;
 
     return al->length;
 }
 
-ArrayList_status ArrayList_swap(
-    ArrayList *al,
-    const size_t i1,
-    const size_t i2
-) {
+ArrayList_status ArrayList_swap(ArrayList *al,
+                                const size_t i1,
+                                const size_t i2)
+{
     if (!al)
         return ARRAYLIST_ERR_WRONG_PTR;
 
@@ -131,7 +138,8 @@ ArrayList_status ArrayList_swap(
     return ARRAYLIST_OK;
 }
 
-int ArrayList_get(ArrayList *al, const size_t i) {
+int ArrayList_get(ArrayList *al, const size_t i)
+{
     if (!al)
         return INT_MAX;
 
@@ -141,7 +149,8 @@ int ArrayList_get(ArrayList *al, const size_t i) {
     return al->items[i];
 }
 
-ArrayList_status ArrayList_remove(ArrayList *al, const size_t i) {
+ArrayList_status ArrayList_remove(ArrayList *al, const size_t i)
+{
     if (!al)
         return ARRAYLIST_ERR_WRONG_PTR;
 
@@ -157,7 +166,8 @@ ArrayList_status ArrayList_remove(ArrayList *al, const size_t i) {
 }
 
 // this function has a problem (dont know what it is yet)
-ArrayList *_helper(ArrayList *left, ArrayList *right) {
+ArrayList *_helper(ArrayList *left, ArrayList *right)
+{
     ArrayList *sorted = ArrayList_init(left->length + right->length);
     if (!sorted)
         return NULL;
@@ -181,7 +191,8 @@ ArrayList *_helper(ArrayList *left, ArrayList *right) {
     return sorted;
 }
 
-ArrayList *sort(ArrayList *al) {
+ArrayList *sort(ArrayList *al)
+{
     if (!al || al->length <= 1)
         return al;
 
