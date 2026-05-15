@@ -2,7 +2,7 @@
  * vec.c — implementation of the raw (type-erased) vector helpers.
  *
  * Compile alongside your project:
- *   cc -o myapp main.c vec.c
+ *   cc -o myapp main.c Vector.c
  */
 
 #include "Vector.h"
