@@ -3,7 +3,7 @@ CC = gcc
 CFLAGS = -std=c11 -Wall -Wextra -Wconversion -pedantic -g \
          -fsanitize=address -fno-omit-frame-pointer
 
-SRC = test_Vector.c ../../utils/Vector/Vector.h
+SRC = test_Vector.c ../../utils/Vector/Vector.c
 OUT = test
 
 $(OUT): $(SRC)
