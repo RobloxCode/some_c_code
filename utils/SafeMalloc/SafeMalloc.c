@@ -1,3 +1,4 @@
+#include "SafeMalloc.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -40,14 +41,4 @@ void *safe_calloc_imp(size_t count,
 
 #define safe_calloc(count, size) \
     safe_calloc_imp(count, size, __FILE__, __LINE__)
-
-int main(void)
-{
-    float *grades = safe_malloc(10 * sizeof *grades);
-    int *nums = safe_calloc(10, sizeof *nums);
-
-    free(grades);
-    free(nums);
-    return EXIT_SUCCESS;
-}
 
