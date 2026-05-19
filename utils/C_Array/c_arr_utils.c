@@ -45,7 +45,7 @@ void arr_sort(
     _arr_sort_helper(arr, tmp, left, mid, right);
 }
 
-void arr_println(const int *arr, size_t len)
+void int_arr_println(const int *arr, size_t len)
 {
     if (!arr)
         return;
