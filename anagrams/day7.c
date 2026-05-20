@@ -10,12 +10,10 @@ size_t str_len(const char *str);
 int is_anagram_count_chars(const char *str1, const char *str2);
 int is_anagram(const char *str1, const char *str2);
 int print_strs(char *const *strs, const size_t strs_len);
-int find_anagrams(
-    char **words,
-    const size_t words_len,
-    char **out,
-    size_t *out_cap
-);
+int find_anagrams(char **words,
+                  const size_t words_len,
+                  char **out,
+                  size_t *out_cap);
 
 int main(void)
 {
