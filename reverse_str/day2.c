@@ -19,7 +19,8 @@ int str_reverse_opt(char *str);
 
 noreturn void display_err(char *msg);
 
-int main(void) {
+int main(void)
+{
     char str[] = "abcdefg";
     puts(str);
     str_to_capital(str);
@@ -45,7 +46,8 @@ int main(void) {
     return EXIT_SUCCESS;
 }
 
-size_t str_len(char *str) {
+size_t str_len(char *str)
+{
     if (!str)
         return 0;
 
@@ -55,21 +57,24 @@ size_t str_len(char *str) {
     return len;
 }
 
-void char_to_capital(char *c) {
+void char_to_capital(char *c)
+{
     if (!c)
         return;
 
     *c += ('A' - 'a');
 }
 
-void char_to_lower(char *c) {
+void char_to_lower(char *c)
+{
     if (!c)
         return;
 
     *c -= ('A' - 'a');
 }
 
-void str_to_capital(char *str) {
+void str_to_capital(char *str)
+{
     if (!str)
         return;
 
@@ -78,7 +83,8 @@ void str_to_capital(char *str) {
     }
 }
 
-void str_to_lower(char *str) {
+void str_to_lower(char *str)
+{
     if (!str)
         return;
 
@@ -87,7 +93,8 @@ void str_to_lower(char *str) {
     }
 }
 
-int str_reverse(char *str) {
+int str_reverse(char *str)
+{
     if (!str)
         return -1;
 
@@ -108,7 +115,8 @@ int str_reverse(char *str) {
     return 0;
 }
 
-int str_reverse_in_place(char *str) {
+int str_reverse_in_place(char *str)
+{
     if (!str)
         return -1;
 
@@ -131,7 +139,8 @@ int str_reverse_in_place(char *str) {
     return 0;
 }
 
-int str_reverse_opt(char *str) {
+int str_reverse_opt(char *str)
+{
     if (!str)
         return -1;
 
@@ -157,7 +166,8 @@ int str_reverse_opt(char *str) {
     return 0;
 }
 
-noreturn void display_err(char *msg) {
+noreturn void display_err(char *msg)
+{
     fprintf(stderr, "Error: %s\n", msg);
     exit(EXIT_FAILURE);
 }
