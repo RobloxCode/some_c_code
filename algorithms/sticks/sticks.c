@@ -1,35 +1,27 @@
+#include "../../ascii_to_int/ascii_to_int.h"
 #include <limits.h>
 #include <stddef.h>
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
-#include "../../ascii_to_int/ascii_to_int.h"
+#include <string.h>
 
 #define COUNT_CAPACITY 256
 #define DATA_FILENAME "list_of_sticks.txt"
 #define BUFF_CAPACITY 256
 #define DIGIT_MAX_CAPACITY 10
-#define ARR_LEN(a) (sizeof (a) / sizeof(a[0]))
+#define ARR_LEN(a) (sizeof(a) / sizeof(a[0]))
 #define ARR_LAST(a) (a[ARR_LEN(a) - 1])
 
 size_t get_num_new_lines(const char *str);
-void load_file_content(char *buf,
-                       const size_t buf_size,
-                       FILE *stream);
-void init_new_lines_idxs(size_t *new_lines_idxs,
-                         const char *file_content,
+void load_file_content(char *buf, const size_t buf_size, FILE *stream);
+void init_new_lines_idxs(size_t *new_lines_idxs, const char *file_content,
                          const size_t starting_idx);
-void parse_file_content(const char *file_content,
-                        int *file_content_parsed);
-int arr_contains(const size_t *arr,
-                     const size_t len,
-                     const size_t val);
-void arr_print_range(const int *arr,
-                     const size_t start_idx,
+void parse_file_content(const char *file_content, int *file_content_parsed);
+int arr_contains(const size_t *arr, const size_t len, const size_t val);
+void arr_print_range(const int *arr, const size_t start_idx,
                      const size_t finish_idx);
 int can_make_square_range(const int *file_content_parsed,
-                          const size_t start_idx,
-                          const size_t finish_idx);
+                          const size_t start_idx, const size_t finish_idx);
 void parse_content_and_check(void);
 
 void test_can_make_square(void);
@@ -42,49 +34,48 @@ int main(void)
 
 size_t get_num_new_lines(const char *str)
 {
-    if (!str)
+    if (!str) {
         return 0;
+    }
 
     size_t num_lines = 0;
-    for (size_t i = 0; str[i] != '\0'; ++i)
-        if (str[i] == '\n')
+    for (size_t i = 0; str[i] != '\0'; ++i) {
+        if (str[i] == '\n') {
             num_lines++;
+        }
+    }
 
     return num_lines;
 }
 
-void load_file_content(char *buf,
-                       const size_t buf_size,
-                       FILE *stream)
+void load_file_content(char *buf, const size_t buf_size, FILE *stream)
 {
-    if (!buf || !stream)
+    if (!buf || !stream) {
         return;
+    }
 
     size_t bytes_read = 0;
 
-    while ((bytes_read = fread(buf,
-                               sizeof(char),
-                               buf_size,
-                               stream)) != 0)
+    while ((bytes_read = fread(buf, sizeof(char), buf_size, stream)) != 0) {
         buf[bytes_read] = '\0';
+    }
 }
 
-void init_new_lines_idxs(size_t *new_lines_idxs,
-                         const char *file_content,
+void init_new_lines_idxs(size_t *new_lines_idxs, const char *file_content,
                          const size_t starting_idx)
 {
     size_t last_new_line_idx = starting_idx;
     size_t last_pos = 0;
     for (size_t i = 0; file_content[i] != '\0'; ++i) {
-        if (file_content[i] != '\n' && file_content[i] != ' ')
+        if (file_content[i] != '\n' && file_content[i] != ' ') {
             last_pos++;
-        else if (file_content[i] == '\n')
+        } else if (file_content[i] == '\n') {
             new_lines_idxs[last_new_line_idx++] = last_pos;
+        }
     }
 }
 
-void parse_file_content(const char *file_content,
-                        int *file_content_parsed)
+void parse_file_content(const char *file_content, int *file_content_parsed)
 {
     size_t file_content_parsed_idx = 0;
     int parse_helper_buf = 0;
@@ -98,52 +89,55 @@ void parse_file_content(const char *file_content,
             ascii_to_int(cur_digit_buf, &parse_helper_buf);
             file_content_parsed[file_content_parsed_idx++] = parse_helper_buf;
             cur_digit_buf_idx = 0;
-        } else
+        } else {
             cur_digit_buf[cur_digit_buf_idx++] = cur_char;
+        }
     }
 }
 
-int arr_contains(const size_t *arr,
-                     const size_t len,
-                     const size_t val)
+int arr_contains(const size_t *arr, const size_t len, const size_t val)
 {
-    for (size_t i = 0; i < len; ++i)
-        if (arr[i] == val)
+    for (size_t i = 0; i < len; ++i) {
+        if (arr[i] == val) {
             return 1;
+        }
+    }
 
     return 0;
 }
 
 int can_make_square_range(const int *file_content_parsed,
-                          const size_t start_idx,
-                          const size_t finish_idx)
+                          const size_t start_idx, const size_t finish_idx)
 {
     size_t len = finish_idx - start_idx + 1;
-    if (len < 4)
+    if (len < 4) {
         return 0;
+    }
 
     int count[COUNT_CAPACITY];
 
-    for (size_t i = start_idx; i < finish_idx; ++i)
+    for (size_t i = start_idx; i < finish_idx; ++i) {
         count[file_content_parsed[i]]++;
+    }
 
-    for (size_t i = 0; i < len; ++i)
-        if (count[i] >= 4)
+    for (size_t i = 0; i < len; ++i) {
+        if (count[i] >= 4) {
             return 1;
+        }
+    }
 
     return 0;
 }
 
-void arr_print_range(const int *arr,
-                     const size_t start_idx,
+void arr_print_range(const int *arr, const size_t start_idx,
                      const size_t finish_idx)
 {
-    for (size_t i = start_idx; i < finish_idx; ++i)
+    for (size_t i = start_idx; i < finish_idx; ++i) {
         printf("%d ", arr[i]);
+    }
 
     printf("\n");
 }
-
 
 void parse_content_and_check(void)
 {
@@ -151,8 +145,9 @@ void parse_content_and_check(void)
     char file_content[BUFF_CAPACITY];
 
     file = fopen(DATA_FILENAME, "r");
-    if (!file)
+    if (!file) {
         return;
+    }
 
     load_file_content(file_content, sizeof file_content, file);
 
@@ -175,20 +170,21 @@ void parse_content_and_check(void)
     }
 
     for (size_t i = 0; i < ARR_LEN(new_lines_idxs) - 1; ++i) {
-        if (can_make_square_range(file_content_parsed,
-                    new_lines_idxs[i],
-                    new_lines_idxs[i + 1]))
+        if (can_make_square_range(file_content_parsed, new_lines_idxs[i],
+                                  new_lines_idxs[i + 1])) {
             fputs("YES\n", res_file);
-        else
+        } else {
             fputs("NO\n", res_file);
+        }
     }
 
-
 files_cleanup:
-    if (file)
+    if (file) {
         fclose(file);
-    if (res_file)
+    }
+    if (res_file) {
         fclose(res_file);
+    }
 
     return;
 }
