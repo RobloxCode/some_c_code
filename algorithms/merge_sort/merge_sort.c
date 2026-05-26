@@ -37,20 +37,24 @@ void _arr_sort_helper(int *arr,
     size_t tmp_idx = left;
 
     while (left_idx <= mid && right_idx <= right) {
-        if (arr[left_idx] <= arr[right_idx])
+        if (arr[left_idx] <= arr[right_idx]) {
             tmp[tmp_idx++] = arr[left_idx++];
-        else
+        } else {
             tmp[tmp_idx++] = arr[right_idx++];
+        }
     }
 
-    while (left_idx <= mid)
+    while (left_idx <= mid) {
         tmp[tmp_idx++] = arr[left_idx++];
+    }
 
-    while (right_idx <= right)
+    while (right_idx <= right) {
         tmp[tmp_idx++] = arr[right_idx++];
+    }
 
-    for (int x = (int)left; x <= (int)right; ++x)
+    for (int x = (int)left; x <= (int)right; ++x) {
         arr[x] = tmp[x];
+    }
 }
 
 void arr_sort(int *arr,
@@ -58,8 +62,9 @@ void arr_sort(int *arr,
               const size_t left,
               const size_t right)
 {
-    if (left >= right)
+    if (left >= right) {
         return;
+    }
 
     size_t mid = (left + right) / 2;
 
@@ -70,7 +75,8 @@ void arr_sort(int *arr,
 
 void arr_println(const int *arr, const size_t len)
 {
-    for (size_t i = 0; i < len; ++i)
+    for (size_t i = 0; i < len; ++i) {
         printf("%d ", arr[i]);
+    }
     printf("\n");
 }

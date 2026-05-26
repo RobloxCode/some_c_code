@@ -5,12 +5,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define COUNT_CAPACITY 256
-#define DATA_FILENAME "list_of_sticks.txt"
-#define BUFF_CAPACITY 256
+#define COUNT_CAPACITY     256
+#define DATA_FILENAME      "list_of_sticks.txt"
+#define BUFF_CAPACITY      256
 #define DIGIT_MAX_CAPACITY 10
-#define ARR_LEN(a) (sizeof(a) / sizeof(a[0]))
-#define ARR_LAST(a) (a[ARR_LEN(a) - 1])
+#define ARR_LEN(a)         (sizeof(a) / sizeof(a[0]))
+#define ARR_LAST(a)        (a[ARR_LEN(a) - 1])
 
 size_t get_num_new_lines(const char *str);
 void load_file_content(char *buf, const size_t buf_size, FILE *stream);

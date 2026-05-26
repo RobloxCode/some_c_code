@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <string.h>
-#define NUM_WORDS 5
+#define NUM_WORDS        5
 #define ANAGRAMS_MAX_LEN (NUM_WORDS * 2)
 #define ANAGRAM_FREQ_LEN 256
 
@@ -24,8 +24,9 @@ int main(void)
     if (find_anagrams(words,
                       NUM_WORDS,
                       anagrams,
-                      &anagrams_found) < 0)
+                      &anagrams_found) < 0) {
         return EXIT_FAILURE;
+    }
 
     if (print_strs(anagrams, anagrams_found) < 0) {
         return EXIT_FAILURE;
@@ -36,20 +37,23 @@ int main(void)
 
 size_t str_len(const char *str)
 {
-    if (!str)
+    if (!str) {
         return 0;
+    }
 
     size_t i = 0;
-    while (str[i])
+    while (str[i]) {
         i++;
+    }
 
     return i;
 }
 
 int is_anagram_count_chars(const char *str1, const char *str2)
 {
-    if (!str1 || !str2)
+    if (!str1 || !str2) {
         return 0;
+    }
 
     int freq[ANAGRAM_FREQ_LEN] = {0};
 
@@ -63,20 +67,24 @@ int is_anagram_count_chars(const char *str1, const char *str2)
         freq[(int)cur_char]--;
     }
 
-    for (size_t i = 0; i < ANAGRAM_FREQ_LEN; ++i)
-        if (freq[i] != 0)
+    for (size_t i = 0; i < ANAGRAM_FREQ_LEN; ++i) {
+        if (freq[i] != 0) {
             return 0;
+        }
+    }
 
     return 1;
 }
 
 int is_anagram(const char *str1, const char *str2)
 {
-    if (!str1 || !str2)
+    if (!str1 || !str2) {
         return 0;
+    }
 
-    if (strlen(str1) != strlen(str2))
+    if (strlen(str1) != strlen(str2)) {
         return 0;
+    }
 
     int sum_s1 = 0;
     int sum_s2 = 0;
@@ -86,20 +94,24 @@ int is_anagram(const char *str1, const char *str2)
         sum_s2 += str2[i];
     }
 
-    if (sum_s1 == sum_s2)
+    if (sum_s1 == sum_s2) {
         return 1;
+    }
 
     return 0;
 }
 
 int print_strs(char *const *strs, const size_t strs_len)
 {
-    if (!strs)
+    if (!strs) {
         return -1;
+    }
 
-    for (size_t i = 0; i < strs_len; ++i)
-        if (strs[i])
+    for (size_t i = 0; i < strs_len; ++i) {
+        if (strs[i]) {
             printf("%s\n", strs[i]);
+        }
+    }
 
     printf("\n");
     return 0;
@@ -110,8 +122,9 @@ int find_anagrams(char **words,
                   char **out,
                   size_t *out_cap)
 {
-    if (!words || !out || !*out || !out_cap)
+    if (!words || !out || !*out || !out_cap) {
         return -1;
+    }
 
     *out_cap = 0;
     size_t out_idx = 0;

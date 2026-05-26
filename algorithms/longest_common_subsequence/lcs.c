@@ -16,8 +16,9 @@ int main(void)
 
 size_t longest_common_subsequence(char *s1, char *s2)
 {
-    if (!s1 || !s2)
+    if (!s1 || !s2) {
         return 0;
+    }
 
     size_t s1_len = strlen(s1);
     size_t s2_len = strlen(s2);
