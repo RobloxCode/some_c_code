@@ -4,8 +4,7 @@
 #include <stdlib.h>
 #include <limits.h>
 
-String *
-String_init(const size_t cap)
+String *String_init(const size_t cap)
 {
     if (cap == 0) {
         return NULL;
@@ -23,8 +22,7 @@ String_init(const size_t cap)
     return str;
 }
 
-void
-String_deinit(String **str)
+void String_deinit(String **str)
 {
     if (!str || !*str) {
         return;
@@ -34,8 +32,7 @@ String_deinit(String **str)
     *str = NULL;
 }
 
-void
-String_println(const String *str)
+void String_println(const String *str)
 {
     if (!str) {
         return;
@@ -44,8 +41,7 @@ String_println(const String *str)
     puts(str->items);
 }
 
-int
-String_append_char(String **str, const char c)
+int String_append_char(String **str, const char c)
 {
     if (!str || !*str) {
         return 1;
@@ -69,8 +65,7 @@ String_append_char(String **str, const char c)
     return 0;
 }
 
-int
-String_append(String **str, const char *cstr)
+int String_append(String **str, const char *cstr)
 {
     if (!str || !*str || !cstr) {
         return 1;
@@ -122,8 +117,7 @@ String_len(const String *str)
     return str->len;
 }
 
-int
-String_cmp(const String *str1, const String *str2)
+int String_cmp(const String *str1, const String *str2)
 {
     if (!str1 || !str2) {
         return 1;
@@ -142,8 +136,7 @@ String_cmp(const String *str1, const String *str2)
     return 0;
 }
 
-void
-String_clear(String *str)
+void String_clear(String *str)
 {
     if (!str) {
         return;
@@ -153,8 +146,7 @@ String_clear(String *str)
     str->len = 0;
 }
 
-int
-String_copy(String *dst, const String *src)
+int String_copy(String *dst, const String *src)
 {
     if (!dst || !src) {
         return 1;
@@ -170,8 +162,7 @@ String_copy(String *dst, const String *src)
     return 0;
 }
 
-int
-String_concat(
+int String_concat(
     String **dst,
     const String *str1,
     const String *str2)
@@ -236,11 +227,10 @@ _int_to_char(int num, char *out)
     _str_reverse(out);
 }
 
-int
-String_join_int_arr(String *str,
-                    const int *arr,
-                    const size_t len,
-                    const char *separator)
+int String_join_int_arr(String *str,
+                        const int *arr,
+                        const size_t len,
+                        const char *separator)
 {
     if (!str || !arr) {
         return 1;
@@ -254,7 +244,7 @@ String_join_int_arr(String *str,
 
     String_clear(str);
 
-    char cur_digit[MAX_DIGIT_LEN] = { 0 };
+    char cur_digit[MAX_DIGIT_LEN] = {0};
     for (size_t i = 0; i < len; ++i) {
         _int_to_char(arr[i], cur_digit);
         String_append(&str, cur_digit);
@@ -264,8 +254,7 @@ String_join_int_arr(String *str,
     return 0;
 }
 
-int
-String_replace(String *str, const char oldchar, char newchar)
+int String_replace(String *str, const char oldchar, char newchar)
 {
     if (!str) {
         return 1;
