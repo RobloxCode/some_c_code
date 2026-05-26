@@ -1,15 +1,9 @@
-#include <stdio.h>
 #include <stddef.h>
+#include <stdio.h>
 
-void _arr_sort_helper(int *arr,
-                      int *tmp,
-                      const size_t left,
-                      const size_t mid,
+void _arr_sort_helper(int *arr, int *tmp, const size_t left, const size_t mid,
                       const size_t right);
-void arr_sort(int *arr,
-              int *tmp,
-              const size_t left,
-              const size_t right);
+void arr_sort(int *arr, int *tmp, const size_t left, const size_t right);
 void arr_println(const int *arr, const size_t len);
 
 int main(void)
@@ -26,10 +20,7 @@ int main(void)
     return 0;
 }
 
-void _arr_sort_helper(int *arr,
-                      int *tmp,
-                      const size_t left,
-                      const size_t mid,
+void _arr_sort_helper(int *arr, int *tmp, const size_t left, const size_t mid,
                       const size_t right)
 {
     size_t left_idx = left;
@@ -57,10 +48,7 @@ void _arr_sort_helper(int *arr,
     }
 }
 
-void arr_sort(int *arr,
-              int *tmp,
-              const size_t left,
-              const size_t right)
+void arr_sort(int *arr, int *tmp, const size_t left, const size_t right)
 {
     if (left >= right) {
         return;

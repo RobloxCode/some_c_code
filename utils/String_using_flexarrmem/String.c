@@ -1,8 +1,8 @@
 #include "String.h"
+#include <limits.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <limits.h>
 
 String *String_init(const size_t cap)
 {
@@ -97,8 +97,7 @@ int String_append(String **str, const char *cstr)
     return 0;
 }
 
-const char *
-String_to_cstr(const String *str)
+const char *String_to_cstr(const String *str)
 {
     if (!str) {
         return NULL;
@@ -107,8 +106,7 @@ String_to_cstr(const String *str)
     return str->items;
 }
 
-size_t
-String_len(const String *str)
+size_t String_len(const String *str)
 {
     if (!str) {
         return 0;
@@ -162,10 +160,7 @@ int String_copy(String *dst, const String *src)
     return 0;
 }
 
-int String_concat(
-    String **dst,
-    const String *str1,
-    const String *str2)
+int String_concat(String **dst, const String *str1, const String *str2)
 {
     if (!dst || !*dst || !str1 || !str2) {
         return 1;
@@ -187,8 +182,7 @@ int String_concat(
     return 0;
 }
 
-static void
-_str_reverse(char *str)
+static void _str_reverse(char *str)
 {
     size_t left = 0;
     size_t right = 0;
@@ -209,8 +203,7 @@ _str_reverse(char *str)
     }
 }
 
-static void
-_int_to_char(int num, char *out)
+static void _int_to_char(int num, char *out)
 {
     if (!out) {
         return;
@@ -227,9 +220,7 @@ _int_to_char(int num, char *out)
     _str_reverse(out);
 }
 
-int String_join_int_arr(String *str,
-                        const int *arr,
-                        const size_t len,
+int String_join_int_arr(String *str, const int *arr, const size_t len,
                         const char *separator)
 {
     if (!str || !arr) {
