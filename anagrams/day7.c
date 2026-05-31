@@ -1,6 +1,6 @@
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stddef.h>
 #include <string.h>
 #define NUM_WORDS        5
 #define ANAGRAMS_MAX_LEN (NUM_WORDS * 2)
@@ -10,21 +10,15 @@ size_t str_len(const char *str);
 int is_anagram_count_chars(const char *str1, const char *str2);
 int is_anagram(const char *str1, const char *str2);
 int print_strs(char *const *strs, const size_t strs_len);
-int find_anagrams(char **words,
-                  const size_t words_len,
-                  char **out,
+int find_anagrams(char **words, const size_t words_len, char **out,
                   size_t *out_cap);
 
-int main(void)
-{
+int main(void) {
     char *words[NUM_WORDS] = {"eggs", "plant", "cat", "gsge", "tac"};
     size_t anagrams_found = 0;
     char *anagrams[ANAGRAMS_MAX_LEN] = {0};
 
-    if (find_anagrams(words,
-                      NUM_WORDS,
-                      anagrams,
-                      &anagrams_found) < 0) {
+    if (find_anagrams(words, NUM_WORDS, anagrams, &anagrams_found) < 0) {
         return EXIT_FAILURE;
     }
 
@@ -35,8 +29,7 @@ int main(void)
     return EXIT_SUCCESS;
 }
 
-size_t str_len(const char *str)
-{
+size_t str_len(const char *str) {
     if (!str) {
         return 0;
     }
@@ -49,8 +42,7 @@ size_t str_len(const char *str)
     return i;
 }
 
-int is_anagram_count_chars(const char *str1, const char *str2)
-{
+int is_anagram_count_chars(const char *str1, const char *str2) {
     if (!str1 || !str2) {
         return 0;
     }
@@ -76,8 +68,7 @@ int is_anagram_count_chars(const char *str1, const char *str2)
     return 1;
 }
 
-int is_anagram(const char *str1, const char *str2)
-{
+int is_anagram(const char *str1, const char *str2) {
     if (!str1 || !str2) {
         return 0;
     }
@@ -101,8 +92,7 @@ int is_anagram(const char *str1, const char *str2)
     return 0;
 }
 
-int print_strs(char *const *strs, const size_t strs_len)
-{
+int print_strs(char *const *strs, const size_t strs_len) {
     if (!strs) {
         return -1;
     }
@@ -117,11 +107,8 @@ int print_strs(char *const *strs, const size_t strs_len)
     return 0;
 }
 
-int find_anagrams(char **words,
-                  const size_t words_len,
-                  char **out,
-                  size_t *out_cap)
-{
+int find_anagrams(char **words, const size_t words_len, char **out,
+                  size_t *out_cap) {
     if (!words || !out || !*out || !out_cap) {
         return -1;
     }

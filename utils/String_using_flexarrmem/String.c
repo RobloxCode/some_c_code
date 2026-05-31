@@ -4,8 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-String *String_init(const size_t cap)
-{
+String *String_init(const size_t cap) {
     if (cap == 0) {
         return NULL;
     }
@@ -22,8 +21,7 @@ String *String_init(const size_t cap)
     return str;
 }
 
-void String_deinit(String **str)
-{
+void String_deinit(String **str) {
     if (!str || !*str) {
         return;
     }
@@ -32,8 +30,7 @@ void String_deinit(String **str)
     *str = NULL;
 }
 
-void String_println(const String *str)
-{
+void String_println(const String *str) {
     if (!str) {
         return;
     }
@@ -41,8 +38,7 @@ void String_println(const String *str)
     puts(str->items);
 }
 
-int String_append_char(String **str, const char c)
-{
+int String_append_char(String **str, const char c) {
     if (!str || !*str) {
         return 1;
     }
@@ -65,8 +61,7 @@ int String_append_char(String **str, const char c)
     return 0;
 }
 
-int String_append(String **str, const char *cstr)
-{
+int String_append(String **str, const char *cstr) {
     if (!str || !*str || !cstr) {
         return 1;
     }
@@ -97,8 +92,7 @@ int String_append(String **str, const char *cstr)
     return 0;
 }
 
-const char *String_to_cstr(const String *str)
-{
+const char *String_to_cstr(const String *str) {
     if (!str) {
         return NULL;
     }
@@ -106,8 +100,7 @@ const char *String_to_cstr(const String *str)
     return str->items;
 }
 
-size_t String_len(const String *str)
-{
+size_t String_len(const String *str) {
     if (!str) {
         return 0;
     }
@@ -115,8 +108,7 @@ size_t String_len(const String *str)
     return str->len;
 }
 
-int String_cmp(const String *str1, const String *str2)
-{
+int String_cmp(const String *str1, const String *str2) {
     if (!str1 || !str2) {
         return 1;
     }
@@ -134,8 +126,7 @@ int String_cmp(const String *str1, const String *str2)
     return 0;
 }
 
-void String_clear(String *str)
-{
+void String_clear(String *str) {
     if (!str) {
         return;
     }
@@ -144,8 +135,7 @@ void String_clear(String *str)
     str->len = 0;
 }
 
-int String_copy(String *dst, const String *src)
-{
+int String_copy(String *dst, const String *src) {
     if (!dst || !src) {
         return 1;
     }
@@ -160,8 +150,7 @@ int String_copy(String *dst, const String *src)
     return 0;
 }
 
-int String_concat(String **dst, const String *str1, const String *str2)
-{
+int String_concat(String **dst, const String *str1, const String *str2) {
     if (!dst || !*dst || !str1 || !str2) {
         return 1;
     }
@@ -182,8 +171,7 @@ int String_concat(String **dst, const String *str1, const String *str2)
     return 0;
 }
 
-static void _str_reverse(char *str)
-{
+static void _str_reverse(char *str) {
     size_t left = 0;
     size_t right = 0;
 
@@ -203,8 +191,7 @@ static void _str_reverse(char *str)
     }
 }
 
-static void _int_to_char(int num, char *out)
-{
+static void _int_to_char(int num, char *out) {
     if (!out) {
         return;
     }
@@ -221,8 +208,7 @@ static void _int_to_char(int num, char *out)
 }
 
 int String_join_int_arr(String *str, const int *arr, const size_t len,
-                        const char *separator)
-{
+                        const char *separator) {
     if (!str || !arr) {
         return 1;
     }
@@ -245,8 +231,7 @@ int String_join_int_arr(String *str, const int *arr, const size_t len,
     return 0;
 }
 
-int String_replace(String *str, const char oldchar, char newchar)
-{
+int String_replace(String *str, const char oldchar, char newchar) {
     if (!str) {
         return 1;
     }

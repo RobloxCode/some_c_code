@@ -29,16 +29,10 @@ LinkedList_status LinkedList_remove(LinkedList *ll, const size_t idx);
 LinkedList_status LinkedList_println(LinkedList *ll);
 LinkedList_status LinkedList_reverse(LinkedList *ll);
 size_t LinkedList_len(LinkedList *ll);
-LinkedList_status LinkedList_to_arr(
-    const LinkedList *ll,
-    int *dst,
-    const size_t dst_len);
-LinkedList *arr_to_LinkedList(
-    const int *arr,
-    const size_t arr_len);
-LinkedList_status LinkedList_search(
-    const LinkedList *ll,
-    const int val,
-    size_t *out);
+LinkedList_status LinkedList_to_arr(const LinkedList *ll, int *dst,
+                                    const size_t dst_len);
+LinkedList *arr_to_LinkedList(const int *arr, const size_t arr_len);
+LinkedList_status LinkedList_search(const LinkedList *ll, const int val,
+                                    size_t *out);
 
 #endif

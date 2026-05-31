@@ -1,10 +1,12 @@
-#include <stdlib.h>
 #include "../../utils/Queue/QueueImp.h"
+
+#include <stdlib.h>
 
 int main(void) {
     Queue *q = Queue_init();
-    if (!q)
+    if (!q) {
         return EXIT_FAILURE;
+    }
 
     Queue_push(q, 1);
     Queue_push(q, 2);
@@ -23,4 +25,3 @@ int main(void) {
 
     return EXIT_SUCCESS;
 }
-

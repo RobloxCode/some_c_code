@@ -1,13 +1,14 @@
 #include "QueueImp.h"
+
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-Queue *Queue_init()
-{
+Queue *Queue_init() {
     Queue *q = malloc(sizeof *q);
-    if (!q)
+    if (!q) {
         return NULL;
+    }
 
     q->len = 0;
     q->start = NULL;
@@ -15,13 +16,14 @@ Queue *Queue_init()
     return q;
 }
 
-void Queue_deinit(Queue **q)
-{
-    if (!q || !*q)
+void Queue_deinit(Queue **q) {
+    if (!q || !*q) {
         return;
+    }
 
-    if (!(*q)->start)
+    if (!(*q)->start) {
         return;
+    }
 
     QueueNode *to_del = NULL;
     QueueNode *cur = (*q)->start;
@@ -36,10 +38,10 @@ void Queue_deinit(Queue **q)
     *q = NULL;
 }
 
-void Queue_push(Queue *q, int val)
-{
-    if (!q)
+void Queue_push(Queue *q, int val) {
+    if (!q) {
         return;
+    }
 
     QueueNode *new_node = malloc(sizeof *new_node);
     new_node->next = NULL;
@@ -53,20 +55,22 @@ void Queue_push(Queue *q, int val)
 
     QueueNode *cur = q->start;
 
-    while (cur->next)
+    while (cur->next) {
         cur = cur->next;
+    }
 
     cur->next = new_node;
     q->len++;
 }
 
-void Queue_pop(Queue *q)
-{
-    if (!q)
+void Queue_pop(Queue *q) {
+    if (!q) {
         return;
+    }
 
-    if (!q->start || !q->start->next)
+    if (!q->start || !q->start->next) {
         return;
+    }
 
     QueueNode *to_del = q->start;
     q->start = q->start->next;
@@ -75,10 +79,10 @@ void Queue_pop(Queue *q)
     q->len--;
 }
 
-void Queue_println(Queue *q)
-{
-    if (!q)
+void Queue_println(Queue *q) {
+    if (!q) {
         return;
+    }
 
     QueueNode *cur = q->start;
 

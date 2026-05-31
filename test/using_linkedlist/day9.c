@@ -1,7 +1,8 @@
-#include <stdio.h>
-#include <stddef.h>
-#include <stdlib.h>
 #include "../../utils/LinkedList/LinkedList_imp.h"
+
+#include <stddef.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 int main(void) {
     LinkedList_status status = LL_OK;
@@ -11,36 +12,46 @@ int main(void) {
     }
 
     for (int i = 1; i <= 6; ++i) {
-        if ((status = LinkedList_append(ll, i)) != LL_OK)
+        if ((status = LinkedList_append(ll, i)) != LL_OK) {
             goto cleanup;
+        }
     }
 
-    if ((status = LinkedList_println(ll)) != LL_OK)
+    if ((status = LinkedList_println(ll)) != LL_OK) {
         goto cleanup;
+    }
 
-    if ((status = LinkedList_remove(ll, 2)) != LL_OK)
+    if ((status = LinkedList_remove(ll, 2)) != LL_OK) {
         goto cleanup;
+    }
 
-    if ((status = LinkedList_println(ll)) != LL_OK)
+    if ((status = LinkedList_println(ll)) != LL_OK) {
         goto cleanup;
+    }
 
-    if ((status = LinkedList_remove(ll, 0)) != LL_OK)
+    if ((status = LinkedList_remove(ll, 0)) != LL_OK) {
         goto cleanup;
+    }
 
-    if ((status = LinkedList_println(ll)) != LL_OK)
+    if ((status = LinkedList_println(ll)) != LL_OK) {
         goto cleanup;
+    }
 
-    if ((status = LinkedList_remove(ll, LinkedList_len(ll) - 1)) != LL_OK)
+    if ((status = LinkedList_remove(ll, LinkedList_len(ll) - 1)) != LL_OK) {
         goto cleanup;
+    }
 
-    if ((status = LinkedList_println(ll)) != LL_OK)
+    if ((status = LinkedList_println(ll)) != LL_OK) {
         goto cleanup;
+    }
 
-    if ((status = LinkedList_remove(ll, 0)) != LL_OK)
+    if ((status = LinkedList_remove(ll, 0)) != LL_OK) {
         goto cleanup;
+    }
 
-    if ((status = LinkedList_println(ll)) != LL_OK)
+    if ((status = LinkedList_println(ll)) != LL_OK) {
         goto cleanup;
+    }
 
 cleanup:
     LinkedList_deinit(&ll);
@@ -52,4 +63,3 @@ cleanup:
 
     return EXIT_SUCCESS;
 }
-

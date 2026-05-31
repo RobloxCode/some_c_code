@@ -1,5 +1,6 @@
-#include <stdio.h>
 #include "../../utils/HashTable/HashTableImp.h"
+
+#include <stdio.h>
 
 int main(void) {
     display_sum("tuheaoth");

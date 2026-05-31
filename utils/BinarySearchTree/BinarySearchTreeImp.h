@@ -3,12 +3,12 @@
 #include <stddef.h>
 
 typedef enum {
-    BST_OK                  = 0,
-    BST_ERR_WRONG_PTR       = 1,
-    BST_ERR_INIT_NODE       = 2,
-    BST_ERR_REPEATED_VAL    = 3,
-    BST_ERR_EMPTY_TREE      = 4,
-    BST_ERR_VAL_NOT_FOUND   = 5,
+    BST_OK = 0,
+    BST_ERR_WRONG_PTR = 1,
+    BST_ERR_INIT_NODE = 2,
+    BST_ERR_REPEATED_VAL = 3,
+    BST_ERR_EMPTY_TREE = 4,
+    BST_ERR_VAL_NOT_FOUND = 5,
 } BST_status;
 
 typedef struct BSTNode {

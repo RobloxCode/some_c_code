@@ -6,11 +6,7 @@
 #include <stddef.h>
 #include <stdio.h>
 
-void print_cube(
-    const size_t width,
-    const size_t height,
-    const char symbol
-);
+void print_cube(const size_t width, const size_t height, const char symbol);
 void print_triangle(const size_t height, const char symbol);
 
 int main(void) {
@@ -20,11 +16,7 @@ int main(void) {
     return 0;
 }
 
-void print_cube(
-    const size_t width,
-    const size_t height,
-    const char symbol
-) {
+void print_cube(const size_t width, const size_t height, const char symbol) {
     for (size_t w = 0; w < width; ++w) {
         for (size_t h = 0; h < height; ++h) {
             printf("%c", symbol);
@@ -44,4 +36,3 @@ void print_triangle(const size_t height, const char symbol) {
         printf("\n");
     }
 }
-

@@ -18,8 +18,9 @@ void CircularList_print(CircularList *cl);
 
 int main(void) {
     CircularList *cl = CircularList_init();
-    if (!cl)
+    if (!cl) {
         return EXIT_FAILURE;
+    }
 
     CircularList_push(cl, 1);
     CircularList_push(cl, 2);
@@ -32,8 +33,9 @@ int main(void) {
 
 CircularList *CircularList_init() {
     CircularList *cl = malloc(sizeof *cl);
-    if (!cl)
+    if (!cl) {
         return NULL;
+    }
 
     cl->len = 0;
     cl->start = NULL;
@@ -42,11 +44,13 @@ CircularList *CircularList_init() {
 }
 
 void CircularList_deinit(CircularList **cl) {
-    if (!cl || !*cl)
+    if (!cl || !*cl) {
         return;
+    }
 
-    if (!(*cl)->start)
+    if (!(*cl)->start) {
         return;
+    }
 
     Node *cur = (*cl)->start;
     Node *del = NULL;
@@ -62,13 +66,15 @@ void CircularList_deinit(CircularList **cl) {
 }
 
 void CircularList_push(CircularList *cl, int val) {
-    if (!cl)
+    if (!cl) {
         return;
+    }
 
     if (!cl->start) {
         Node *new = malloc(sizeof *new);
-        if (!new)
+        if (!new) {
             return;
+        }
 
         new->val = val;
         new->next = NULL;
@@ -79,8 +85,9 @@ void CircularList_push(CircularList *cl, int val) {
 
     Node *last = cl->start;
     Node *new = malloc(sizeof *new);
-    if (!new)
+    if (!new) {
         return;
+    }
 
     new->val = val;
     new->next = cl->start;
@@ -100,8 +107,9 @@ void CircularList_push(CircularList *cl, int val) {
 }
 
 void CircularList_print(CircularList *cl) {
-    if (!cl)
+    if (!cl) {
         return;
+    }
 
     Node *cur = cl->start;
     while (cur) {

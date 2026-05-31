@@ -1,4 +1,5 @@
 #include "../../ascii_to_int/ascii_to_int.h"
+
 #include <limits.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -26,14 +27,12 @@ void parse_content_and_check(void);
 
 void test_can_make_square(void);
 
-int main(void)
-{
+int main(void) {
     test_can_make_square();
     return 0;
 }
 
-size_t get_num_new_lines(const char *str)
-{
+size_t get_num_new_lines(const char *str) {
     if (!str) {
         return 0;
     }
@@ -48,8 +47,7 @@ size_t get_num_new_lines(const char *str)
     return num_lines;
 }
 
-void load_file_content(char *buf, const size_t buf_size, FILE *stream)
-{
+void load_file_content(char *buf, const size_t buf_size, FILE *stream) {
     if (!buf || !stream) {
         return;
     }
@@ -62,8 +60,7 @@ void load_file_content(char *buf, const size_t buf_size, FILE *stream)
 }
 
 void init_new_lines_idxs(size_t *new_lines_idxs, const char *file_content,
-                         const size_t starting_idx)
-{
+                         const size_t starting_idx) {
     size_t last_new_line_idx = starting_idx;
     size_t last_pos = 0;
     for (size_t i = 0; file_content[i] != '\0'; ++i) {
@@ -75,8 +72,7 @@ void init_new_lines_idxs(size_t *new_lines_idxs, const char *file_content,
     }
 }
 
-void parse_file_content(const char *file_content, int *file_content_parsed)
-{
+void parse_file_content(const char *file_content, int *file_content_parsed) {
     size_t file_content_parsed_idx = 0;
     int parse_helper_buf = 0;
     char cur_digit_buf[DIGIT_MAX_CAPACITY] = {0};
@@ -95,8 +91,7 @@ void parse_file_content(const char *file_content, int *file_content_parsed)
     }
 }
 
-int arr_contains(const size_t *arr, const size_t len, const size_t val)
-{
+int arr_contains(const size_t *arr, const size_t len, const size_t val) {
     for (size_t i = 0; i < len; ++i) {
         if (arr[i] == val) {
             return 1;
@@ -107,8 +102,7 @@ int arr_contains(const size_t *arr, const size_t len, const size_t val)
 }
 
 int can_make_square_range(const int *file_content_parsed,
-                          const size_t start_idx, const size_t finish_idx)
-{
+                          const size_t start_idx, const size_t finish_idx) {
     size_t len = finish_idx - start_idx + 1;
     if (len < 4) {
         return 0;
@@ -130,8 +124,7 @@ int can_make_square_range(const int *file_content_parsed,
 }
 
 void arr_print_range(const int *arr, const size_t start_idx,
-                     const size_t finish_idx)
-{
+                     const size_t finish_idx) {
     for (size_t i = start_idx; i < finish_idx; ++i) {
         printf("%d ", arr[i]);
     }
@@ -139,8 +132,7 @@ void arr_print_range(const int *arr, const size_t start_idx,
     printf("\n");
 }
 
-void parse_content_and_check(void)
-{
+void parse_content_and_check(void) {
     FILE *file = NULL;
     char file_content[BUFF_CAPACITY];
 
@@ -189,7 +181,6 @@ files_cleanup:
     return;
 }
 
-void test_can_make_square(void)
-{
+void test_can_make_square(void) {
     parse_content_and_check();
 }

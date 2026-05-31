@@ -2,8 +2,9 @@
  * get a list of primes using the Sieve of Eratosthenes
  */
 
-#include <stdio.h>
 #include "../utils/ArrayList/ArrayListImp.h"
+
+#include <stdio.h>
 #include <stdlib.h>
 #include <stdnoreturn.h>
 

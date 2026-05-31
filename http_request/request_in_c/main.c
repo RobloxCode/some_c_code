@@ -1,22 +1,20 @@
+#include <arpa/inet.h>
+#include <netdb.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <arpa/inet.h>
-#include <netdb.h>
 
 #define BUFF_LEN 4096
 
-int main()
-{
+int main() {
     int sock;
     struct hostent *server;
     struct sockaddr_in serv_addr;
 
-    char request[] =
-        "GET /posts/1 HTTP/1.1\r\n"
-        "Host: jsonplaceholder.typicode.com\r\n"
-        "Connection: close\r\n\r\n";
+    char request[] = "GET /posts/1 HTTP/1.1\r\n"
+                     "Host: jsonplaceholder.typicode.com\r\n"
+                     "Connection: close\r\n\r\n";
 
     char resp_buff[BUFF_LEN];
 
@@ -32,14 +30,11 @@ int main()
 
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(80); // HTTP port
-    memcpy(&serv_addr.sin_addr.s_addr,
-           server->h_addr,
+    memcpy(&serv_addr.sin_addr.s_addr, server->h_addr,
            (size_t)server->h_length);
 
     // Connect
-    if (connect(sock,
-                (struct sockaddr*)&serv_addr,
-                sizeof(serv_addr)) < 0) {
+    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
         printf("Connection failed\n");
         return EXIT_FAILURE;
     }

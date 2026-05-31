@@ -11,8 +11,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-int vec_raw_reserve(void **data, size_t *cap, size_t new_cap, size_t elem_size)
-{
+int vec_raw_reserve(void **data, size_t *cap, size_t new_cap,
+                    size_t elem_size) {
     if (new_cap <= *cap) {
         return 1;
     }
@@ -33,8 +33,7 @@ int vec_raw_reserve(void **data, size_t *cap, size_t new_cap, size_t elem_size)
 }
 
 int vec_raw_push(void **data, size_t *size, size_t *cap, size_t elem_size,
-                 const void *elem)
-{
+                 const void *elem) {
     if (!vec_raw_reserve(data, cap, *size + 1, elem_size)) {
         return 0;
     }
@@ -44,8 +43,7 @@ int vec_raw_push(void **data, size_t *size, size_t *cap, size_t elem_size,
 }
 
 int vec_raw_insert(void **data, size_t *size, size_t *cap, size_t elem_size,
-                   size_t i, const void *elem)
-{
+                   size_t i, const void *elem) {
     if (i > *size) {
         return 0;
     }
@@ -61,8 +59,7 @@ int vec_raw_insert(void **data, size_t *size, size_t *cap, size_t elem_size,
     return 1;
 }
 
-int vec_raw_remove(void **data, size_t *size, size_t elem_size, size_t i)
-{
+int vec_raw_remove(void **data, size_t *size, size_t elem_size, size_t i) {
     if (i >= *size) {
         return 0;
     }
@@ -73,8 +70,7 @@ int vec_raw_remove(void **data, size_t *size, size_t elem_size, size_t i)
     return 1;
 }
 
-int vec_raw_swap_remove(void *data, size_t *size, size_t elem_size, size_t i)
-{
+int vec_raw_swap_remove(void *data, size_t *size, size_t elem_size, size_t i) {
     if (i >= *size) {
         return 0;
     }
@@ -86,14 +82,12 @@ int vec_raw_swap_remove(void *data, size_t *size, size_t elem_size, size_t i)
     return 1;
 }
 
-void *vec_raw_at(void *data, size_t size, size_t elem_size, size_t i)
-{
+void *vec_raw_at(void *data, size_t size, size_t elem_size, size_t i) {
     assert(i < size);
     return (char *)data + i * elem_size;
 }
 
-int vec_raw_shrink(void **data, size_t *cap, size_t size, size_t elem_size)
-{
+int vec_raw_shrink(void **data, size_t *cap, size_t size, size_t elem_size) {
     size_t target = (size < VEC_MIN_CAP) ? VEC_MIN_CAP : size;
     if (target == *cap) {
         return 1;

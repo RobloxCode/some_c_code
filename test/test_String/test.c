@@ -1,6 +1,7 @@
+#include "../../utils/String/StringImp.h"
+
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../utils/String/StringImp.h"
 
 int main(void) {
     const size_t string_init_len = 10;
@@ -11,38 +12,46 @@ int main(void) {
     String *s3 = NULL;
 
     s1 = String_create(string_init_len);
-    if (!s1)
+    if (!s1) {
         goto cleanup;
+    }
 
     s2 = String_create(string_init_len);
-    if (!s2)
+    if (!s2) {
         goto cleanup;
+    }
 
     s3 = String_create(string_init_len);
-    if (!s3)
+    if (!s3) {
         goto cleanup;
+    }
 
     status = String_append_cstr(s1, "message written to string 1 example");
-    if (status != STRING_OK)
+    if (status != STRING_OK) {
         goto cleanup;
+    }
 
     status = String_append_cstr(s2, "some other message for string 2");
-    if (status != STRING_OK)
+    if (status != STRING_OK) {
         goto cleanup;
+    }
 
     status = String_append_cstr(s3, "final message for string 3");
-    if (status != STRING_OK)
+    if (status != STRING_OK) {
         goto cleanup;
+    }
 
     String_println(s1);
     printf("%s\n", s2->items);
     printf("%s\n", String_cstr(s3));
 
-    if ((status = String_clear(s1)) != STRING_OK)
+    if ((status = String_clear(s1)) != STRING_OK) {
         goto cleanup;
+    }
 
-    if ((status = String_clear(s2)) != STRING_OK)
+    if ((status = String_clear(s2)) != STRING_OK) {
         goto cleanup;
+    }
 
     String_append_cstr(s2, "aaa");
 
@@ -55,53 +64,43 @@ int main(void) {
     printf("%s\n", s2->items);
     printf("%s\n", String_cstr(s3));
 
-    if ((status = String_compare(s1, s2, &comparisson)) != STRING_OK)
+    if ((status = String_compare(s1, s2, &comparisson)) != STRING_OK) {
         goto cleanup;
-
-    if (comparisson) {
-        printf(
-            "s1: %s\n"
-            "s2: %s\n"
-            "are equal\n",
-            String_cstr(s1),
-            String_cstr(s2)
-        );
-    } else {
-        printf(
-            "s1: %s\n"
-            "s2: %s\n"
-            "are not equal\n",
-            String_cstr(s1),
-            String_cstr(s2)
-        );
     }
 
-    if ((status = String_compare(s2, s3, &comparisson)) != STRING_OK)
+    if (comparisson) {
+        printf("s1: %s\n"
+               "s2: %s\n"
+               "are equal\n",
+               String_cstr(s1), String_cstr(s2));
+    } else {
+        printf("s1: %s\n"
+               "s2: %s\n"
+               "are not equal\n",
+               String_cstr(s1), String_cstr(s2));
+    }
+
+    if ((status = String_compare(s2, s3, &comparisson)) != STRING_OK) {
         goto cleanup;
+    }
 
     if (comparisson) {
-        printf(
-            "s2: %s\n"
-            "s3: %s\n"
-            "are equal\n",
-            String_cstr(s2),
-            String_cstr(s3)
-        );
+        printf("s2: %s\n"
+               "s3: %s\n"
+               "are equal\n",
+               String_cstr(s2), String_cstr(s3));
     } else {
-        printf(
-            "s2: %s\n"
-            "s3: %s\n"
-            "are not equal\n",
-            String_cstr(s2),
-            String_cstr(s3)
-        );
+        printf("s2: %s\n"
+               "s3: %s\n"
+               "are not equal\n",
+               String_cstr(s2), String_cstr(s3));
     }
 
     printf("len s1: %zu\n", String_len(s1));
     printf("len s2: %zu\n", String_len(s2));
     printf("len s3: %zu\n", String_len(s3));
 
-    cleanup:
+cleanup:
     if (s1) {
         String_free(&s1);
     }
