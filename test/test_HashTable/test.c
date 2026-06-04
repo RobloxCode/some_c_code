@@ -3,6 +3,6 @@
 #include <stdio.h>
 
 int main(void) {
-    display_sum("tuheaoth");
+    printf("%d\n", some_fn());
     return 0;
 }
