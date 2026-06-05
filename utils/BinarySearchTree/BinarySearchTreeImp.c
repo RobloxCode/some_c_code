@@ -16,7 +16,7 @@ static BSTNode *BSTNode_init(const int val) {
     return bstnode;
 }
 
-BST *BST_init(void) {
+BST *bst_init(void) {
     BST *bst = malloc(sizeof *bst);
     if (!bst) {
         return NULL;
@@ -38,7 +38,7 @@ static void _free_node(BSTNode *node) {
     free(node);
 }
 
-BST_status BST_deinit(BST **bst) {
+BST_status bst_deinit(BST **bst) {
     if (!bst || !*bst) {
         return BST_ERR_WRONG_PTR;
     }
@@ -50,7 +50,7 @@ BST_status BST_deinit(BST **bst) {
     return BST_OK;
 }
 
-BST_status BST_append(BST *bst, const int val) {
+BST_status bst_append(BST *bst, const int val) {
     if (!bst) {
         return BST_ERR_WRONG_PTR;
     }
@@ -101,7 +101,7 @@ static void _print_bstnode_pre(const BSTNode *node) {
     _print_bstnode_pre(node->right_child);
 }
 
-BST_status BST_println_pre(const BST *bst) {
+BST_status bst_println_pre(const BST *bst) {
     if (!bst) {
         return BST_ERR_WRONG_PTR;
     }
@@ -121,7 +121,7 @@ static void _print_bstnode_ino(const BSTNode *node) {
     _print_bstnode_ino(node->right_child);
 }
 
-BST_status BST_println_ino(const BST *bst) {
+BST_status bst_println_ino(const BST *bst) {
     if (!bst) {
         return BST_ERR_WRONG_PTR;
     }
@@ -141,7 +141,7 @@ static void _print_bstnode_pos(const BSTNode *node) {
     printf("%d ", node->val);
 }
 
-BST_status BST_println_pos(const BST *bst) {
+BST_status bst_println_pos(const BST *bst) {
     if (!bst) {
         return BST_ERR_WRONG_PTR;
     }
@@ -217,7 +217,7 @@ static void _replace_child(BST *bst, BSTNode *parent, BSTNode *old,
     }
 }
 
-BST_status BST_remove(BST *bst, int val) {
+BST_status bst_remove(BST *bst, int val) {
     if (!bst) {
         return BST_ERR_WRONG_PTR;
     }
@@ -274,7 +274,7 @@ free_node:
     return BST_OK;
 }
 
-BST_status BST_get_min(const BST *bst, int *out) {
+BST_status bst_get_min(const BST *bst, int *out) {
     if (!bst || !out) {
         return BST_ERR_WRONG_PTR;
     }
@@ -410,7 +410,7 @@ static BSTNode *_remove_rec(BSTNode *node, int val, BST_status *status) {
     return node;
 }
 
-BST_status BST_remove_rec(BST *bst, int val) {
+BST_status bst_remove_rec(BST *bst, int val) {
     if (!bst) {
         return BST_ERR_WRONG_PTR;
     }

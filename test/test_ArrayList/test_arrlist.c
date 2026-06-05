@@ -4,78 +4,78 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void test_ArrayList(void) {
+void test_ArrList(void) {
     const size_t data_len = 20;
-    ArrayList_status status = ARRAYLIST_OK;
-    ArrayList *data = ArrayList_init(data_len);
+    AL_status status = ARRAYLIST_OK;
+    ArrList *data = array_list_init(data_len);
     if (!data) {
         return;
     }
 
     for (size_t i = 1; i <= 20; ++i) {
-        if ((status = ArrayList_append(data, (int)i)) != ARRAYLIST_OK) {
+        if ((status = array_list_append(data, (int)i)) != ARRAYLIST_OK) {
             goto cleanup;
         }
     }
 
-    ArrayList_println(data);
+    array_list_println(data);
 
-    if ((status = ArrayList_reverse(data)) != ARRAYLIST_OK) {
+    if ((status = array_list_reverse(data)) != ARRAYLIST_OK) {
         goto cleanup;
     }
 
-    ArrayList_println(data);
+    array_list_println(data);
 
-    ArrayList *data2 = ArrayList_init(data->length);
+    ArrList *data2 = array_list_init(data->length);
     if (!data2) {
         goto cleanup;
     }
 
-    if ((status = ArrayList_copy(data, data2)) != ARRAYLIST_OK) {
+    if ((status = array_list_copy(data, data2)) != ARRAYLIST_OK) {
         goto cleanup;
     }
 
     puts("data2: ");
-    ArrayList_println(data2);
+    array_list_println(data2);
 
-    ArrayList_println(data);
+    array_list_println(data);
 
-    if ((status = ArrayList_swap(data, 0, ArrayList_len(data) - 1))
+    if ((status = array_list_swap(data, 0, array_list_len(data) - 1))
         != ARRAYLIST_OK) {
         goto cleanup;
     }
 
-    ArrayList_println(data);
+    array_list_println(data);
 
-    if ((status = ArrayList_remove(data, 0)) != ARRAYLIST_OK) {
+    if ((status = array_list_remove(data, 0)) != ARRAYLIST_OK) {
         goto cleanup;
     }
 
-    ArrayList_println(data);
+    array_list_println(data);
 
-    if ((status = ArrayList_remove(data, ArrayList_len(data) - 1))
+    if ((status = array_list_remove(data, array_list_len(data) - 1))
         != ARRAYLIST_OK) {
         goto cleanup;
     }
 
-    if ((status = ArrayList_remove(data, ArrayList_len(data) - 1))
+    if ((status = array_list_remove(data, array_list_len(data) - 1))
         != ARRAYLIST_OK) {
         goto cleanup;
     }
 
-    ArrayList_println(data);
-    ArrayList *sorted = ArrayList_init(data->length);
+    array_list_println(data);
+    ArrList *sorted = array_list_init(data->length);
     if (!sorted) {
         goto cleanup;
     }
 
     // sorted = sort(data);
-    ArrayList_println(sorted);
+    array_list_println(sorted);
 
 cleanup:
-    ArrayList_deinit(&data);
-    ArrayList_deinit(&data2);
-    ArrayList_deinit(&sorted);
+    array_list_deinit(&data);
+    array_list_deinit(&data2);
+    array_list_deinit(&sorted);
 
     if (status != ARRAYLIST_OK) {
         fprintf(stderr, "Error status: %d\n", status);
@@ -85,6 +85,6 @@ cleanup:
 }
 
 int main(void) {
-    test_ArrayList();
+    test_ArrList();
     return EXIT_SUCCESS;
 }

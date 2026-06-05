@@ -3,25 +3,25 @@
 #include <stdlib.h>
 
 int main(void) {
-    Queue *q = Queue_init();
+    Queue *q = queue_init();
     if (!q) {
         return EXIT_FAILURE;
     }
 
-    Queue_push(q, 1);
-    Queue_push(q, 2);
-    Queue_push(q, 3);
-    Queue_push(q, 4);
+    queue_push(q, 1);
+    queue_push(q, 2);
+    queue_push(q, 3);
+    queue_push(q, 4);
 
-    Queue_println(q);
+    queue_println(q);
 
-    Queue_pop(q);
-    Queue_println(q);
+    queue_pop(q);
+    queue_println(q);
 
-    Queue_pop(q);
-    Queue_println(q);
+    queue_pop(q);
+    queue_println(q);
 
-    Queue_deinit(&q);
+    queue_deinit(&q);
 
     return EXIT_SUCCESS;
 }

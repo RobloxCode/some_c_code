@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-FlexArr *FlexArr_init(const size_t cap) {
+FlexArr *flex_arr_init(const size_t cap) {
     if (cap == 0) {
         return NULL;
     }
@@ -19,7 +19,7 @@ FlexArr *FlexArr_init(const size_t cap) {
     return fa;
 }
 
-FA_status FlexArr_deinit(FlexArr **fa) {
+FA_status flex_arr_deinit(FlexArr **fa) {
     if (!fa || !*fa) {
         return FA_ERR_WRONG_PTR;
     }
@@ -29,7 +29,7 @@ FA_status FlexArr_deinit(FlexArr **fa) {
     return FA_OK;
 }
 
-FA_status FlexArr_push(FlexArr **fa, int val) {
+FA_status flex_arr_push(FlexArr **fa, int val) {
     if (!fa || !*fa) {
         return FA_ERR_WRONG_PTR;
     }
@@ -50,7 +50,7 @@ FA_status FlexArr_push(FlexArr **fa, int val) {
     return FA_OK;
 }
 
-FA_status FlexArr_pop(FlexArr *fa) {
+FA_status flex_arr_pop(FlexArr *fa) {
     if (!fa) {
         return FA_ERR_WRONG_PTR;
     }
@@ -59,7 +59,7 @@ FA_status FlexArr_pop(FlexArr *fa) {
     return FA_OK;
 }
 
-FA_status FlexArr_get(const FlexArr *fa, const size_t i, int *out) {
+FA_status flex_arr_get(const FlexArr *fa, const size_t i, int *out) {
     if (!fa || !out) {
         return FA_ERR_WRONG_PTR;
     }
@@ -73,7 +73,7 @@ FA_status FlexArr_get(const FlexArr *fa, const size_t i, int *out) {
     return FA_OK;
 }
 
-size_t FlexArr_len(const FlexArr *fa) {
+size_t flex_arr_len(const FlexArr *fa) {
     if (!fa) {
         return 0;
     }
@@ -81,7 +81,7 @@ size_t FlexArr_len(const FlexArr *fa) {
     return fa->len - 1;
 }
 
-FA_status FlexArr_println(const FlexArr *fa) {
+FA_status flex_arr_println(const FlexArr *fa) {
     if (!fa) {
         return FA_ERR_WRONG_PTR;
     }

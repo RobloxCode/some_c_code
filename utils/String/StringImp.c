@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-String *String_create(const size_t init_len) {
+String *string_create(const size_t init_len) {
     if (init_len == 0) {
         return NULL;
     }
@@ -28,7 +28,7 @@ String *String_create(const size_t init_len) {
     return str;
 }
 
-String_status String_append_char(String *dst, const char src) {
+Str_status string_append_char(String *dst, const char src) {
     if (!dst) {
         return STRING_ERR_WRONG_PTR;
     }
@@ -60,7 +60,7 @@ String_status String_append_char(String *dst, const char src) {
     return STRING_OK;
 }
 
-String_status String_free(String **str) {
+Str_status string_free(String **str) {
     if (!str || !*str) {
         return STRING_ERR_WRONG_PTR;
     }
@@ -71,7 +71,7 @@ String_status String_free(String **str) {
     return STRING_OK;
 }
 
-String_status String_println(const String *str) {
+Str_status string_println(const String *str) {
     if (!str) {
         return STRING_ERR_WRONG_PTR;
     }
@@ -79,7 +79,7 @@ String_status String_println(const String *str) {
     return STRING_OK;
 }
 
-String_status String_append_cstr(String *dst, const char *src) {
+Str_status string_append_cstr(String *dst, const char *src) {
     if (!dst || !src) {
         return STRING_ERR_WRONG_PTR;
     }
@@ -119,8 +119,7 @@ String_status String_append_cstr(String *dst, const char *src) {
     return STRING_OK;
 }
 
-String_status String_compare(const String *str1, const String *str2,
-                             int *result) {
+Str_status string_compare(const String *str1, const String *str2, int *result) {
     if (!str1 || !str2 || !result) {
         return STRING_ERR_WRONG_PTR;
     }
@@ -141,7 +140,7 @@ String_status String_compare(const String *str1, const String *str2,
     return STRING_OK;
 }
 
-size_t String_len(const String *str) {
+size_t string_len(const String *str) {
     if (!str) {
         return 0;
     }
@@ -149,7 +148,7 @@ size_t String_len(const String *str) {
     return str->length;
 }
 
-String_status String_clear(String *str) {
+Str_status string_clear(String *str) {
     if (!str) {
         return STRING_ERR_WRONG_PTR;
     }
@@ -159,7 +158,7 @@ String_status String_clear(String *str) {
     return STRING_OK;
 }
 
-const char *String_cstr(const String *str) {
+const char *string_cstr(const String *str) {
     if (!str) {
         return NULL;
     }
@@ -167,7 +166,6 @@ const char *String_cstr(const String *str) {
     return str->items;
 }
 
-String_status String_concat(String *dst, const String *str1,
-                            const String *str2);
-String_status String_copy(String *dst, const String *src);
-String_status String_substring(String *str);
+Str_status string_concat(String *dst, const String *str1, const String *str2);
+Str_status string_copy(String *dst, const String *src);
+Str_status string_substring(String *str);

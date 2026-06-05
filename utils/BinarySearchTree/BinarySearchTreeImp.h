@@ -25,46 +25,46 @@ typedef struct {
 /**
  * Initializes the binary search tree
  */
-BST *BST_init(void);
+BST *bst_init(void);
 
 /**
  * Destroys the binary search tree
  * @param bst a double pointer to the BST struct
  */
-BST_status BST_deinit(BST **bst);
+BST_status bst_deinit(BST **bst);
 
 /**
  * Adds a new node to the tree, it will find where to add it to
  * @param bst a pointer to a BST struct
  * @param val value to be added
  */
-BST_status BST_append(BST *bst, const int val);
+BST_status bst_append(BST *bst, const int val);
 
 /**
  * Not implemented yet
  */
-BST_status BST_remove(BST *bst, int val);
+BST_status bst_remove(BST *bst, int val);
 
 /*
  * Prints to the console the tree values in preorder
  * Node -> left -> right
  * @param bst a pointer to a BST struct
  */
-BST_status BST_println_pre(const BST *bst);
+BST_status bst_println_pre(const BST *bst);
 
 /*
  * Prints to the console the tree values in inorder
  * left -> Node -> right
  * @param bst a pointer to a BST struct
  */
-BST_status BST_println_ino(const BST *bst);
+BST_status bst_println_ino(const BST *bst);
 
 /*
  * Prints to the console the tree values in postorder
  * left -> right -> Node
  * @param bst a pointer to a BST struct
  */
-BST_status BST_println_pos(const BST *bst);
+BST_status bst_println_pos(const BST *bst);
 
 /*
  * stores the minimun value in the tree in the out variable
@@ -72,8 +72,8 @@ BST_status BST_println_pos(const BST *bst);
  * @param out a poointer to the variable where the mininum
  *        value will be stored
  */
-BST_status BST_get_min(const BST *bst, int *out);
+BST_status bst_get_min(const BST *bst, int *out);
 
-BST_status BST_remove_rec(BST *bst, int val);
+BST_status bst_remove_rec(BST *bst, int val);
 
 #endif

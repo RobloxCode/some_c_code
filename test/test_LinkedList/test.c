@@ -6,8 +6,8 @@
 
 int main(void) {
     int arr[ARR_LEN];
-    LinkedList_status status = LL_OK;
-    LinkedList *ll = LinkedList_init();
+    LL_status status = LL_OK;
+    LinkedList *ll = ll_init();
     if (!ll) {
         return EXIT_FAILURE;
     }
@@ -16,75 +16,75 @@ int main(void) {
         arr[i] = (int)i;
     }
 
-    if ((status = LinkedList_append(ll, 1)) != LL_OK) {
+    if ((status = ll_append(ll, 1)) != LL_OK) {
         goto cleanup;
     }
 
-    if ((status = LinkedList_append(ll, 2)) != LL_OK) {
+    if ((status = ll_append(ll, 2)) != LL_OK) {
         goto cleanup;
     }
 
-    if ((status = LinkedList_append(ll, 3)) != LL_OK) {
+    if ((status = ll_append(ll, 3)) != LL_OK) {
         goto cleanup;
     }
 
-    if ((status = LinkedList_append(ll, 4)) != LL_OK) {
+    if ((status = ll_append(ll, 4)) != LL_OK) {
         goto cleanup;
     }
 
-    if ((status = LinkedList_append(ll, 5)) != LL_OK) {
+    if ((status = ll_append(ll, 5)) != LL_OK) {
         goto cleanup;
     }
 
-    if ((status = LinkedList_println(ll)) != LL_OK) {
+    if ((status = ll_println(ll)) != LL_OK) {
         goto cleanup;
     }
 
-    if ((status = LinkedList_to_arr(ll, arr, ll->len) != LL_OK)) {
+    if ((status = ll_to_arr(ll, arr, ll->len) != LL_OK)) {
         goto cleanup;
     }
 
     puts("array");
-    for (size_t i = 0; i < LinkedList_len(ll); ++i) {
+    for (size_t i = 0; i < ll_len(ll); ++i) {
         printf("%d ", arr[i]);
     }
     printf("\n");
 
-    LinkedList *from_arr = arr_to_LinkedList(arr, ARR_LEN);
+    LinkedList *from_arr = arr_to_ll(arr, ARR_LEN);
     if (!from_arr) {
         goto cleanup;
     }
 
     puts("linked list copied from the arr");
-    if ((status = LinkedList_println(from_arr)) != LL_OK) {
+    if ((status = ll_println(from_arr)) != LL_OK) {
         goto cleanup;
     }
 
     puts("list before reverse");
-    if ((status = LinkedList_println(ll)) != LL_OK) {
+    if ((status = ll_println(ll)) != LL_OK) {
         goto cleanup;
     }
 
-    if ((status = LinkedList_reverse(ll)) != LL_OK) {
+    if ((status = ll_reverse(ll)) != LL_OK) {
         goto cleanup;
     }
 
     puts("reversed");
-    if ((status = LinkedList_println(ll)) != LL_OK) {
+    if ((status = ll_println(ll)) != LL_OK) {
         goto cleanup;
     }
 
     size_t idx = 0;
     int val_to_find = 5;
-    if ((status = LinkedList_search(ll, val_to_find, &idx)) != LL_OK) {
+    if ((status = ll_search(ll, val_to_find, &idx)) != LL_OK) {
         goto cleanup;
     }
 
     printf("idx: %zu\nval: %d", idx, val_to_find);
 
 cleanup:
-    LinkedList_deinit(&ll);
-    LinkedList_deinit(&from_arr);
+    ll_deinit(&ll);
+    ll_deinit(&from_arr);
 
     if (status != LL_OK) {
         fprintf(stderr, "Error status: %d\n", status);

@@ -13,10 +13,10 @@ typedef struct {
     size_t len;
 } Queue;
 
-Queue *Queue_init();
-void Queue_deinit(Queue **q);
-void Queue_push(Queue *q, int val);
-void Queue_pop(Queue *q);
-void Queue_println(Queue *q);
+Queue *queue_init();
+void queue_deinit(Queue **q);
+void queue_push(Queue *q, int val);
+void queue_pop(Queue *q);
+void queue_println(Queue *q);
 
 #endif

@@ -9,24 +9,23 @@ typedef enum {
     ARRAYLIST_ERR_OVERFLOW,
     ARRAYLIST_ERR_SRC_LARGER_THAN_DST,
     ARRAYLIST_IDX_OUT_OF_RANGE,
-} ArrayList_status;
+} AL_status;
 
 typedef struct {
     int *items;
     size_t length;
     size_t capacity;
-} ArrayList;
+} ArrList;
 
-ArrayList *ArrayList_init(const size_t cap);
-ArrayList_status ArrayList_append(ArrayList *al, const int item);
-ArrayList_status ArrayList_deinit(ArrayList **al);
-ArrayList_status ArrayList_println(const ArrayList *al);
-ArrayList_status ArrayList_reverse(ArrayList *al);
-ArrayList_status ArrayList_copy(const ArrayList *src, ArrayList *dst);
-ArrayList_status ArrayList_remove(ArrayList *al, const size_t i);
-size_t ArrayList_len(const ArrayList *al);
-ArrayList_status ArrayList_swap(ArrayList *al, const size_t i1,
-                                const size_t i2);
-int ArrayList_get(ArrayList *al, const size_t i);
+ArrList *array_list_init(const size_t cap);
+AL_status array_list_append(ArrList *al, const int item);
+AL_status array_list_deinit(ArrList **al);
+AL_status array_list_println(const ArrList *al);
+AL_status array_list_reverse(ArrList *al);
+AL_status array_list_copy(const ArrList *src, ArrList *dst);
+AL_status array_list_remove(ArrList *al, const size_t i);
+size_t array_list_len(const ArrList *al);
+AL_status array_list_swap(ArrList *al, const size_t i1, const size_t i2);
+int array_list_get(ArrList *al, const size_t i);
 
 #endif

@@ -8,9 +8,9 @@ typedef struct {
     size_t len;
 } iSlice;
 
-void *iSlice_make(int *src, size_t srclen, size_t start, size_t end);
-void iSlice_deinit(iSlice **s);
-int iSlice_init(iSlice *s, int *src, size_t srclen, size_t start, size_t end);
-void iSlice_println(iSlice *s);
+void *i_slice_make(int *src, size_t srclen, size_t start, size_t end);
+void i_slice_deinit(iSlice **s);
+int i_slice_init(iSlice *s, int *src, size_t srclen, size_t start, size_t end);
+void i_slice_println(iSlice *s);
 
 #endif

@@ -22,24 +22,24 @@ int main(void) {
 void test_stack_allocated_slice(int *src, size_t srclen, size_t start,
                                 size_t end) {
     iSlice slice;
-    if (iSlice_init(&slice, src, srclen, start, end) != 0) {
+    if (i_slice_init(&slice, src, srclen, start, end) != 0) {
         printf("error initialializing slice\n");
         return;
     }
 
     printf("stack allocated slice: ");
-    iSlice_println(&slice);
+    i_slice_println(&slice);
 }
 
 void test_heap_allocated_slice(int *src, size_t srclen, size_t start,
                                size_t end) {
-    iSlice *slice = iSlice_make(src, srclen, start, end);
+    iSlice *slice = i_slice_make(src, srclen, start, end);
     if (!slice) {
         return;
     }
 
     printf("heap allocated slice: ");
-    iSlice_println(slice);
+    i_slice_println(slice);
 
-    iSlice_deinit(&slice);
+    i_slice_deinit(&slice);
 }

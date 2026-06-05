@@ -12,29 +12,27 @@ typedef struct {
     char items[];
 } String;
 
-String *String_init(const size_t cap);
-void String_deinit(String **str);
-void String_println(const String *str);
-int String_append_char(String **str, const char c);
-int String_append(String **str, const char *cstr);
-const char *String_to_cstr(const String *str);
-size_t String_len(const String *str);
+String *string_init(const size_t cap);
+void string_deinit(String **str);
+void string_println(const String *str);
+int string_append_char(String **str, const char c);
+int string_append(String **str, const char *cstr);
+const char *string_to_cstr(const String *str);
+size_t string_len(const String *str);
 
 /*
  * returns 0 on success (both of the strings are equal)
  * otherwise 1
  */
-int String_cmp(const String *str1, const String *str2);
+int string_cmp(const String *str1, const String *str2);
 
-void String_clear(String *str);
-int String_copy(String *dst, const String *src);
-int String_concat(String **dst, const String *str1, const String *str2);
+void string_clear(String *str);
+int string_copy(String *dst, const String *src);
+int string_concat(String **dst, const String *str1, const String *str2);
 
-int String_join_int_arr(String *str,
-                        const int *arr,
-                        const size_t len,
+int string_join_int_arr(String *str, const int *arr, const size_t len,
                         const char *separator);
 
-int String_replace(String *str, const char oldchar, char newchar);
+int string_replace(String *str, const char oldchar, char newchar);
 
 #endif

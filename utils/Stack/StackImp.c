@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-Stack *Stack_init(const size_t init_cap) {
+Stack *stack_init(const size_t init_cap) {
     if (init_cap > SIZE_MAX / 10) {
         return NULL;
     }
@@ -30,7 +30,7 @@ Stack *Stack_init(const size_t init_cap) {
     return stack;
 }
 
-Stack_status Stack_free(Stack **stack) {
+Stack_status stack_free(Stack **stack) {
     if (!stack || !*stack) {
         return STACK_ERR_WRONG_PTR;
     }
@@ -42,7 +42,7 @@ Stack_status Stack_free(Stack **stack) {
     return STACK_OK;
 }
 
-Stack_status Stack_push(Stack *stack, const int item) {
+Stack_status stack_push(Stack *stack, const int item) {
     if (!stack) {
         return STACK_ERR_WRONG_PTR;
     }
@@ -70,7 +70,7 @@ Stack_status Stack_push(Stack *stack, const int item) {
     return STACK_OK;
 }
 
-Stack_status Stack_pop(Stack *stack, int *out) {
+Stack_status stack_pop(Stack *stack, int *out) {
     if (!stack || !out) {
         return STACK_ERR_WRONG_PTR;
     }
@@ -83,7 +83,7 @@ Stack_status Stack_pop(Stack *stack, int *out) {
     return STACK_OK;
 }
 
-Stack_status Stack_top(const Stack *stack, int *out) {
+Stack_status stack_top(const Stack *stack, int *out) {
     if (!stack || !out) {
         return STACK_ERR_WRONG_PTR;
     }
@@ -96,7 +96,7 @@ Stack_status Stack_top(const Stack *stack, int *out) {
     return STACK_OK;
 }
 
-Stack_status Stack_println(const Stack *stack) {
+Stack_status stack_println(const Stack *stack) {
     if (!stack) {
         return STACK_ERR_WRONG_PTR;
     }
@@ -109,7 +109,7 @@ Stack_status Stack_println(const Stack *stack) {
     return STACK_OK;
 }
 
-Stack_status Stack_clear(Stack *stack) {
+Stack_status stack_clear(Stack *stack) {
     if (!stack) {
         return STACK_ERR_WRONG_PTR;
     }
@@ -119,7 +119,7 @@ Stack_status Stack_clear(Stack *stack) {
     return STACK_OK;
 }
 
-size_t Stack_len(Stack *stack) {
+size_t stack_len(Stack *stack) {
     if (!stack) {
         return 0;
     }

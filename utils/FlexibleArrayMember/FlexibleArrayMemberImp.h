@@ -15,12 +15,12 @@ typedef struct {
     int arr[];
 } FlexArr;
 
-FlexArr *FlexArr_init(const size_t cap);
-FA_status FlexArr_deinit(FlexArr **fa);
-FA_status FlexArr_push(FlexArr **fa, int val);
-FA_status FlexArr_pop(FlexArr *fa);
-FA_status FlexArr_get(const FlexArr *fa, const size_t i, int *out);
-FA_status FlexArr_println(const FlexArr *fa);
-size_t FlexArr_len(const FlexArr *fa);
+FlexArr *flex_arr_init(const size_t cap);
+FA_status flex_arr_deinit(FlexArr **fa);
+FA_status flex_arr_push(FlexArr **fa, int val);
+FA_status flex_arr_pop(FlexArr *fa);
+FA_status flex_arr_get(const FlexArr *fa, const size_t i, int *out);
+FA_status flex_arr_println(const FlexArr *fa);
+size_t flex_arr_len(const FlexArr *fa);
 
 #endif

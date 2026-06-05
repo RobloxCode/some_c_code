@@ -7,7 +7,7 @@ typedef enum {
     STRING_ERR_WRONG_PTR,
     STRING_ERR_REALLOC,
     STRING_ERR_OVERFLOW,
-} String_status;
+} Str_status;
 
 typedef struct {
     char *items;
@@ -19,15 +19,14 @@ typedef struct {
     size_t capacity;
 } String;
 
-String *String_create(const size_t init_len);
-String_status String_append_char(String *dst, const char src);
-String_status String_free(String **str);
-String_status String_println(const String *str);
-String_status String_append_cstr(String *dst, const char *src);
-String_status String_compare(const String *str1, const String *str2,
-                             int *result);
-size_t String_len(const String *str);
-String_status String_clear(String *str);
-const char *String_cstr(const String *str);
+String *string_create(const size_t init_len);
+Str_status string_append_char(String *dst, const char src);
+Str_status string_free(String **str);
+Str_status string_println(const String *str);
+Str_status string_append_cstr(String *dst, const char *src);
+Str_status string_compare(const String *str1, const String *str2, int *result);
+size_t string_len(const String *str);
+Str_status string_clear(String *str);
+const char *string_cstr(const String *str);
 
 #endif

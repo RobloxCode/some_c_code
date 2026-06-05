@@ -9,7 +9,7 @@ void print_bin(const unsigned char num) {
     printf("\n");
 }
 
-int u8_BitArr_print(const struct u8_BitArr *ba) {
+int u8_bit_arr_print(const struct u8_BitArr *ba) {
     if (!ba) {
         return 1;
     }
@@ -22,7 +22,7 @@ int u8_BitArr_print(const struct u8_BitArr *ba) {
     return 0;
 }
 
-int u8_BitArr_set(struct u8_BitArr *ba, int n) {
+int u8_bit_arr_set(struct u8_BitArr *ba, int n) {
     if (n > 7 || !ba) {
         return 1;
     }
@@ -34,7 +34,7 @@ int u8_BitArr_set(struct u8_BitArr *ba, int n) {
     return 0;
 }
 
-int u8_BitArr_clear(struct u8_BitArr *ba, int n) {
+int u8_bit_arr_clear(struct u8_BitArr *ba, int n) {
     if (n > 7 || !ba) {
         return 1;
     }
@@ -46,7 +46,7 @@ int u8_BitArr_clear(struct u8_BitArr *ba, int n) {
     return 0;
 }
 
-int u8_BitArr_get(const struct u8_BitArr *ba, const int i, int *out) {
+int u8_bit_arr_get(const struct u8_BitArr *ba, const int i, int *out) {
     if (!ba || i > 7) {
         return 1;
     }

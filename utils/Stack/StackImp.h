@@ -15,13 +15,13 @@ typedef enum {
     STACK_ERR_OVERFLOW,
 } Stack_status;
 
-Stack *Stack_init(const size_t init_cap);
-Stack_status Stack_free(Stack **stack);
-Stack_status Stack_push(Stack *stack, const int item);
-Stack_status Stack_pop(Stack *stack, int *out);
-Stack_status Stack_top(const Stack *stack, int *out);
-Stack_status Stack_println(const Stack *stack);
-Stack_status Stack_clear(Stack *stack);
-size_t Stack_len(Stack *stack);
+Stack *stack_init(const size_t init_cap);
+Stack_status stack_free(Stack **stack);
+Stack_status stack_push(Stack *stack, const int item);
+Stack_status stack_pop(Stack *stack, int *out);
+Stack_status stack_top(const Stack *stack, int *out);
+Stack_status stack_println(const Stack *stack);
+Stack_status stack_clear(Stack *stack);
+size_t stack_len(Stack *stack);
 
 #endif

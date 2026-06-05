@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-Queue *Queue_init() {
+Queue *queue_init() {
     Queue *q = malloc(sizeof *q);
     if (!q) {
         return NULL;
@@ -16,7 +16,7 @@ Queue *Queue_init() {
     return q;
 }
 
-void Queue_deinit(Queue **q) {
+void queue_deinit(Queue **q) {
     if (!q || !*q) {
         return;
     }
@@ -38,7 +38,7 @@ void Queue_deinit(Queue **q) {
     *q = NULL;
 }
 
-void Queue_push(Queue *q, int val) {
+void queue_push(Queue *q, int val) {
     if (!q) {
         return;
     }
@@ -63,7 +63,7 @@ void Queue_push(Queue *q, int val) {
     q->len++;
 }
 
-void Queue_pop(Queue *q) {
+void queue_pop(Queue *q) {
     if (!q) {
         return;
     }
@@ -79,7 +79,7 @@ void Queue_pop(Queue *q) {
     q->len--;
 }
 
-void Queue_println(Queue *q) {
+void queue_println(Queue *q) {
     if (!q) {
         return;
     }

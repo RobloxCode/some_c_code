@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-LinkedList *LinkedList_init(void) {
+LinkedList *ll_init(void) {
     LinkedList *ll = malloc(sizeof *ll);
     if (!ll) {
         return NULL;
@@ -15,7 +15,7 @@ LinkedList *LinkedList_init(void) {
     return ll;
 }
 
-LinkedList_status LinkedList_deinit(LinkedList **ll) {
+LL_status ll_deinit(LinkedList **ll) {
     if (!ll) {
         return LL_ERR_WRONG_PTR;
     }
@@ -37,7 +37,7 @@ LinkedList_status LinkedList_deinit(LinkedList **ll) {
     return LL_OK;
 }
 
-LinkedList_status LinkedList_append(LinkedList *ll, const int val) {
+LL_status ll_append(LinkedList *ll, const int val) {
     if (!ll) {
         return LL_ERR_WRONG_PTR;
     }
@@ -66,7 +66,7 @@ LinkedList_status LinkedList_append(LinkedList *ll, const int val) {
     return LL_OK;
 }
 
-LinkedList_status LinkedList_remove(LinkedList *ll, const size_t idx) {
+LL_status ll_remove(LinkedList *ll, const size_t idx) {
     if (!ll) {
         return LL_ERR_WRONG_PTR;
     }
@@ -98,7 +98,7 @@ free_node:
     return LL_OK;
 }
 
-LinkedList_status LinkedList_println(LinkedList *ll) {
+LL_status ll_println(LinkedList *ll) {
     if (!ll) {
         return LL_ERR_WRONG_PTR;
     }
@@ -113,7 +113,7 @@ LinkedList_status LinkedList_println(LinkedList *ll) {
     return LL_OK;
 }
 
-LinkedList_status LinkedList_reverse(LinkedList *ll) {
+LL_status ll_reverse(LinkedList *ll) {
     if (!ll) {
         return LL_ERR_WRONG_PTR;
     }
@@ -132,7 +132,7 @@ LinkedList_status LinkedList_reverse(LinkedList *ll) {
     return LL_OK;
 }
 
-size_t LinkedList_len(LinkedList *ll) {
+size_t ll_len(LinkedList *ll) {
     if (!ll) {
         return 0;
     }
@@ -140,8 +140,7 @@ size_t LinkedList_len(LinkedList *ll) {
     return ll->len;
 }
 
-LinkedList_status LinkedList_to_arr(const LinkedList *ll, int *dst,
-                                    const size_t dst_len) {
+LL_status ll_to_arr(const LinkedList *ll, int *dst, const size_t dst_len) {
     if (!ll || !dst) {
         return LL_ERR_WRONG_PTR;
     }
@@ -163,19 +162,19 @@ LinkedList_status LinkedList_to_arr(const LinkedList *ll, int *dst,
     return LL_OK;
 }
 
-LinkedList *arr_to_LinkedList(const int *arr, const size_t arr_len) {
+LinkedList *arr_to_ll(const int *arr, const size_t arr_len) {
     if (!arr) {
         return NULL;
     }
 
-    LinkedList *new = LinkedList_init();
+    LinkedList *new = ll_init();
     if (!new) {
         return NULL;
     }
 
-    LinkedList_status status = LL_OK;
+    LL_status status = LL_OK;
     for (size_t i = 0; i < arr_len; ++i) {
-        if ((status = LinkedList_append(new, arr[i])) != LL_OK) {
+        if ((status = ll_append(new, arr[i])) != LL_OK) {
             return NULL;
         }
     }
@@ -183,8 +182,7 @@ LinkedList *arr_to_LinkedList(const int *arr, const size_t arr_len) {
     return new;
 }
 
-LinkedList_status LinkedList_search(const LinkedList *ll, const int val,
-                                    size_t *out) {
+LL_status ll_search(const LinkedList *ll, const int val, size_t *out) {
     if (!ll || !out) {
         return LL_ERR_WRONG_PTR;
     }

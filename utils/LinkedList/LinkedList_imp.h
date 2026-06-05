@@ -20,19 +20,17 @@ typedef enum {
     LL_ERR_OVERFLOW,
     LL_ERR_EMPTY,
     LL_ERR_VALUE_NOT_FOUND,
-} LinkedList_status;
+} LL_status;
 
-LinkedList *LinkedList_init(void);
-LinkedList_status LinkedList_deinit(LinkedList **ll);
-LinkedList_status LinkedList_append(LinkedList *ll, const int val);
-LinkedList_status LinkedList_remove(LinkedList *ll, const size_t idx);
-LinkedList_status LinkedList_println(LinkedList *ll);
-LinkedList_status LinkedList_reverse(LinkedList *ll);
-size_t LinkedList_len(LinkedList *ll);
-LinkedList_status LinkedList_to_arr(const LinkedList *ll, int *dst,
-                                    const size_t dst_len);
-LinkedList *arr_to_LinkedList(const int *arr, const size_t arr_len);
-LinkedList_status LinkedList_search(const LinkedList *ll, const int val,
-                                    size_t *out);
+LinkedList *ll_init(void);
+LL_status ll_deinit(LinkedList **ll);
+LL_status ll_append(LinkedList *ll, const int val);
+LL_status ll_remove(LinkedList *ll, const size_t idx);
+LL_status ll_println(LinkedList *ll);
+LL_status ll_reverse(LinkedList *ll);
+size_t ll_len(LinkedList *ll);
+LL_status ll_to_arr(const LinkedList *ll, int *dst, const size_t dst_len);
+LinkedList *arr_to_ll(const int *arr, const size_t arr_len);
+LL_status ll_search(const LinkedList *ll, const int val, size_t *out);
 
 #endif
